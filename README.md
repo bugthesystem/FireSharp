@@ -7,22 +7,19 @@ update your clients **in realtime from the backend**.
 
 ### Usage
 ```csharp
-
-    IFirebaseClient  client = new FirebaseClient("your firebase url", "your firebase secret");
-     FirebaseResponse response = _client.Push("todos", new {name="Do your homework",priority=1});
+IFirebaseClient  client = new FirebaseClient("your firebase url", "your firebase secret");
+FirebaseResponse response = _client.Push("todos", new { name="Do your homework", priority=1 });
 ```
 
-So far, supported methods are:
+So far, supported methods are :
 
 ```csharp
-
-    IFirebaseClient  client = new FirebaseClient("your firebase url", "your firebase secret");
-    
-    client.Set(path, data)
-    client.Get(path)
-    client.Push(path, data)
-    client.Delete(path)
-    client.Update(path,data)
+IFirebaseClient  client = new FirebaseClient("your firebase url", "your firebase secret");
+client.Set(path, data)
+client.Get(path)
+client.Push(path, data)
+client.Delete(path)
+client.Update(path,data)
 ```
 
 More features are coming soon.
