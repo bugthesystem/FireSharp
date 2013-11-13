@@ -27,12 +27,24 @@ namespace FireSharp.Tests {
         [Test]
         public void Push_Test() {
             var todo = new Todo {
-                name = "Do your homework2",
-                priority = 3
+                name = "Do your homework3",
+                priority = 2
             };
             var response = _client.Push("todos", todo);
             Assert.NotNull(response);
             Assert.IsTrue(response.Body.Contains("name"));
+        }
+
+        [Test]
+        public void Set_Test() {
+            var todo = new Todo {
+                name = "Do your homework4",
+                priority = 2
+            };
+            var response = _client.Set("todos", todo);
+            Todo result = response.ReadAs<Todo>();
+            Assert.NotNull(response);
+            Assert.AreEqual(todo.name, result.name);
         }
 
         [Test]
@@ -41,7 +53,7 @@ namespace FireSharp.Tests {
             Assert.NotNull(response);
             Assert.IsTrue(response.Body.Contains("name"));
         }
-        
+
         [Test]
         public void Update_Test() {
             var todo = new Todo {
@@ -49,7 +61,7 @@ namespace FireSharp.Tests {
                 priority = 1
             };
 
-            var response = _client.Update("todos/-J8HaQrYd9xMUZLF5NxI",todo);
+            var response = _client.Update("todos/-J8HaQrYd9xMUZLF5NxI", todo);
             Assert.NotNull(response);
             Assert.IsTrue(response.Body.Contains("name"));
         }

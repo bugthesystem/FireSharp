@@ -1,10 +1,9 @@
-﻿using FireSharp.Config;
-
-namespace FireSharp {
+﻿namespace FireSharp {
     using System.Threading.Tasks;
     using Exceptions;
     using Interfaces;
     using Response;
+    using Config;
 
     public class FirebaseClient : IFirebaseClient {
         private readonly IFirebaseRequestManager _requestManager;

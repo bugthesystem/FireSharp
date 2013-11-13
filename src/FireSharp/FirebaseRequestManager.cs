@@ -1,10 +1,9 @@
-﻿using FireSharp.Config;
-
-namespace FireSharp {
+﻿namespace FireSharp {
     using System;
     using System.Threading.Tasks;
     using Exceptions;
     using Interfaces;
+    using Config;
     using RestSharp;
 
     internal class FirebaseRequestManager : IFirebaseRequestManager {
