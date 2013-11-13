@@ -33,7 +33,7 @@ namespace FireSharp.Tests {
 
             FirebaseResponse firebaseResponse = _firebaseClientMock.Object.Push("todos", _expected);
             Assert.NotNull(firebaseResponse);
-            Assert.AreEqual(firebaseResponse.Raw, _expected.ToJson());
+            Assert.AreEqual(firebaseResponse.Body, _expected.ToJson());
         }
 
         [Test]
@@ -42,7 +42,7 @@ namespace FireSharp.Tests {
 
             FirebaseResponse firebaseResponse = _firebaseClientMock.Object.Set("todos", _expected);
             Assert.NotNull(firebaseResponse);
-            Assert.AreEqual(firebaseResponse.Raw, _expected.ToJson());
+            Assert.AreEqual(firebaseResponse.Body, _expected.ToJson());
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace FireSharp.Tests {
 
             FirebaseResponse firebaseResponse = _firebaseClientMock.Object.Get("todos");
             Assert.NotNull(firebaseResponse);
-            Assert.AreEqual(firebaseResponse.Raw, _expected.ToJson());
+            Assert.AreEqual(firebaseResponse.Body, _expected.ToJson());
         }
 
         [Test]

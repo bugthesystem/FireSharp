@@ -1,5 +1,4 @@
-﻿using FireSharp.Interfaces;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace FireSharp.Tests {
     [TestFixture]
@@ -13,7 +12,14 @@ namespace FireSharp.Tests {
             };
             var response = await _client.PushTaskAsync("todos", todo);
             Assert.NotNull(response);
-            Assert.IsTrue(response.Raw.Contains("name"));
+            Assert.IsTrue(response.Body.Contains("name"));
+        }
+
+        [Test]
+        public async void Push_Chat_Async_Test() {
+            var response = await _client.PushTaskAsync("chat", new {name="ziyasal",text="Hello vogu"});
+            Assert.NotNull(response);
+            Assert.IsTrue(response.Body.Contains("name"));
         }
     }
 }

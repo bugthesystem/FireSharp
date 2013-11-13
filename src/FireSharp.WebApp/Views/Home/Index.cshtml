@@ -11,23 +11,26 @@
 <input type='text' id='messageInput' placeholder='Message...'>
 
 @section scripts {
+    <script src='https://cdn.firebase.com/v0/firebase.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js'></script>
     <script>
 
         // Get a reference to the root of the chat data.
-        var messagesRef = new Firebase('https://a1lxegucitd.firebaseio-demo.com/');
+        var dataRef = new Firebase("https://firesharp.firebaseio.com/chat");
+        //dataRef.set("I am now writing data into Firebase!");
 
         // When the user presses enter on the message input, write the message to firebase.
         $('#messageInput').keypress(function (e) {
             if (e.keyCode == 13) {
                 var name = $('#nameInput').val();
                 var text = $('#messageInput').val();
-                messagesRef.push({ name: name, text: text });
+                dataRef.push({ name: name, text: text });
                 $('#messageInput').val('');
             }
         });
 
         // Add a callback that is triggered for each chat message.
-        messagesRef.limit(10).on('child_added', function (snapshot) {
+        dataRef.limit(10).on('child_added', function (snapshot) {
             var message = snapshot.val();
             $('<div/>').text(message.text).prepend($('<em/>')
               .text(message.name + ': ')).appendTo($('#messagesDiv'));

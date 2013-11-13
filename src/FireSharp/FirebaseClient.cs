@@ -1,4 +1,6 @@
-﻿namespace FireSharp {
+﻿using FireSharp.Config;
+
+namespace FireSharp {
     using System.Threading.Tasks;
     using Exceptions;
     using Interfaces;
@@ -9,6 +11,9 @@
 
         public FirebaseClient(string basePath, string authSecret)
             : this(new FirebaseRequestManager(basePath, authSecret)) {
+        }
+        public FirebaseClient(IFirebaseConfig config)
+            : this(new FirebaseRequestManager(config)) {
         }
 
         internal FirebaseClient(IFirebaseRequestManager requestManager) {

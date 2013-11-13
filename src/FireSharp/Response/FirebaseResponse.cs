@@ -14,7 +14,7 @@
             _response = null;
         }
 
-        public string Raw {
+        public string Body {
             get {
                 return _response.Content;
             }

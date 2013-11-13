@@ -1,4 +1,6 @@
-﻿namespace FireSharp {
+﻿using FireSharp.Config;
+
+namespace FireSharp {
     using System;
     using System.Threading.Tasks;
     using Exceptions;
@@ -6,12 +8,17 @@
     using RestSharp;
 
     internal class FirebaseRequestManager : IFirebaseRequestManager {
-        private readonly string _basePath;
-        private readonly string _authSecret;
+        private readonly IFirebaseConfig _config;
 
-        public FirebaseRequestManager(string basePath, string authSecret) {
-            _basePath = basePath;
-            _authSecret = authSecret;
+        internal FirebaseRequestManager(string basePath, string authSecret) {
+            _config = new FirebaseConfig {
+                AuthSecret = authSecret,
+                BasePath = basePath
+            };
+        }
+
+        internal FirebaseRequestManager(IFirebaseConfig config) {
+            _config = config;
         }
 
         public IRestResponse Get(string path) {
@@ -56,17 +63,8 @@
 
         private IRestResponse ProcessRequest(Method requestMethod, string path, object data) {
             try {
-                string authToken = !string.IsNullOrWhiteSpace(_authSecret) 
-                    ? string.Format("{0}.json?auth={1}", path, _authSecret)
-                    : string.Format("{0}.json", path);
-
-                string url = string.Format("{0}{1}", _basePath, authToken);
-
-                var client = new RestClient(url);
-                var request = new RestRequest(requestMethod) { RequestFormat = DataFormat.Json };
-                if (data != null) {
-                    request.AddBody(data);
-                }
+                RestRequest request;
+                IRestClient client = PrepareClient(requestMethod, path, data, out request);
                 return client.Execute(request);
 
             } catch (Exception ex) {
@@ -76,15 +74,28 @@
 
         private async Task<IRestResponse> ProcessRequestAsync(Method requestMethod, string path, object data) {
             try {
-                var client = new RestClient(_basePath + string.Format("{0}.json?auth={1}", path, _authSecret));
-                var request = new RestRequest(requestMethod) { RequestFormat = DataFormat.Json };
-                if (data != null) {
-                    request.AddBody(data);
-                }
+                RestRequest request;
+                IRestClient client = PrepareClient(requestMethod, path, data, out request);
                 return await client.ExecuteTaskAsync(request);
+
             } catch (Exception ex) {
-                throw new FirebaseException("An error occured while execution request.", ex); ;
+                throw new FirebaseException("An error occured while execution request.", ex);
             }
+        }
+
+        private IRestClient PrepareClient(Method requestMethod, string path, object data, out RestRequest request) {
+            string authToken = !string.IsNullOrWhiteSpace(_config.AuthSecret)
+                    ? string.Format("{0}.json?auth={1}", path, _config.AuthSecret)
+                    : string.Format("{0}.json", path);
+
+            string url = string.Format("{0}{1}", _config.BasePath, authToken);
+
+            var client = new RestClient(url);
+            request = new RestRequest(requestMethod) { RequestFormat = DataFormat.Json };
+            if (data != null) {
+                request.AddBody(data);
+            }
+            return client;
         }
 
     }
