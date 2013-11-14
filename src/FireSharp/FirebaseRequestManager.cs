@@ -4,6 +4,7 @@
     using Exceptions;
     using Interfaces;
     using Config;
+    using Response;
     using RestSharp;
 
     internal class FirebaseRequestManager : IFirebaseRequestManager {
@@ -41,23 +42,23 @@
         }
 
         public async Task<IRestResponse> GetTaskAsync(string path) {
-            return await ProcessRequestAsync(Method.GET, path, null);
+            return await ProcessRequestTaskAsync(Method.GET, path, null);
         }
 
         public async Task<IRestResponse> PutTaskAsync<T>(string path, T data) {
-            return await ProcessRequestAsync(Method.PATCH, path, data);
+            return await ProcessRequestTaskAsync(Method.PATCH, path, data);
         }
 
         public async Task<IRestResponse> PostTaskAsync<T>(string path, T data) {
-            return await ProcessRequestAsync(Method.POST, path, data);
+            return await ProcessRequestTaskAsync(Method.POST, path, data);
         }
 
         public async Task<IRestResponse> DeleteTaskAsync(string path) {
-            return await ProcessRequestAsync(Method.DELETE, path, null);
+            return await ProcessRequestTaskAsync(Method.DELETE, path, null);
         }
 
         public async Task<IRestResponse> PatchTaskAsync<T>(string path, T data) {
-            return await ProcessRequestAsync(Method.PATCH, path, data);
+            return await ProcessRequestTaskAsync(Method.PATCH, path, data);
         }
 
         private IRestResponse ProcessRequest(Method requestMethod, string path, object data) {
@@ -71,7 +72,7 @@
             }
         }
 
-        private async Task<IRestResponse> ProcessRequestAsync(Method requestMethod, string path, object data) {
+        private async Task<IRestResponse> ProcessRequestTaskAsync(Method requestMethod, string path, object data) {
             try {
                 RestRequest request;
                 IRestClient client = PrepareClient(requestMethod, path, data, out request);

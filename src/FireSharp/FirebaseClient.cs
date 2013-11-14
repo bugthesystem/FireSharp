@@ -30,32 +30,32 @@
             return response;
         }
 
-        public FirebaseResponse Set<T>(string path, T data) {
-            FirebaseResponse response;
+        public SetResponse Set<T>(string path, T data) {
+            SetResponse response;
             try {
-                response = new FirebaseResponse(_requestManager.Put(path, data));
+                response = new SetResponse(_requestManager.Put(path, data));
             } catch (FirebaseException ex) {
-                response = new FirebaseResponse { Exception = ex };
+                response = new SetResponse { Exception = ex };
             }
             return response;
         }
 
-        public FirebaseResponse Push<T>(string path, T data) {
-            FirebaseResponse response;
+        public PushResponse Push<T>(string path, T data) {
+            PushResponse response;
             try {
-                response = new FirebaseResponse(_requestManager.Post(path, data));
+                response = new PushResponse(_requestManager.Post(path, data));
             } catch (FirebaseException ex) {
-                response = new FirebaseResponse { Exception = ex };
+                response = new PushResponse { Exception = ex };
             }
             return response;
         }
 
-        public FirebaseResponse Delete(string path) {
-            FirebaseResponse response;
+        public DeleteResponse Delete(string path) {
+            DeleteResponse response;
             try {
-                response = new FirebaseResponse(_requestManager.Delete(path));
+                response = new DeleteResponse(_requestManager.Delete(path));
             } catch (FirebaseException ex) {
-                response = new FirebaseResponse { Exception = ex };
+                response = new DeleteResponse { Exception = ex };
             }
             return response;
         }
@@ -80,32 +80,32 @@
             return response;
         }
 
-        public async Task<FirebaseResponse> SetTaskAsync<T>(string path, T data) {
-            FirebaseResponse response;
+        public async Task<SetResponse> SetTaskAsync<T>(string path, T data) {
+            SetResponse response;
             try {
-                response = new FirebaseResponse(await _requestManager.PutTaskAsync(path, data));
+                response = new SetResponse(await _requestManager.PutTaskAsync(path, data));
             } catch (FirebaseException ex) {
-                response = new FirebaseResponse { Exception = ex };
+                response = new SetResponse { Exception = ex };
             }
             return response;
         }
 
-        public async Task<FirebaseResponse> PushTaskAsync<T>(string path, T data) {
-            FirebaseResponse response;
+        public async Task<PushResponse> PushTaskAsync<T>(string path, T data) {
+            PushResponse response;
             try {
-                response = new FirebaseResponse(await _requestManager.PostTaskAsync(path, data));
+                response = new PushResponse(await _requestManager.PostTaskAsync(path, data));
             } catch (FirebaseException ex) {
-                response = new FirebaseResponse { Exception = ex };
+                response = new PushResponse { Exception = ex };
             }
             return response;
         }
 
-        public async Task<FirebaseResponse> DeleteTaskAsync(string path) {
-            FirebaseResponse response;
+        public async Task<DeleteResponse> DeleteTaskAsync(string path) {
+            DeleteResponse response;
             try {
-                response = new FirebaseResponse(await _requestManager.DeleteTaskAsync(path));
+                response = new DeleteResponse(await _requestManager.DeleteTaskAsync(path));
             } catch (FirebaseException ex) {
-                response = new FirebaseResponse { Exception = ex };
+                response = new DeleteResponse { Exception = ex };
             }
             return response;
         }

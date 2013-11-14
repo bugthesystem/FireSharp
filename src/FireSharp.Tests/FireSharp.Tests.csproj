@@ -54,9 +54,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FirebaseClientMockedTests.cs" />
     <Compile Include="FirebaseClientTests.async.cs" />
     <Compile Include="FirebaseClientTests.cs" />
-    <Compile Include="FirebaseClientMockedTests.cs" />
     <Compile Include="MoqExtensions\MoqExtensions.cs" />
     <Compile Include="NunitExtensions\AssertExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

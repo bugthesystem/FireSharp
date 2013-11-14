@@ -1,23 +1,26 @@
-﻿using NUnit.Framework;
+﻿using FireSharp.Response;
+using NUnit.Framework;
 
 namespace FireSharp.Tests {
     [TestFixture]
     public partial class FirebaseClientTests {
+        private const string TODOS_ASYNC_PATH = "todos/async";
 
-        [Test]
-        public async void Push_Async_Test() {
+        [Test, Category("ASYNC")]
+        public async void PushAsyncTest() {
             var todo = new Todo {
                 name = "Do your homewrok",
                 priority = 1
             };
-            var response = await _client.PushTaskAsync("todos", todo);
+
+            PushResponse response = await _client.PushTaskAsync(string.Format("{0}", TODOS_ASYNC_PATH), todo);
             Assert.NotNull(response);
             Assert.IsTrue(response.Body.Contains("name"));
         }
 
-        [Test]
-        public async void Push_Chat_Async_Test() {
-            var response = await _client.PushTaskAsync("chat", new {name="ziyasal",text="Hello vogu"});
+        [Test, Category("ASYNC")]
+        public async void PushChatAsyncTest() {
+            PushResponse response = await _client.PushTaskAsync("chat", new { name = "ziyasal", text = "Hello vogu" });
             Assert.NotNull(response);
             Assert.IsTrue(response.Body.Contains("name"));
         }

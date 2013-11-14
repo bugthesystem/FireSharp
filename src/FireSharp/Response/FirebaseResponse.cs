@@ -1,38 +1,25 @@
-﻿using FireSharp.Extensions;
-
-namespace FireSharp.Response {
-    using System.Net;
+﻿namespace FireSharp.Response {
     using Exceptions;
     using RestSharp;
+    using Extensions;
 
     public class FirebaseResponse {
-        private readonly IRestResponse _response;
+        protected readonly IRestResponse Response;
 
         public FirebaseResponse(IRestResponse response) {
-            _response = response;
+            Response = response;
         }
 
-        public FirebaseResponse() {
-            _response = null;
-        }
+        public FirebaseResponse() { Response = null; }
 
         public string Body {
-            get {
-                return _response.Content;
-            }
-        }
-
-        public bool Success {
-            get {
-                return _response.StatusCode == HttpStatusCode.OK || _response.StatusCode == HttpStatusCode.NoContent;
-
-            }
-        }
-
-        public T ReadAs<T>() {
-            return _response.ToTyped<T>();
+            get { return Response.Content; }
         }
 
         public FirebaseException Exception { get; set; }
+
+        public virtual T ResultAs<T>() {
+            return Response.ToTyped<T>();
+        }
     }
 }
