@@ -12,8 +12,14 @@ Install-Package FireSharp
 ### Usage
 **FirebaseClient** uses **RestSharp JsonSerializer** by default but there are other options such as **ServiceStack.Text** and **Json.Net**
 Set **FirebaseConfig** **Serializer** property for register custom serializer.
-
-**IMPORTANT:** Custom Serialization packages available soon.
+#### Enable Json.Net Serializer (optional)
+```csharp
+Install-Package FireSharp.Serialization.JsonNet
+```
+#### Enable ServiceStack.Text Serializer (optional)
+```csharp
+Install-Package FireSharp.Serialization.ServiceStack
+```
 ```csharp
 IFirebaseConfig config = new FirebaseConfig { AuthSecret = "**your firebase auth secret**", 
                                               BasePath = "**your firebase path**" };
