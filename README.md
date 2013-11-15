@@ -10,9 +10,15 @@ update your clients **in realtime from the backend**.
 Install-Package FireSharp
 ```
 ### Usage
+**FirebaseClient** uses **RestSharp JsonSerializer** by default but there are other options such as **ServiceStack.Text** and **Json.Net**
+Set **FirebaseConfig** **Serializer** property for register custom serializer.
 ```csharp
 IFirebaseConfig config = new FirebaseConfig { AuthSecret = "**your firebase auth secret**", 
                                               BasePath = "**your firebase path**" };
+                                              
+config.Serializer=new ServiceStackJsonSerializer(); //Register ServiceStack.Text
+config.Serializer=new JsonNetSerializer();          //Register Json.Net
+
 IFirebaseClient  client = new FirebaseClient(config);
 ```
 So far, supported methods are :
