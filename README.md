@@ -5,6 +5,10 @@
 Changes are sent to all subscribed clients automatically, so you can
 update your clients **in realtime from the backend**.
 
+####Installation (NuGet)
+```csharp
+Install-Package FireSharp
+```
 ### Usage
 ```csharp
 IFirebaseConfig config = new FirebaseConfig { AuthSecret = "**your firebase auth secret**", 
