@@ -5,10 +5,8 @@ using FireSharp.Response;
 using NUnit.Framework;
 
 namespace FireSharp.Tests {
-    [TestFixture]
-    public partial class FirebaseClientTests {
-        private const string BASE_PATH = "https://firesharp.firebaseio.com/";
-        private const string FIREBASE_SECRET = "**your firebase secret here**";
+
+    public partial class FirebaseClientTests : FirebaseClientTestBase {
         IFirebaseClient _client;
 
         [SetUp]
@@ -16,7 +14,7 @@ namespace FireSharp.Tests {
             IFirebaseConfig config = new FirebaseConfig {
                 AuthSecret = FIREBASE_SECRET, BasePath = BASE_PATH
             };
-            _client = new FirebaseClient(config);
+            _client = new FirebaseClient(config);//Uses serializer RestSharp JsonSerializer by default
         }
 
         [Test, Category("NORMAL")]
@@ -69,7 +67,7 @@ namespace FireSharp.Tests {
             FirebaseResponse response = _client.Update("todos/set", todo);
             Assert.NotNull(response);
             Todo actual = response.ResultAs<Todo>();
-            Assert.AreEqual(todo.name,actual.name);
+            Assert.AreEqual(todo.name, actual.name);
         }
     }
 }

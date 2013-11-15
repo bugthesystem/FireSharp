@@ -54,9 +54,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FirebaseClientJsonNetSerializerTests.cs" />
+    <Compile Include="FirebaseClientServiceStackSerializerTests.cs" />
+    <Compile Include="FirebaseClientTests.cs" />
     <Compile Include="FirebaseClientMockedTests.cs" />
     <Compile Include="FirebaseClientTests.async.cs" />
-    <Compile Include="FirebaseClientTests.cs" />
+    <Compile Include="FirebaseClientTestBase.cs" />
     <Compile Include="MoqExtensions\MoqExtensions.cs" />
     <Compile Include="NunitExtensions\AssertExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -67,6 +70,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FireSharp.Serialization.JsonNet\FireSharp.Serialization.JsonNet.csproj">
+      <Project>{A5F20EAF-9E8E-4CED-90F3-F19869570B7C}</Project>
+      <Name>FireSharp.Serialization.JsonNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FireSharp.Serialization.ServiceStack\FireSharp.Serialization.ServiceStack.csproj">
+      <Project>{7B0E3BC1-4C1D-4748-B678-3197E8E194FC}</Project>
+      <Name>FireSharp.Serialization.ServiceStack</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FireSharp\FireSharp.csproj">
       <Project>{7613B723-E81B-4C02-A3EC-54F8F02C60F6}</Project>
       <Name>FireSharp</Name>

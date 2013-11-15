@@ -8,9 +8,6 @@
     public class FirebaseClient : IFirebaseClient {
         private readonly IFirebaseRequestManager _requestManager;
 
-        public FirebaseClient(string basePath, string authSecret)
-            : this(new FirebaseRequestManager(basePath, authSecret)) {
-        }
         public FirebaseClient(IFirebaseConfig config)
             : this(new FirebaseRequestManager(config)) {
         }

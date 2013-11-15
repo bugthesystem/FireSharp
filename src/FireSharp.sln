@@ -14,6 +14,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{83537A
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FireSharp.Serialization.ServiceStack", "FireSharp.Serialization.ServiceStack\FireSharp.Serialization.ServiceStack.csproj", "{7B0E3BC1-4C1D-4748-B678-3197E8E194FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FireSharp.Serialization.JsonNet", "FireSharp.Serialization.JsonNet\FireSharp.Serialization.JsonNet.csproj", "{A5F20EAF-9E8E-4CED-90F3-F19869570B7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +36,14 @@ Global
 		{36E7801E-AF0D-47F7-9C6C-7BE3DBB9DF30}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36E7801E-AF0D-47F7-9C6C-7BE3DBB9DF30}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36E7801E-AF0D-47F7-9C6C-7BE3DBB9DF30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B0E3BC1-4C1D-4748-B678-3197E8E194FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B0E3BC1-4C1D-4748-B678-3197E8E194FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B0E3BC1-4C1D-4748-B678-3197E8E194FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B0E3BC1-4C1D-4748-B678-3197E8E194FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5F20EAF-9E8E-4CED-90F3-F19869570B7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5F20EAF-9E8E-4CED-90F3-F19869570B7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5F20EAF-9E8E-4CED-90F3-F19869570B7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5F20EAF-9E8E-4CED-90F3-F19869570B7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

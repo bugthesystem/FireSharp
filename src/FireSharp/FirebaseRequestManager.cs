@@ -4,18 +4,10 @@
     using Exceptions;
     using Interfaces;
     using Config;
-    using Response;
     using RestSharp;
 
     internal class FirebaseRequestManager : IFirebaseRequestManager {
         private readonly IFirebaseConfig _config;
-
-        internal FirebaseRequestManager(string basePath, string authSecret) {
-            _config = new FirebaseConfig {
-                AuthSecret = authSecret,
-                BasePath = basePath
-            };
-        }
 
         internal FirebaseRequestManager(IFirebaseConfig config) {
             _config = config;
@@ -91,10 +83,11 @@
             string url = string.Format("{0}{1}", _config.BasePath, authToken);
 
             var client = new RestClient(url);
-            request = new RestRequest(requestMethod) { RequestFormat = DataFormat.Json };
+            request = new RestRequest(requestMethod) { RequestFormat = DataFormat.Json, JsonSerializer = _config.Serializer };
             if (data != null) {
                 request.AddBody(data);
             }
+
             return client;
         }
 
