@@ -11,7 +11,7 @@
         public ISerializer Serializer {
             get { return _serializer ?? (_serializer = new JsonSerializer()); }
             set {
-                if (_serializer != null) _serializer = value;
+                if (value != null) _serializer = value;
                 else { throw new ArgumentNullException("value"); }
             }
         }

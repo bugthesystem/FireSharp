@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>FireSharp.Serialization.JsonNet</id>
+        <version>1.0.1</version>
+        <title>Fire# Serialization JsonNet</title>
+        <authors>ziyasal</authors>
+        <owners>ziyasal</owners>
+        <licenseUrl>https://github.com/ziyasal/FireSharp/blob/master/LICENSE.md</licenseUrl>
+        <projectUrl>https://github.com/ziyasal/FireSharp</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Provides JSON serialization support using Newtonsoft.JsonNet.</description>
+        <language>en-US</language>
+        <tags>firebase rest api client realtime newtonsoft jsonnet json</tags>
+        <dependencies>
+            <dependency id="RestSharp" version="104.3.3" />
+            <dependency id="Newtonsoft.Json" version="5.0.8" />
+            <dependency id="FireSharp" version="1.0.1" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="bin\Release\FireSharp.Serialization.JsonNet.dll" target="lib\net45\FireSharp.Serialization.JsonNet.dll" />
+    </files>
+</package>
