@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace FireSharp.Tests {
 
-    public partial class FirebaseClientTests {
+    public partial class FirebaseClientIntegrationTests {
         private const string TODOS_ASYNC_PATH = "todos/async";
 
         [Test, Category("ASYNC")]

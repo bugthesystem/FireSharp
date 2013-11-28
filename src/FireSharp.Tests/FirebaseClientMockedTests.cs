@@ -9,28 +9,23 @@ using RestSharp;
 
 namespace FireSharp.Tests {
 
-    [TestFixture]
-    public class FirebaseClientMockedTests {
+    public class FirebaseClientMockedTests : MockTestBase {
 
         Todo _expected;
-        MockRepository _repository;
         Mock<IFirebaseRequestManager> _firebaseRequestManagerMock;
         IRestResponse _expectedResponse;
         IFirebaseClient _firebaseClient;
-        IFixture _fixtureRepository;
 
-        [SetUp]
-        public void Setup() {
+        protected override void FinalizeSetUp() {
 
             _expected = new Todo {
                 name = "Do your homework!",
                 priority = 1
             };
-            _repository = new MockRepository(MockBehavior.Strict);
-            _fixtureRepository = new Fixture();
-            _firebaseRequestManagerMock = _repository.Create<IFirebaseRequestManager>();
 
-            _expectedResponse = _fixtureRepository.Build<RestResponse>()
+            _firebaseRequestManagerMock = MockFor<IFirebaseRequestManager>();
+
+            _expectedResponse = FixtureRepository.Build<RestResponse>()
                 .With(response => response.Content, _expected.ToJson())
                 .With(response => response.StatusCode, HttpStatusCode.OK)
                 .Without(response => response.Request) /*Ignore request field because it has no public constructor, is an abstract or non-public type*/
@@ -73,11 +68,6 @@ namespace FireSharp.Tests {
             DeleteResponse response = _firebaseClient.Delete("todos");
             Assert.NotNull(response);
             Assert.AreEqual(response.Success, true);
-        }
-
-        [TearDown]
-        public void TearDown() {
-            _repository.VerifyAll();
         }
     }
 }

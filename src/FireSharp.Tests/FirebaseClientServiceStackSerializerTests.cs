@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace FireSharp.Tests {
 
-    public class FirebaseClientServiceStackSerializerTests : FirebaseClientTestBase {
+    public class FirebaseClientServiceStackSerializerTests : FirebaseClientIntegrationTestBase {
         IFirebaseClient _client;
 
         [SetUp]
