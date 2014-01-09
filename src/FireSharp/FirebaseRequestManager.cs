@@ -76,7 +76,7 @@
             }
             catch (Exception ex)
             {
-                throw new FirebaseException("An error occured while execution request.", ex);
+                throw new FirebaseException(string.Format("An error occured while execution request. Path : {0} , Method : {1}", path, requestMethod), ex);
             }
         }
 
@@ -90,7 +90,7 @@
             }
             catch (Exception ex)
             {
-                throw new FirebaseException("An error occured while execution request.", ex);
+                throw new FirebaseException(string.Format("An error occured while execution request. Path : {0} , Method : {1}", path, requestMethod), ex);
             }
         }
 
