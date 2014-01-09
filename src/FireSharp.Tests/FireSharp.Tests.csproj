@@ -57,11 +57,11 @@
   <ItemGroup>
     <Compile Include="FirebaseClientJsonNetSerializerTests.cs" />
     <Compile Include="FirebaseClientServiceStackSerializerTests.cs" />
+    <Compile Include="FirebaseClientIntegrationTests.cs" />
     <Compile Include="FirebaseClientTests.cs" />
-    <Compile Include="FirebaseClientMockedTests.cs" />
-    <Compile Include="FirebaseClientTests.async.cs" />
+    <Compile Include="FirebaseClientIntegrationTests.async.cs" />
     <Compile Include="FirebaseClientTestBase.cs" />
-    <Compile Include="MockTestBase.cs" />
+    <Compile Include="TestBase.cs" />
     <Compile Include="MoqExtensions\MoqExtensions.cs" />
     <Compile Include="NunitExtensions\AssertExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

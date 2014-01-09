@@ -4,7 +4,7 @@ using Ploeh.AutoFixture;
 
 namespace FireSharp.Tests {
     [TestFixture]
-    public class MockTestBase {
+    public class TestBase {
         MockRepository _mockRepository;
 
         [SetUp]
