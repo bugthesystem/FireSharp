@@ -60,7 +60,7 @@
     <Compile Include="FirebaseClientIntegrationTests.cs" />
     <Compile Include="FirebaseClientTests.cs" />
     <Compile Include="FirebaseClientIntegrationTests.async.cs" />
-    <Compile Include="FirebaseClientTestBase.cs" />
+    <Compile Include="FirebaseClientIntegrationTestBase.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="MoqExtensions\MoqExtensions.cs" />
     <Compile Include="NunitExtensions\AssertExtensions.cs" />

@@ -1,17 +1,19 @@
-﻿namespace FireSharp.Serialization.ServiceStack {
+﻿namespace FireSharp.Serialization.ServiceStack
+{
     using RestSharp.Serializers;
+
     /// <summary>
     /// ServiceSatck JSON serializer for request bodies
     /// Doesn't currently use the SerializeAs attribute, defers to ServiceStack's attributes that ServiceStack.Text supports DataContract,DataMember attributes
     /// </summary>
-    public class ServiceStackJsonSerializer : ISerializer {
-
+    public class ServiceStackJsonSerializer : ISerializer
+    {
         /// <summary>
         /// Default serializer
         /// </summary>
-        public ServiceStackJsonSerializer() {
+        public ServiceStackJsonSerializer()
+        {
             ContentType = "application/json";
-
         }
 
         /// <summary>
@@ -19,7 +21,8 @@
         /// </summary>
         /// <param name="obj">Object to serialize</param>
         /// <returns>JSON as String</returns>
-        public string Serialize(object obj) {
+        public string Serialize(object obj)
+        {
             return global::ServiceStack.Text.JsonSerializer.SerializeToString(obj);
         }
 

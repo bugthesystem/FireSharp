@@ -4,22 +4,28 @@ using FireSharp.Response;
 using FireSharp.Serialization.JsonNet;
 using NUnit.Framework;
 
-namespace FireSharp.Tests {
-
-    public class FirebaseClientJsonNetSerializerTests : FirebaseClientIntegrationTestBase {
-        IFirebaseClient _client;
+namespace FireSharp.Tests
+{
+    public class FirebaseClientJsonNetSerializerTests : FirebaseClientIntegrationTestBase
+    {
+        private IFirebaseClient _client;
 
         [SetUp]
-        public void Setup() {
-            IFirebaseConfig config = new FirebaseConfig {
-                AuthSecret = FIREBASE_SECRET, BasePath = BASE_PATH
+        public void Setup()
+        {
+            IFirebaseConfig config = new FirebaseConfig
+            {
+                AuthSecret = FIREBASE_SECRET,
+                BasePath = BASE_PATH
             };
             _client = GetClientWithSerializer(new JsonNetSerializer(), config);
         }
 
         [Test, Category("JSONNET")]
-        public void Set() {
-            var todo = new Todo {
+        public void Set()
+        {
+            var todo = new Todo
+            {
                 name = "Execute SET",
                 priority = 2
             };

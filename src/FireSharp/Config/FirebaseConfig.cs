@@ -1,18 +1,25 @@
-﻿namespace FireSharp.Config {
+﻿namespace FireSharp.Config
+{
     using RestSharp.Serializers;
     using System;
 
-    public class FirebaseConfig : IFirebaseConfig {
+    public class FirebaseConfig : IFirebaseConfig
+    {
         private ISerializer _serializer;
 
         public string BasePath { get; set; }
         public string AuthSecret { get; set; }
 
-        public ISerializer Serializer {
+        public ISerializer Serializer
+        {
             get { return _serializer ?? (_serializer = new JsonSerializer()); }
-            set {
+            set
+            {
                 if (value != null) _serializer = value;
-                else { throw new ArgumentNullException("value"); }
+                else
+                {
+                    throw new ArgumentNullException("value");
+                }
             }
         }
     }

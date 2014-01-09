@@ -1,15 +1,17 @@
-﻿namespace FireSharp.Exceptions {
+﻿namespace FireSharp.Exceptions
+{
     using System;
 
-    public class FirebaseException : Exception {
+    public class FirebaseException : Exception
+    {
         public FirebaseException(string message)
-            : base(message) {
-
+            : base(message)
+        {
         }
+
         public FirebaseException(string message, Exception innerException)
-            : base(message, innerException) {
-
+            : base(message, innerException)
+        {
         }
-
     }
 }

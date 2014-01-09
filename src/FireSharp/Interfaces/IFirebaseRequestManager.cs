@@ -1,8 +1,10 @@
-﻿namespace FireSharp.Interfaces {
+﻿namespace FireSharp.Interfaces
+{
     using System.Threading.Tasks;
     using RestSharp;
 
-    internal interface IFirebaseRequestManager {
+    internal interface IFirebaseRequestManager
+    {
         IRestResponse Get(string path);
         IRestResponse Put<T>(string path, T data);
         IRestResponse Post<T>(string path, T data);

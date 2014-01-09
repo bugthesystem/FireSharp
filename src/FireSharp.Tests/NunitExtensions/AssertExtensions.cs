@@ -8,7 +8,7 @@ namespace FireSharp.Tests.NunitExtensions
     {
         public static async Task ThrowsAsync<TException>(Func<Task> func) where TException : Exception
         {
-            var expected = typeof(TException);
+            var expected = typeof (TException);
             Type actual = null;
 
             try

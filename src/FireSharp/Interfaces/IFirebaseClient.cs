@@ -1,8 +1,10 @@
-﻿namespace FireSharp.Interfaces {
+﻿namespace FireSharp.Interfaces
+{
     using System.Threading.Tasks;
     using Response;
 
-    public interface IFirebaseClient {
+    public interface IFirebaseClient
+    {
         FirebaseResponse Get(string path);
         SetResponse Set<T>(string path, T data);
         PushResponse Push<T>(string path, T data);

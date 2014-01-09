@@ -7,18 +7,19 @@ using NUnit.Framework;
 using Ploeh.AutoFixture;
 using RestSharp;
 
-namespace FireSharp.Tests {
+namespace FireSharp.Tests
+{
+    public class FirebaseClientTests : TestBase
+    {
+        private Todo _expected;
+        private Mock<IFirebaseRequestManager> _firebaseRequestManagerMock;
+        private IRestResponse _expectedResponse;
+        private IFirebaseClient _firebaseClient;
 
-    public class FirebaseClientTests : TestBase {
-
-        Todo _expected;
-        Mock<IFirebaseRequestManager> _firebaseRequestManagerMock;
-        IRestResponse _expectedResponse;
-        IFirebaseClient _firebaseClient;
-
-        protected override void FinalizeSetUp() {
-
-            _expected = new Todo {
+        protected override void FinalizeSetUp()
+        {
+            _expected = new Todo
+            {
                 name = "Do your homework!",
                 priority = 1
             };
@@ -28,15 +29,18 @@ namespace FireSharp.Tests {
             _expectedResponse = FixtureRepository.Build<RestResponse>()
                 .With(response => response.Content, _expected.ToJson())
                 .With(response => response.StatusCode, HttpStatusCode.OK)
-                .Without(response => response.Request) /*Ignore request field because it has no public constructor, is an abstract or non-public type*/
+                .Without(response => response.Request)
+                /*Ignore request field because it has no public constructor, is an abstract or non-public type*/
                 .Create();
 
             _firebaseClient = new FirebaseClient(_firebaseRequestManagerMock.Object);
         }
 
         [Test]
-        public void Push() {
-            _firebaseRequestManagerMock.Setup(firebaseRequestManager => firebaseRequestManager.Post("todos", _expected)).Returns(_expectedResponse);
+        public void Push()
+        {
+            _firebaseRequestManagerMock.Setup(firebaseRequestManager => firebaseRequestManager.Post("todos", _expected))
+                .Returns(_expectedResponse);
 
             PushResponse response = _firebaseClient.Push("todos", _expected);
             Assert.NotNull(response);
@@ -44,8 +48,10 @@ namespace FireSharp.Tests {
         }
 
         [Test]
-        public void Set() {
-            _firebaseRequestManagerMock.Setup(firebaseRequestManager => firebaseRequestManager.Put("todos", _expected)).Returns(_expectedResponse);
+        public void Set()
+        {
+            _firebaseRequestManagerMock.Setup(firebaseRequestManager => firebaseRequestManager.Put("todos", _expected))
+                .Returns(_expectedResponse);
 
             SetResponse response = _firebaseClient.Set("todos", _expected);
             Assert.NotNull(response);
@@ -53,8 +59,10 @@ namespace FireSharp.Tests {
         }
 
         [Test]
-        public void Get() {
-            _firebaseRequestManagerMock.Setup(firebaseRequestManager => firebaseRequestManager.Get("todos")).Returns(_expectedResponse);
+        public void Get()
+        {
+            _firebaseRequestManagerMock.Setup(firebaseRequestManager => firebaseRequestManager.Get("todos"))
+                .Returns(_expectedResponse);
 
             FirebaseResponse firebaseResponse = _firebaseClient.Get("todos");
             Assert.NotNull(firebaseResponse);
@@ -62,8 +70,10 @@ namespace FireSharp.Tests {
         }
 
         [Test]
-        public void Delete() {
-            _firebaseRequestManagerMock.Setup(firebaseRequestManager => firebaseRequestManager.Delete("todos")).Returns(_expectedResponse);
+        public void Delete()
+        {
+            _firebaseRequestManagerMock.Setup(firebaseRequestManager => firebaseRequestManager.Delete("todos"))
+                .Returns(_expectedResponse);
 
             DeleteResponse response = _firebaseClient.Delete("todos");
             Assert.NotNull(response);

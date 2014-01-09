@@ -1,5 +1,7 @@
-﻿namespace FireSharp.Tests {
-    public class Todo {
+﻿namespace FireSharp.Tests
+{
+    public class Todo
+    {
         //[JsonName("name")]
         public string name { get; set; }
 

@@ -1,14 +1,17 @@
 ﻿using FireSharp.Response;
 using NUnit.Framework;
 
-namespace FireSharp.Tests {
-
-    public partial class FirebaseClientIntegrationTests {
+namespace FireSharp.Tests
+{
+    public partial class FirebaseClientIntegrationTests
+    {
         private const string TODOS_ASYNC_PATH = "todos/async";
 
-        [Test, Category("ASYNC")]
-        public async void PushAsyncTest() {
-            var todo = new Todo {
+        [Test, Category("INTEGRATION_ASYNC")]
+        public async void PushAsyncTest()
+        {
+            var todo = new Todo
+            {
                 name = "Do your homewrok",
                 priority = 1
             };
@@ -18,9 +21,10 @@ namespace FireSharp.Tests {
             Assert.IsTrue(response.Body.Contains("name"));
         }
 
-        [Test, Category("ASYNC")]
-        public async void PushChatAsyncTest() {
-            PushResponse response = await _client.PushTaskAsync("chat", new { name = "ziyasal", text = "Hello vogu" });
+        [Test, Category("INTEGRATION_ASYNC")]
+        public async void PushChatAsyncTest()
+        {
+            PushResponse response = await _client.PushTaskAsync("chat", new {name = "ziyasal", text = "Hello vogu"});
             Assert.NotNull(response);
             Assert.IsTrue(response.Body.Contains("name"));
         }

@@ -1,4 +1,5 @@
 ﻿#region License
+
 //   Copyright 2010 John Sheehan
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,13 +13,17 @@
 //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //   See the License for the specific language governing permissions and
 //   limitations under the License. 
+
 #endregion
+
 #region Acknowledgements
+
 // Original JsonNetSerializer contributed by Daniel Crenna (@dimebrain)
+
 #endregion
 
-
-namespace FireSharp.Serialization.JsonNet {
+namespace FireSharp.Serialization.JsonNet
+{
     using System.IO;
     using Newtonsoft.Json;
     using RestSharp.Serializers;
@@ -27,15 +32,19 @@ namespace FireSharp.Serialization.JsonNet {
     /// JsonNet JSON serializer for request bodies
     /// Doesn't currently use the SerializeAs attribute, defers to Newtonsoft's attributes
     /// </summary>
-    public class JsonNetSerializer : ISerializer {
+    public class JsonNetSerializer : ISerializer
+    {
         private readonly Newtonsoft.Json.JsonSerializer _serializer;
 
         /// <summary>
         /// Default serializer
         /// </summary>
-        public JsonNetSerializer() {
+        public JsonNetSerializer()
+        {
             ContentType = "application/json";
-            _serializer = new Newtonsoft.Json.JsonSerializer {
+
+            _serializer = new Newtonsoft.Json.JsonSerializer
+            {
                 MissingMemberHandling = MissingMemberHandling.Ignore,
                 NullValueHandling = NullValueHandling.Include,
                 DefaultValueHandling = DefaultValueHandling.Include
@@ -45,7 +54,8 @@ namespace FireSharp.Serialization.JsonNet {
         /// <summary>
         /// Default serializer with overload for allowing custom Json.NET settings
         /// </summary>
-        public JsonNetSerializer(Newtonsoft.Json.JsonSerializer serializer) {
+        public JsonNetSerializer(Newtonsoft.Json.JsonSerializer serializer)
+        {
             ContentType = "application/json";
             _serializer = serializer;
         }
@@ -55,9 +65,12 @@ namespace FireSharp.Serialization.JsonNet {
         /// </summary>
         /// <param name="obj">Object to serialize</param>
         /// <returns>JSON as String</returns>
-        public string Serialize(object obj) {
-            using (var stringWriter = new StringWriter()) {
-                using (var jsonTextWriter = new JsonTextWriter(stringWriter)) {
+        public string Serialize(object obj)
+        {
+            using (var stringWriter = new StringWriter())
+            {
+                using (var jsonTextWriter = new JsonTextWriter(stringWriter))
+                {
                     jsonTextWriter.Formatting = Formatting.Indented;
                     jsonTextWriter.QuoteChar = '"';
 

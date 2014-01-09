@@ -12,6 +12,5 @@ namespace FireSharp.WebApp.Controllers
         {
             return View();
         }
-
     }
 }
