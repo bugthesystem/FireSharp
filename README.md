@@ -100,7 +100,11 @@ More features and documentation are coming soon.
 More information about Firebase and the Firebase API is available at the
 [official website](http://www.firebase.com/).
 
+
+## License
+
+MIT
+
 ### Copyright
 
 Copyright (c) 2013 Ziya SARIKAYA (@ziyasal)
-
