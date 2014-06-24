@@ -62,11 +62,11 @@
     <Compile Include="FirebaseClientTests.cs" />
     <Compile Include="FirebaseClientIntegrationTests.async.cs" />
     <Compile Include="FirebaseClientIntegrationTestBase.cs" />
+    <Compile Include="Models\Todo.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="MoqExtensions\MoqExtensions.cs" />
     <Compile Include="NunitExtensions\AssertExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Todo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

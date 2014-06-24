@@ -2,6 +2,9 @@
 {
     using System.Threading.Tasks;
     using Response;
+    using System;
+    using EventStreaming;
+
 
     public interface IFirebaseClient
     {

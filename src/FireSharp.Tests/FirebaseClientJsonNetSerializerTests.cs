@@ -2,6 +2,7 @@
 using FireSharp.Interfaces;
 using FireSharp.Response;
 using FireSharp.Serialization.JsonNet;
+using FireSharp.Tests.Models;
 using NUnit.Framework;
 
 namespace FireSharp.Tests
@@ -30,7 +31,7 @@ namespace FireSharp.Tests
                 priority = 2
             };
             SetResponse response = _client.Set("todos/set", todo);
-            Todo result = response.ResultAs<Todo>();
+            Todo result = response.ReadAs<Todo>();
             Assert.NotNull(response);
             Assert.AreEqual(todo.name, result.name);
         }

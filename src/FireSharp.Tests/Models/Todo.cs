@@ -1,11 +1,8 @@
-﻿namespace FireSharp.Tests
+﻿namespace FireSharp.Tests.Models
 {
     public class Todo
     {
-        //[JsonName("name")]
         public string name { get; set; }
-
-        //[JsonName("priority")]
         public int priority { get; set; }
     }
 }

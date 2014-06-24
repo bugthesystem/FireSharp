@@ -13,7 +13,7 @@ namespace FireSharp.Extensions
             return serializer.Serialize(@object);
         }
 
-        public static T ToTyped<T>(this IRestResponse response)
+        public static T ReadAs<T>(this IRestResponse response)
         {
             JsonDeserializer serializer = new JsonDeserializer();
             return serializer.Deserialize<T>(response);

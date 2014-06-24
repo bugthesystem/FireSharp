@@ -2,6 +2,7 @@
 using FireSharp.Extensions;
 using FireSharp.Interfaces;
 using FireSharp.Response;
+using FireSharp.Tests.Models;
 using Moq;
 using NUnit.Framework;
 using Ploeh.AutoFixture;
@@ -78,6 +79,12 @@ namespace FireSharp.Tests
             DeleteResponse response = _firebaseClient.Delete("todos");
             Assert.NotNull(response);
             Assert.AreEqual(response.Success, true);
+        }
+
+        [Test]
+        public void Added_Event_Stream()
+        {
+
         }
     }
 }

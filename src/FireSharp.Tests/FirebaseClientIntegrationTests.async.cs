@@ -1,4 +1,5 @@
 ﻿using FireSharp.Response;
+using FireSharp.Tests.Models;
 using NUnit.Framework;
 
 namespace FireSharp.Tests
@@ -12,7 +13,7 @@ namespace FireSharp.Tests
         {
             var todo = new Todo
             {
-                name = "Do your homewrok",
+                name = "Do your homework",
                 priority = 1
             };
 
@@ -24,7 +25,7 @@ namespace FireSharp.Tests
         [Test, Category("INTEGRATION_ASYNC")]
         public async void PushChatAsyncTest()
         {
-            PushResponse response = await _client.PushTaskAsync("chat", new {name = "ziyasal", text = "Hello vogu"});
+            PushResponse response = await _client.PushTaskAsync("chat", new {name = "ziyasal", text = "Hello there"});
             Assert.NotNull(response);
             Assert.IsTrue(response.Body.Contains("name"));
         }

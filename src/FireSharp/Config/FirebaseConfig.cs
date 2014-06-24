@@ -1,7 +1,6 @@
 ﻿namespace FireSharp.Config
 {
     using RestSharp.Serializers;
-    using System;
 
     public class FirebaseConfig : IFirebaseConfig
     {
@@ -12,8 +11,8 @@
 
         public ISerializer Serializer
         {
-            get { return _serializer; }
-            set {_serializer = value != null ? value : new JsonSerializer(); }
+            get { return _serializer ?? (_serializer = new JsonSerializer()); }
+            set { _serializer = value ?? new JsonSerializer(); }
         }
     }
 }

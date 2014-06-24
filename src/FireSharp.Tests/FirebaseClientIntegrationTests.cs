@@ -2,6 +2,7 @@
 using FireSharp.Config;
 using FireSharp.Interfaces;
 using FireSharp.Response;
+using FireSharp.Tests.Models;
 using NUnit.Framework;
 
 namespace FireSharp.Tests
@@ -18,12 +19,19 @@ namespace FireSharp.Tests
                 AuthSecret = FIREBASE_SECRET,
                 BasePath = BASE_PATH
             };
-            _client = new FirebaseClient(config); //Uses serializer RestSharp JsonSerializer by default
+            _client = new FirebaseClient(config); //Uses RestSharp JsonSerializer as default
+            _client.Delete("todos");
         }
 
         [Test, Category("INTEGRATION")]
         public void Delete()
         {
+            _client.Push("todos/push", new Todo
+            {
+                name = "Execute PUSH4GET",
+                priority = 2
+            });
+
             DeleteResponse response = _client.Delete("todos");
             Assert.NotNull(response);
             Assert.IsTrue(response.Success);
@@ -39,7 +47,7 @@ namespace FireSharp.Tests
                 priority = 2
             };
             SetResponse response = _client.Set("todos/set", todo);
-            Todo result = response.ResultAs<Todo>();
+            Todo result = response.ReadAs<Todo>();
             Assert.NotNull(response);
             Assert.AreEqual(todo.name, result.name);
         }
@@ -52,6 +60,7 @@ namespace FireSharp.Tests
                 name = "Execute PUSH4",
                 priority = 2
             };
+
             PushResponse response = _client.Push("todos/push", todo);
             Assert.NotNull(response);
             Assert.NotNull(response.Result);
@@ -62,6 +71,12 @@ namespace FireSharp.Tests
         [Test, Category("INTEGRATION")]
         public void Get()
         {
+            _client.Push("todos/push", new Todo
+            {
+                name = "Execute PUSH4GET",
+                priority = 2
+            });
+
             var response = _client.Get("todos");
             Assert.NotNull(response);
             Assert.IsTrue(response.Body.Contains("name"));
@@ -70,16 +85,23 @@ namespace FireSharp.Tests
         [Test, Category("INTEGRATION")]
         public void Update()
         {
-            var todo = new Todo
+            _client.Set("todos/set", new Todo
+            {
+                name = "Execute SET",
+                priority = 2
+            });
+
+            var todoToUpdate = new Todo
             {
                 name = "Execute UPDATE!",
                 priority = 1
             };
 
-            FirebaseResponse response = _client.Update("todos/set", todo);
+            FirebaseResponse response = _client.Update("todos/set", todoToUpdate);
             Assert.NotNull(response);
-            Todo actual = response.ResultAs<Todo>();
-            Assert.AreEqual(todo.name, actual.name);
+            Todo actual = response.ReadAs<Todo>();
+            Assert.AreEqual(todoToUpdate.name, actual.name);
+            Assert.AreEqual(todoToUpdate.priority, actual.priority);
         }
     }
 }
