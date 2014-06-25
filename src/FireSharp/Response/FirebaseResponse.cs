@@ -25,7 +25,7 @@
 
         public FirebaseException Exception { get; set; }
 
-        public virtual T ReadAs<T>()
+        public virtual T ResultAs<T>()
         {
             return Response.ReadAs<T>();
         }

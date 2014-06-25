@@ -31,7 +31,7 @@ namespace FireSharp.Tests
                 Priority = 2
             };
             SetResponse response = _client.Set("todos/set", todo);
-            TodoAttributed result = response.ReadAs<TodoAttributed>();
+            TodoAttributed result = response.ResultAs<TodoAttributed>();
             Assert.NotNull(response);
             Assert.AreEqual(todo.Name, result.Name);
         }

@@ -15,7 +15,7 @@
 
         public PushResult Result
         {
-            get { return ReadAs<PushResult>(); }
+            get { return ResultAs<PushResult>(); }
         }
     }
 
