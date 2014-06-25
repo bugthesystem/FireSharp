@@ -1,6 +1,6 @@
 #   **Fire#** for Firebase
 
-.NET wrapper for the Firebase backend API.
+.NET wrapper for the Firebase REST API.
 
 Changes are sent to all subscribed clients automatically, so you can
 update your clients **in realtime from the backend**.
