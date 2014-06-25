@@ -1,6 +1,6 @@
 #   **Fire#** for Firebase
 
-.NET wrapper for the Firebase backend API.
+.NET wrapper for the Firebase REST API.
 
 Changes are sent to all subscribed clients automatically, so you can
 update your clients **in realtime from the backend**.
@@ -10,8 +10,8 @@ update your clients **in realtime from the backend**.
 Install-Package FireSharp
 ```
 ### Usage
-**FirebaseClient** uses **RestSharp JsonSerializer** by default but there are other options such as **ServiceStack.Text** and **Json.Net**
-Set **FirebaseConfig** **Serializer** property for register custom serializer.
+[FirebaseClient](https://github.com/ziyasal/FireSharp/blob/master/src/FireSharp/FirebaseClient.cs) uses [RestSharp](https://github.com/restsharp/RestSharp) [JsonSerializer](https://github.com/restsharp/RestSharp/blob/master/RestSharp/Serializers/JsonSerializer.cs) by default but there are other options such as [ServiceStack.Text](https://github.com/ServiceStack/ServiceStack.Text) and [Json.Net](https://github.com/JamesNK/Newtonsoft.Json)
+Set [FirebaseConfig](https://github.com/ziyasal/FireSharp/blob/master/src/FireSharp/Config/FirebaseConfig.cs) **Serializer** property for register custom serializer.
 #### Enable Json.Net Serializer (optional)
 ```csharp
 Install-Package FireSharp.Serialization.JsonNet
