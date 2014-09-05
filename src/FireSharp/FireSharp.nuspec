@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>FireSharp</id>
-        <version>1.0.0</version>
+        <version>1.1.0</version>
         <title>Fire#</title>
         <authors>ziyasal</authors>
         <owners>ziyasal</owners>
@@ -13,7 +13,7 @@
         <language>en-US</language>
         <tags>firebase rest api client realtime</tags>
         <dependencies>
-            <dependency id="RestSharp" version="104.3.3" />
+            <dependency id="RestSharp" version="104.4.0" />
         </dependencies>
     </metadata>
     <files>
