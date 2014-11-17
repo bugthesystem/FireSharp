@@ -102,9 +102,4 @@ More information about Firebase and the Firebase API is available at the
 
 
 ## License
-
-MIT
-
-### Copyright
-
-Copyright (c) 2013 Ziya SARIKAYA (@ziyasal)
+Code and documentation are available according to the *MIT* License (see [LICENSE](https://github.com/ziyasal/FireSharp/blob/master/LICENSE.md)).
