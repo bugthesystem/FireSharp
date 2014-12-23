@@ -6,6 +6,10 @@
     <link rel="stylesheet" type="text/css" href="https://www.firebase.com/css/example.css">
 }
 
+<a href="@Url.Action("CallFirebase")">Send Message From Backed</a>
+<br />
+<br />
+
 <div id='messagesDiv'></div>
 <input type='text' id='nameInput' placeholder='Name'>
 <input type='text' id='messageInput' placeholder='Message...'>
@@ -20,7 +24,7 @@
         //dataRef.set("I am now writing data into Firebase!");
 
         // When the user presses enter on the message input, write the message to firebase.
-        $('#messageInput').keypress(function(e) {
+        $('#messageInput').keypress(function (e) {
             if (e.keyCode == 13) {
                 var name = $('#nameInput').val();
                 var text = $('#messageInput').val();
@@ -30,7 +34,7 @@
         });
 
         // Add a callback that is triggered for each chat message.
-        dataRef.limit(10).on('child_added', function(snapshot) {
+        dataRef.limit(10).on('child_added', function (snapshot) {
             var message = snapshot.val();
             $('<div/>').text(message.text).prepend($('<em/>')
                 .text(message.name + ': ')).appendTo($('#messagesDiv'));
