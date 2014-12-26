@@ -1,12 +1,14 @@
-﻿namespace FireSharp
-{
-    using System.Threading.Tasks;
-    using Exceptions;
-    using Interfaces;
-    using Response;
-    using Config;
+﻿using System;
+using System.Threading.Tasks;
+using FireSharp.Config;
+using FireSharp.EventStreaming;
+using FireSharp.Exceptions;
+using FireSharp.Interfaces;
+using FireSharp.Response;
 
-    public class FirebaseClient : IFirebaseClient
+namespace FireSharp
+{
+    public class FirebaseClient : IFirebaseClient, IDisposable
     {
         private readonly IFirebaseRequestManager _requestManager;
 
@@ -20,12 +22,17 @@
             _requestManager = requestManager;
         }
 
+        public void Dispose()
+        {
+        }
+
         public FirebaseResponse Get(string path)
         {
             FirebaseResponse response;
             try
             {
-                response = new FirebaseResponse(_requestManager.Get(path));
+                var task = _requestManager.Get(path);
+                response = new FirebaseResponse(task.Result);
             }
             catch (FirebaseException ex)
             {
@@ -39,7 +46,8 @@
             SetResponse response;
             try
             {
-                response = new SetResponse(_requestManager.Put(path, data));
+                var task = _requestManager.Put(path, data);
+                response = new SetResponse(task.Result);
             }
             catch (FirebaseException ex)
             {
@@ -53,7 +61,8 @@
             PushResponse response;
             try
             {
-                response = new PushResponse(_requestManager.Post(path, data));
+                var task = _requestManager.Post(path, data);
+                response = new PushResponse(task.Result);
             }
             catch (FirebaseException ex)
             {
@@ -67,7 +76,8 @@
             DeleteResponse response;
             try
             {
-                response = new DeleteResponse(_requestManager.Delete(path));
+                var task = _requestManager.Delete(path);
+                response = new DeleteResponse(task.Result);
             }
             catch (FirebaseException ex)
             {
@@ -81,13 +91,21 @@
             FirebaseResponse response;
             try
             {
-                response = new FirebaseResponse(_requestManager.Patch(path, data));
+                var task = _requestManager.Patch(path, data);
+                response = new FirebaseResponse(task.Result);
             }
             catch (FirebaseException ex)
             {
                 response = new FirebaseResponse {Exception = ex};
             }
             return response;
+        }
+
+        public FirebaseResponse GetStreaming(string path, ValueAddedEventHandler added = null,
+            ValueChangedEventHandler changed = null,
+            ValueRemovedEventHandler removed = null)
+        {
+            return GetStreamingAsync(path, added, changed, removed).Result;
         }
 
         public async Task<FirebaseResponse> GetTaskAsync(string path)
@@ -157,6 +175,23 @@
             {
                 response = new FirebaseResponse {Exception = ex};
             }
+            return response;
+        }
+
+        public async Task<FirebaseResponse> GetStreamingAsync(string path, ValueAddedEventHandler added = null,
+            ValueChangedEventHandler changed = null,
+            ValueRemovedEventHandler removed = null)
+        {
+            FirebaseResponse response;
+            try
+            {
+                response = new FirebaseResponse(await _requestManager.GetStreaming(path), added, changed, removed);
+            }
+            catch (FirebaseException ex)
+            {
+                response = new FirebaseResponse {Exception = ex};
+            }
+
             return response;
         }
     }

@@ -8,6 +8,8 @@ namespace FireSharp.Tests
     public class TestBase
     {
         private MockRepository _mockRepository;
+        protected IFixture FixtureRepository { get; set; }
+        protected bool VerifyAll { get; set; }
 
         [SetUp]
         public void Setup()
@@ -46,9 +48,6 @@ namespace FireSharp.Tests
         {
             customization.Customize(FixtureRepository);
         }
-
-        protected IFixture FixtureRepository { get; set; }
-        protected bool VerifyAll { get; set; }
 
         protected virtual void FinalizeTearDown()
         {

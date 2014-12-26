@@ -1,10 +1,9 @@
-﻿using FireSharp.Response;
-using FireSharp.Tests.Models;
+﻿using FireSharp.Tests.Models;
 using NUnit.Framework;
 
 namespace FireSharp.Tests
 {
-    public partial class FirebaseClientIntegrationTests
+    public partial class FiresharpTests
     {
         private const string TODOS_ASYNC_PATH = "todos/async";
 
@@ -17,7 +16,7 @@ namespace FireSharp.Tests
                 priority = 1
             };
 
-            PushResponse response = await _client.PushTaskAsync(string.Format("{0}", TODOS_ASYNC_PATH), todo);
+            var response = await _client.PushTaskAsync(string.Format("{0}", TODOS_ASYNC_PATH), todo);
             Assert.NotNull(response);
             Assert.IsTrue(response.Body.Contains("name"));
         }
@@ -25,7 +24,7 @@ namespace FireSharp.Tests
         [Test, Category("INTEGRATION_ASYNC")]
         public async void PushChatAsyncTest()
         {
-            PushResponse response = await _client.PushTaskAsync("chat", new {name = "ziyasal", text = "Hello there"});
+            var response = await _client.PushTaskAsync("chat", new {name = "ziyasal", text = "Hello there"});
             Assert.NotNull(response);
             Assert.IsTrue(response.Body.Contains("name"));
         }

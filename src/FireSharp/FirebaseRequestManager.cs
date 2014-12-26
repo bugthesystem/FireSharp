@@ -1,119 +1,137 @@
-﻿namespace FireSharp
-{
-    using System;
-    using System.Threading.Tasks;
-    using Exceptions;
-    using Interfaces;
-    using Config;
-    using RestSharp;
+﻿using System;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using FireSharp.Config;
+using FireSharp.Exceptions;
+using FireSharp.Interfaces;
+using Newtonsoft.Json;
 
-    internal class FirebaseRequestManager : IFirebaseRequestManager
+namespace FireSharp
+{
+    internal class FirebaseRequestManager : IFirebaseRequestManager, IDisposable
     {
+        private readonly HttpClient _client;
         private readonly IFirebaseConfig _config;
 
         internal FirebaseRequestManager(IFirebaseConfig config)
         {
             _config = config;
+            var handler = new HttpClientHandler
+            {
+                AllowAutoRedirect = true
+            };
+
+            _client = new HttpClient(handler, true)
+            {
+                BaseAddress = new Uri(_config.BasePath),
+                Timeout = TimeSpan.FromMinutes(_config.TimeoutInMinute)
+            };
         }
 
-        public IRestResponse Get(string path)
+        public void Dispose()
         {
-            return ProcessRequest(Method.GET, path, null);
+            using (_client)
+            {
+            }
         }
 
-        public IRestResponse Put<T>(string path, T data)
+        public Task<HttpResponseMessage> Get(string path)
         {
-            return ProcessRequest(Method.PUT, path, data);
+            return ProcessRequest(HttpMethod.Get, path, null);
         }
 
-        public IRestResponse Post<T>(string path, T data)
+        public Task<HttpResponseMessage> Put<T>(string path, T data)
         {
-            return ProcessRequest(Method.POST, path, data);
+            return ProcessRequest(HttpMethod.Put, path, data);
         }
 
-        public IRestResponse Delete(string path)
+        public Task<HttpResponseMessage> Post<T>(string path, T data)
         {
-            return ProcessRequest(Method.DELETE, path, null);
+            return ProcessRequest(HttpMethod.Post, path, data);
         }
 
-        public IRestResponse Patch<T>(string path, T data)
+        public Task<HttpResponseMessage> Delete(string path)
         {
-            return ProcessRequest(Method.PATCH, path, data);
+            return ProcessRequest(HttpMethod.Delete, path, null);
         }
 
-        public async Task<IRestResponse> GetTaskAsync(string path)
+        public Task<HttpResponseMessage> Patch<T>(string path, T data)
         {
-            return await ProcessRequestTaskAsync(Method.GET, path, null);
+            return ProcessRequest(new HttpMethod("PATCH"), path, data);
         }
 
-        public async Task<IRestResponse> PutTaskAsync<T>(string path, T data)
+        public async Task<HttpResponseMessage> GetTaskAsync(string path)
         {
-            return await ProcessRequestTaskAsync(Method.PATCH, path, data);
+            return await ProcessRequest(HttpMethod.Get, path, null);
         }
 
-        public async Task<IRestResponse> PostTaskAsync<T>(string path, T data)
+        public async Task<HttpResponseMessage> PutTaskAsync<T>(string path, T data)
         {
-            return await ProcessRequestTaskAsync(Method.POST, path, data);
+            return await ProcessRequest(new HttpMethod("PATCH"), path, data);
         }
 
-        public async Task<IRestResponse> DeleteTaskAsync(string path)
+        public async Task<HttpResponseMessage> PostTaskAsync<T>(string path, T data)
         {
-            return await ProcessRequestTaskAsync(Method.DELETE, path, null);
+            return await ProcessRequest(HttpMethod.Post, path, data);
         }
 
-        public async Task<IRestResponse> PatchTaskAsync<T>(string path, T data)
+        public async Task<HttpResponseMessage> DeleteTaskAsync(string path)
         {
-            return await ProcessRequestTaskAsync(Method.PATCH, path, data);
+            return await ProcessRequest(HttpMethod.Delete, path, null);
         }
 
-        private IRestResponse ProcessRequest(Method requestMethod, string path, object data)
+        public async Task<HttpResponseMessage> PatchTaskAsync<T>(string path, T data)
+        {
+            return null;
+            //return await ProcessRequestTaskAsync(HttpMethod.Patch, path, data);
+        }
+
+        public async Task<HttpResponseMessage> GetStreaming(string path)
+        {
+            var uri = PrepareUri(path);
+
+            var request = new HttpRequestMessage(HttpMethod.Get, uri);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("text/event-stream"));
+
+            var response = await _client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+            response.EnsureSuccessStatusCode();
+
+            return response;
+        }
+
+        private Task<HttpResponseMessage> ProcessRequest(HttpMethod method, string path, object payload)
         {
             try
             {
-                RestRequest request;
-                IRestClient client = PrepareClient(requestMethod, path, data, out request);
-                return client.Execute(request);
+                var uri = PrepareUri(path);
+
+                var request = new HttpRequestMessage(method, uri);
+
+                if (payload != null)
+                {
+                    var json = JsonConvert.SerializeObject(payload);
+                    request.Content = new StringContent(json);
+                }
+
+                return _client.SendAsync(request, HttpCompletionOption.ResponseContentRead);
             }
             catch (Exception ex)
             {
-                throw new FirebaseException(string.Format("An error occured while execute request. Path : {0} , Method : {1}", path, requestMethod), ex);
+                throw new FirebaseException(
+                    string.Format("An error occured while execute request. Path : {0} , Method : {1}", path, method), ex);
             }
         }
 
-        private async Task<IRestResponse> ProcessRequestTaskAsync(Method requestMethod, string path, object data)
+        private Uri PrepareUri(string path)
         {
-            try
-            {
-                RestRequest request;
-                IRestClient client = PrepareClient(requestMethod, path, data, out request);
-                return await client.ExecuteTaskAsync(request);
-            }
-            catch (Exception ex)
-            {
-                throw new FirebaseException(string.Format("An error occured while execute request. Path : {0} , Method : {1}", path, requestMethod), ex);
-            }
-        }
-
-        private IRestClient PrepareClient(Method requestMethod, string path, object data, out RestRequest request)
-        {
-            string authToken = !string.IsNullOrWhiteSpace(_config.AuthSecret)
+            var authToken = !string.IsNullOrWhiteSpace(_config.AuthSecret)
                 ? string.Format("{0}.json?auth={1}", path, _config.AuthSecret)
                 : string.Format("{0}.json", path);
 
-            string url = string.Format("{0}{1}", _config.BasePath, authToken);
+            var url = string.Format("{0}{1}", _config.BasePath, authToken);
 
-            var client = new RestClient(url);
-            request = new RestRequest(requestMethod)
-            {
-                RequestFormat = DataFormat.Json,
-                JsonSerializer = _config.Serializer
-            };
-            if (data != null)
-            {
-                request.AddBody(data);
-            }
-
-            return client;
+            return new Uri(url);
         }
     }
 }

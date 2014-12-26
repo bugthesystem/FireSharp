@@ -1,22 +1,19 @@
-﻿using RestSharp;
-using RestSharp.Deserializers;
+﻿using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace FireSharp.Extensions
 {
-    using RestSharp.Serializers;
-
     public static class ObjectExtensions
     {
         public static string ToJson(this object @object)
         {
-            JsonSerializer serializer = new JsonSerializer();
-            return serializer.Serialize(@object);
+            return JsonConvert.SerializeObject(@object);
         }
 
-        public static T ReadAs<T>(this IRestResponse response)
+        public static T ReadAs<T>(this HttpResponseMessage response)
         {
-            JsonDeserializer serializer = new JsonDeserializer();
-            return serializer.Deserialize<T>(response);
+            var task = response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<T>(task.Result);
         }
     }
 }

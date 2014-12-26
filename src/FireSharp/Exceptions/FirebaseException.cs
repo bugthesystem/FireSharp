@@ -1,7 +1,7 @@
-﻿namespace FireSharp.Exceptions
-{
-    using System;
+﻿using System;
 
+namespace FireSharp.Exceptions
+{
     public class FirebaseException : Exception
     {
         public FirebaseException(string message)

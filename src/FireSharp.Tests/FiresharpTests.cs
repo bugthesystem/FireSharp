@@ -1,13 +1,12 @@
 ﻿using System;
 using FireSharp.Config;
 using FireSharp.Interfaces;
-using FireSharp.Response;
 using FireSharp.Tests.Models;
 using NUnit.Framework;
 
 namespace FireSharp.Tests
 {
-    public partial class FirebaseClientIntegrationTests : FirebaseClientIntegrationTestBase
+    public partial class FiresharpTests : FiresharpTestBase
     {
         private IFirebaseClient _client;
 
@@ -32,11 +31,10 @@ namespace FireSharp.Tests
                 priority = 2
             });
 
-            DeleteResponse response = _client.Delete("todos");
+            var response = _client.Delete("todos");
             Assert.NotNull(response);
             Assert.IsTrue(response.Success);
         }
-
 
         [Test, Category("INTEGRATION")]
         public void Set()
@@ -46,8 +44,8 @@ namespace FireSharp.Tests
                 name = "Execute SET",
                 priority = 2
             };
-            SetResponse response = _client.Set("todos/set", todo);
-            Todo result = response.ResultAs<Todo>();
+            var response = _client.Set("todos/set", todo);
+            var result = response.ResultAs<Todo>();
             Assert.NotNull(response);
             Assert.AreEqual(todo.name, result.name);
         }
@@ -61,7 +59,7 @@ namespace FireSharp.Tests
                 priority = 2
             };
 
-            PushResponse response = _client.Push("todos/push", todo);
+            var response = _client.Push("todos/push", todo);
             Assert.NotNull(response);
             Assert.NotNull(response.Result);
             Assert.NotNull(response.Result.Name); /*Returns pushed data name like -J8LR7PDCdz_i9H41kf7*/
@@ -97,9 +95,9 @@ namespace FireSharp.Tests
                 priority = 1
             };
 
-            FirebaseResponse response = _client.Update("todos/set", todoToUpdate);
+            var response = _client.Update("todos/set", todoToUpdate);
             Assert.NotNull(response);
-            Todo actual = response.ResultAs<Todo>();
+            var actual = response.ResultAs<Todo>();
             Assert.AreEqual(todoToUpdate.name, actual.name);
             Assert.AreEqual(todoToUpdate.priority, actual.priority);
         }

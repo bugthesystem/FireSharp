@@ -1,22 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
-    <metadata>
-        <id>FireSharp</id>
-        <version>1.1.0</version>
-        <title>Fire#</title>
-        <authors>ziyasal</authors>
-        <owners>ziyasal</owners>
-        <licenseUrl>https://github.com/ziyasal/FireSharp/blob/master/LICENSE.md</licenseUrl>
-        <projectUrl>https://github.com/ziyasal/FireSharp</projectUrl>
-        <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>.Net wrapper for Firebase backend API</description>
-        <language>en-US</language>
-        <tags>firebase rest api client realtime</tags>
-        <dependencies>
-            <dependency id="RestSharp" version="104.4.0" />
-        </dependencies>
-    </metadata>
-    <files>
-        <file src="bin\Release\FireSharp.dll" target="lib\net45\FireSharp.dll" />
-    </files>
+  <metadata>
+    <id>FireSharp</id>
+    <version>2.0.0</version>
+    <title>Fire#</title>
+    <authors>ziyasal</authors>
+    <owners>ziyasal</owners>
+    <licenseUrl>https://github.com/ziyasal/FireSharp/blob/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/ziyasal/FireSharp</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>.Net wrapper for Firebase backend API</description>
+    <language>en-US</language>
+    <tags>firebase rest api client realtime</tags>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" version="6.0.3" />
+      <dependency id="Microsoft.Net.Http" version="2.2.28" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\Release\FireSharp.dll" target="lib\net45\FireSharp.dll" />
+  </files>
 </package>
