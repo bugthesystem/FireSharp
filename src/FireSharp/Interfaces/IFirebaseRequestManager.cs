@@ -10,7 +10,7 @@ namespace FireSharp.Interfaces
         Task<HttpResponseMessage> Post<T>(string path, T data);
         Task<HttpResponseMessage> Delete(string path);
         Task<HttpResponseMessage> Patch<T>(string path, T data);
-        Task<HttpResponseMessage> GetStreaming(string path);
+        Task<HttpResponseMessage> Listen(string path);
         Task<HttpResponseMessage> GetTaskAsync(string path);
         Task<HttpResponseMessage> PutTaskAsync<T>(string path, T data);
         Task<HttpResponseMessage> PostTaskAsync<T>(string path, T data);

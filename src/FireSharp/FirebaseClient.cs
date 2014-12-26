@@ -101,11 +101,11 @@ namespace FireSharp
             return response;
         }
 
-        public FirebaseResponse GetStreaming(string path, ValueAddedEventHandler added = null,
+        public FirebaseResponse Listen(string path, ValueAddedEventHandler added = null,
             ValueChangedEventHandler changed = null,
             ValueRemovedEventHandler removed = null)
         {
-            return GetStreamingAsync(path, added, changed, removed).Result;
+            return ListenAsync(path, added, changed, removed).Result;
         }
 
         public async Task<FirebaseResponse> GetTaskAsync(string path)
@@ -178,14 +178,14 @@ namespace FireSharp
             return response;
         }
 
-        public async Task<FirebaseResponse> GetStreamingAsync(string path, ValueAddedEventHandler added = null,
+        public async Task<FirebaseResponse> ListenAsync(string path, ValueAddedEventHandler added = null,
             ValueChangedEventHandler changed = null,
             ValueRemovedEventHandler removed = null)
         {
             FirebaseResponse response;
             try
             {
-                response = new FirebaseResponse(await _requestManager.GetStreaming(path), added, changed, removed);
+                response = new FirebaseResponse(await _requestManager.Listen(path), added, changed, removed);
             }
             catch (FirebaseException ex)
             {

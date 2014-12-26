@@ -10,8 +10,7 @@ namespace FireSharp.Tests
     {
         private IFirebaseClient _client;
 
-        [SetUp]
-        public void Setup()
+        protected override void FinalizeSetUp()
         {
             IFirebaseConfig config = new FirebaseConfig
             {

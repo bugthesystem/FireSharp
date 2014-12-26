@@ -12,7 +12,7 @@ namespace FireSharp.Interfaces
         DeleteResponse Delete(string path);
         FirebaseResponse Update<T>(string path, T data);
 
-        FirebaseResponse GetStreaming(string path,
+        FirebaseResponse Listen(string path,
             ValueAddedEventHandler added = null,
             ValueChangedEventHandler changed = null,
             ValueRemovedEventHandler removed = null);
@@ -23,7 +23,7 @@ namespace FireSharp.Interfaces
         Task<DeleteResponse> DeleteTaskAsync(string path);
         Task<FirebaseResponse> UpdateTaskAsync<T>(string path, T data);
 
-        Task<FirebaseResponse> GetStreamingAsync(string path,
+        Task<FirebaseResponse> ListenAsync(string path,
             ValueAddedEventHandler added = null,
             ValueChangedEventHandler changed = null,
             ValueRemovedEventHandler removed = null);

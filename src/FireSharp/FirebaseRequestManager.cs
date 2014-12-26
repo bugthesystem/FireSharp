@@ -87,7 +87,7 @@ namespace FireSharp
             //return await ProcessRequestTaskAsync(HttpMethod.Patch, path, data);
         }
 
-        public async Task<HttpResponseMessage> GetStreaming(string path)
+        public async Task<HttpResponseMessage> Listen(string path)
         {
             var uri = PrepareUri(path);
 
