@@ -83,8 +83,7 @@ namespace FireSharp
 
         public async Task<HttpResponseMessage> PatchTaskAsync<T>(string path, T data)
         {
-            return null;
-            //return await ProcessRequestTaskAsync(HttpMethod.Patch, path, data);
+            return await ProcessRequest(new HttpMethod("PATCH"), path, data);
         }
 
         public async Task<HttpResponseMessage> Listen(string path)
