@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FireSharp", "FireSharp\FireSharp.csproj", "{7613B723-E81B-4C02-A3EC-54F8F02C60F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FireSharp.Tests", "FireSharp.Tests\FireSharp.Tests.csproj", "{F7C691EB-249D-48D7-BE52-DF33C55B1F96}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FireSharp.WebApp", "FireSharp.WebApp\FireSharp.WebApp.csproj", "{36E7801E-AF0D-47F7-9C6C-7BE3DBB9DF30}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{83537A83-211C-4D17-B2BC-7737600D6B29}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FireSharp.Test.Console", "FireSharp.Test.Console\FireSharp.Test.Console.csproj", "{0DF0042E-769D-409B-A9F7-19449FD0AFD0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7613B723-E81B-4C02-A3EC-54F8F02C60F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7613B723-E81B-4C02-A3EC-54F8F02C60F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7613B723-E81B-4C02-A3EC-54F8F02C60F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7613B723-E81B-4C02-A3EC-54F8F02C60F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7C691EB-249D-48D7-BE52-DF33C55B1F96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7C691EB-249D-48D7-BE52-DF33C55B1F96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7C691EB-249D-48D7-BE52-DF33C55B1F96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7C691EB-249D-48D7-BE52-DF33C55B1F96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36E7801E-AF0D-47F7-9C6C-7BE3DBB9DF30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36E7801E-AF0D-47F7-9C6C-7BE3DBB9DF30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36E7801E-AF0D-47F7-9C6C-7BE3DBB9DF30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36E7801E-AF0D-47F7-9C6C-7BE3DBB9DF30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DF0042E-769D-409B-A9F7-19449FD0AFD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DF0042E-769D-409B-A9F7-19449FD0AFD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DF0042E-769D-409B-A9F7-19449FD0AFD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DF0042E-769D-409B-A9F7-19449FD0AFD0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
