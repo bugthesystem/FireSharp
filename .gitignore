@@ -18,6 +18,8 @@ TestResults
 *.user
 *.sln.docstates
 
+#C9 Folder
+.c9/
 # Build results
 [Dd]ebug/
 [Rr]elease/
