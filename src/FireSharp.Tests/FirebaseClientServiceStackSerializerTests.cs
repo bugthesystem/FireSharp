@@ -14,11 +14,7 @@ namespace FireSharp.Tests
         [SetUp]
         public void Setup()
         {
-            IFirebaseConfig config = new FirebaseConfig
-            {
-                AuthSecret = FIREBASE_SECRET,
-                BasePath = BASE_PATH
-            };
+            IFirebaseConfig config = new FirebaseConfig();
             _client = GetClientWithSerializer(new ServiceStackJsonSerializer(), config);
         }
 

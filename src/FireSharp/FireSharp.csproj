@@ -36,6 +36,7 @@
       <HintPath>..\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -44,7 +45,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\ConfigSection\FirebaseConnectionElement.cs" />
+    <Compile Include="Config\ConfigSection\FirebaseTokenElement.cs" />
     <Compile Include="Config\FirebaseConfig.cs" />
+    <Compile Include="Config\ConfigSection\FirebaseConfigurationSection.cs" />
     <Compile Include="Config\IFirebaseConfig.cs" />
     <Compile Include="EventStreaming\Delegates.cs" />
     <Compile Include="EventStreaming\ValueAddedEventArgs.cs" />
@@ -63,6 +67,7 @@
     <Compile Include="Response\SetResponse.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="content\web.config.transform" />
     <None Include="EventStreaming\TODO.md" />
   </ItemGroup>
   <ItemGroup>
