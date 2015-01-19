@@ -27,12 +27,15 @@ namespace FireSharp.Tests
 
             _firebaseRequestManagerMock = MockFor<IFirebaseRequestManager>();
 
-            _expectedResponse = FixtureRepository.Build<HttpResponseMessage>()
+           /* _expectedResponse = FixtureRepository.Build<HttpResponseMessage>()
                 .With(response => response.Content, new StringContent(_expected.ToJson()))
                 .With(response => response.StatusCode, HttpStatusCode.OK)
-                /*Ignore request field because it has no public constructor, is an abstract or non-public type*/
-                .Create();
-
+                //Ignore request field because it has no public constructor, is an abstract or non-public type
+                .Create();*/
+          _expectedResponse =new HttpResponseMessage{
+            Content = new StringContent(_expected.ToJson()),
+            StatusCode = HttpStatusCode.OK
+          };
             _firebaseClient = new FirebaseClient(_firebaseRequestManagerMock.Object);
         }
 
