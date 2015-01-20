@@ -20,9 +20,20 @@ Install-Package FireSharp.Serialization.JsonNet
 ```csharp
 Install-Package FireSharp.Serialization.ServiceStack
 ```
+#### How can I configure FireSharp?
+------------------------------
+
+There is a simple configuration section in web.config file.
+
+	<firebase>
+		<connectionFactory basePath="**your firebase path**" authSecret="**your firebase auth secret**" />
+	</firebase>
+
+* `basePath` - **Required** - your firebase path
+* `authSecret` - **Optional** - your firebase auth secret
+  
 ```csharp
-IFirebaseConfig config = new FirebaseConfig { AuthSecret = "**your firebase auth secret**", 
-                                              BasePath = "**your firebase path**" };
+IFirebaseConfig config = new FirebaseConfig ();
                                               
 config.Serializer=new ServiceStackJsonSerializer(); //Register ServiceStack.Text
 config.Serializer=new JsonNetSerializer();          //Register Json.Net

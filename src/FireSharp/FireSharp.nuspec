@@ -17,6 +17,7 @@
         </dependencies>
     </metadata>
     <files>
+        <file src="content\web.config.transform" target="content" />
         <file src="bin\Release\FireSharp.dll" target="lib\net45\FireSharp.dll" />
     </files>
 </package>
