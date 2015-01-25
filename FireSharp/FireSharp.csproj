@@ -39,7 +39,9 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
     <None Include="app.config" />
     <None Include="EventStreaming\TODO.md" />
-    <None Include="FireSharp.nuspec" />
+    <None Include="FireSharp.nuspec">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
