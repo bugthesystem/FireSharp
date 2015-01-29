@@ -13,10 +13,10 @@ namespace FireSharp.Response
 {
     public class FirebaseResponse
     {
-        protected HttpResponseMessage HttpResponse;
         private readonly TemporaryCache _cache;
         private readonly CancellationTokenSource _cancel;
         private readonly Task _pollingTask;
+        protected HttpResponseMessage HttpResponse;
 
         public FirebaseResponse(HttpResponseMessage httpResponse)
         {

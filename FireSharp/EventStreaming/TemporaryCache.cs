@@ -8,9 +8,9 @@ namespace FireSharp.EventStreaming
 {
     internal sealed class TemporaryCache
     {
-        private readonly LinkedList<CacheItem> _pathFromRootList = new LinkedList<CacheItem>();
+        private readonly LinkedList<SimpleCacheItem> _pathFromRootList = new LinkedList<SimpleCacheItem>();
         private readonly char[] _seperator = {'/'};
-        private readonly CacheItem _tree = new CacheItem();
+        private readonly SimpleCacheItem _tree = new SimpleCacheItem();
         private readonly object _treeLock = new object();
 
         public TemporaryCache()
@@ -21,7 +21,7 @@ namespace FireSharp.EventStreaming
             _tree.Name = null;
         }
 
-        internal CacheItem Root
+        internal SimpleCacheItem Root
         {
             get { return _tree; }
         }
@@ -44,32 +44,32 @@ namespace FireSharp.EventStreaming
             }
         }
 
-        private CacheItem FindRoot(string path)
+        private SimpleCacheItem FindRoot(string path)
         {
             var segments = path.Split(_seperator, StringSplitOptions.RemoveEmptyEntries);
 
             return segments.Aggregate(_tree, GetNamedChild);
         }
 
-        private static CacheItem GetNamedChild(CacheItem root, string segment)
+        private static SimpleCacheItem GetNamedChild(SimpleCacheItem root, string segment)
         {
             var newRoot = root.Children.FirstOrDefault(c => c.Name == segment);
 
             if (newRoot == null)
             {
-                newRoot = new CacheItem {Name = segment, Parent = root, Created = true};
+                newRoot = new SimpleCacheItem {Name = segment, Parent = root, Created = true};
                 root.Children.Add(newRoot);
             }
 
             return newRoot;
         }
 
-        private void Replace(CacheItem root, JsonReader reader)
+        private void Replace(SimpleCacheItem root, JsonReader reader)
         {
             UpdateChildren(root, reader, true);
         }
 
-        private void UpdateChildren(CacheItem root, JsonReader reader, bool replace = false)
+        private void UpdateChildren(SimpleCacheItem root, JsonReader reader, bool replace = false)
         {
             if (replace)
             {
@@ -115,7 +115,7 @@ namespace FireSharp.EventStreaming
             }
         }
 
-        private void DeleteChild(CacheItem root)
+        private void DeleteChild(SimpleCacheItem root)
         {
             if (root.Parent != null)
             {
@@ -134,7 +134,7 @@ namespace FireSharp.EventStreaming
             }
         }
 
-        private bool RemoveChildFromParent(CacheItem child)
+        private bool RemoveChildFromParent(SimpleCacheItem child)
         {
             if (child.Parent != null)
             {
@@ -144,7 +144,7 @@ namespace FireSharp.EventStreaming
             return false;
         }
 
-        private string PathFromRoot(CacheItem root)
+        private string PathFromRoot(SimpleCacheItem root)
         {
             var size = 1;
 

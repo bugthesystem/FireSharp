@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using FireSharp.Config;
 using FireSharp.Interfaces;
 using FireSharp.Tests.Models;
@@ -6,11 +7,11 @@ using NUnit.Framework;
 
 namespace FireSharp.Tests
 {
-    public partial class FiresharpTests : FiresharpTestBase
+    public class FiresharpTests : FiresharpTestBase
     {
         private IFirebaseClient _client;
 
-        protected override void FinalizeSetUp()
+        protected override async void FinalizeSetUp()
         {
             IFirebaseConfig config = new FirebaseConfig
             {
@@ -18,39 +19,39 @@ namespace FireSharp.Tests
                 BasePath = BASE_PATH
             };
             _client = new FirebaseClient(config); //Uses RestSharp JsonSerializer as default
-            _client.Delete("todos");
+            await _client.DeleteAsync("todos");
         }
 
         [Test, Category("INTEGRATION")]
-        public void Delete()
+        public async void Delete()
         {
-            _client.Push("todos/push", new Todo
+            await _client.PushAsync("todos/push", new Todo
             {
                 name = "Execute PUSH4GET",
                 priority = 2
             });
 
-            var response = _client.Delete("todos");
+            var response = await _client.DeleteAsync("todos");
             Assert.NotNull(response);
             Assert.IsTrue(response.Success);
         }
 
         [Test, Category("INTEGRATION")]
-        public void Set()
+        public async void Set()
         {
             var todo = new Todo
             {
                 name = "Execute SET",
                 priority = 2
             };
-            var response = _client.Set("todos/set", todo);
+            var response = await _client.SetAsync("todos/set", todo);
             var result = response.ResultAs<Todo>();
             Assert.NotNull(response);
             Assert.AreEqual(todo.name, result.name);
         }
 
         [Test, Category("INTEGRATION")]
-        public void Push()
+        public async void Push()
         {
             var todo = new Todo
             {
@@ -58,7 +59,7 @@ namespace FireSharp.Tests
                 priority = 2
             };
 
-            var response = _client.Push("todos/push", todo);
+            var response = await _client.PushAsync("todos/push", todo);
             Assert.NotNull(response);
             Assert.NotNull(response.Result);
             Assert.NotNull(response.Result.Name); /*Returns pushed data name like -J8LR7PDCdz_i9H41kf7*/
@@ -66,23 +67,25 @@ namespace FireSharp.Tests
         }
 
         [Test, Category("INTEGRATION")]
-        public void Get()
+        public async void Get()
         {
-            _client.Push("todos/push", new Todo
+            await _client.PushAsync("todos/push", new Todo
             {
                 name = "Execute PUSH4GET",
                 priority = 2
             });
 
-            var response = _client.Get("todos");
+            Thread.Sleep(400);
+
+            var response = await _client.GetAsync("todos");
             Assert.NotNull(response);
             Assert.IsTrue(response.Body.Contains("name"));
         }
 
         [Test, Category("INTEGRATION")]
-        public void Update()
+        public async void Update()
         {
-            _client.Set("todos/set", new Todo
+            await _client.SetAsync("todos/set", new Todo
             {
                 name = "Execute SET",
                 priority = 2
@@ -94,7 +97,7 @@ namespace FireSharp.Tests
                 priority = 1
             };
 
-            var response = _client.Update("todos/set", todoToUpdate);
+            var response = await _client.UpdateAsync("todos/set", todoToUpdate);
             Assert.NotNull(response);
             var actual = response.ResultAs<Todo>();
             Assert.AreEqual(todoToUpdate.name, actual.name);

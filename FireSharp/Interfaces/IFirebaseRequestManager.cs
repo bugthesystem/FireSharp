@@ -1,20 +1,16 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace FireSharp.Interfaces
 {
-    internal interface IFirebaseRequestManager
+    internal interface IFirebaseRequestManager :IDisposable
     {
-        Task<HttpResponseMessage> Get(string path);
-        Task<HttpResponseMessage> Put<T>(string path, T data);
-        Task<HttpResponseMessage> Post<T>(string path, T data);
-        Task<HttpResponseMessage> Delete(string path);
-        Task<HttpResponseMessage> Patch<T>(string path, T data);
-        Task<HttpResponseMessage> Listen(string path);
-        Task<HttpResponseMessage> GetTaskAsync(string path);
-        Task<HttpResponseMessage> PutTaskAsync<T>(string path, T data);
-        Task<HttpResponseMessage> PostTaskAsync<T>(string path, T data);
-        Task<HttpResponseMessage> DeleteTaskAsync(string path);
-        Task<HttpResponseMessage> PatchTaskAsync<T>(string path, T data);
+        Task<HttpResponseMessage> ListenAsync(string path);
+        Task<HttpResponseMessage> GetAsync(string path);
+        Task<HttpResponseMessage> PutAsync<T>(string path, T data);
+        Task<HttpResponseMessage> PostAsync<T>(string path, T data);
+        Task<HttpResponseMessage> DeleteAsync(string path);
+        Task<HttpResponseMessage> PatchAsync<T>(string path, T data);
     }
 }

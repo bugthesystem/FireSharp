@@ -36,6 +36,44 @@ namespace FireSharp
             }
         }
 
+        public async Task<HttpResponseMessage> GetAsync(string path)
+        {
+            return await ProcessRequest(HttpMethod.Get, path, null);
+        }
+
+        public async Task<HttpResponseMessage> PutAsync<T>(string path, T data)
+        {
+            return await ProcessRequest(new HttpMethod("PATCH"), path, data);
+        }
+
+        public async Task<HttpResponseMessage> PostAsync<T>(string path, T data)
+        {
+            return await ProcessRequest(HttpMethod.Post, path, data);
+        }
+
+        public async Task<HttpResponseMessage> DeleteAsync(string path)
+        {
+            return await ProcessRequest(HttpMethod.Delete, path, null);
+        }
+
+        public async Task<HttpResponseMessage> PatchAsync<T>(string path, T data)
+        {
+            return await ProcessRequest(new HttpMethod("PATCH"), path, data);
+        }
+
+        public async Task<HttpResponseMessage> ListenAsync(string path)
+        {
+            var uri = PrepareUri(path);
+
+            var request = new HttpRequestMessage(HttpMethod.Get, uri);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("text/event-stream"));
+
+            var response = await _client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+            response.EnsureSuccessStatusCode();
+
+            return response;
+        }
+
         public Task<HttpResponseMessage> Get(string path)
         {
             return ProcessRequest(HttpMethod.Get, path, null);
@@ -59,44 +97,6 @@ namespace FireSharp
         public Task<HttpResponseMessage> Patch<T>(string path, T data)
         {
             return ProcessRequest(new HttpMethod("PATCH"), path, data);
-        }
-
-        public async Task<HttpResponseMessage> GetTaskAsync(string path)
-        {
-            return await ProcessRequest(HttpMethod.Get, path, null);
-        }
-
-        public async Task<HttpResponseMessage> PutTaskAsync<T>(string path, T data)
-        {
-            return await ProcessRequest(new HttpMethod("PATCH"), path, data);
-        }
-
-        public async Task<HttpResponseMessage> PostTaskAsync<T>(string path, T data)
-        {
-            return await ProcessRequest(HttpMethod.Post, path, data);
-        }
-
-        public async Task<HttpResponseMessage> DeleteTaskAsync(string path)
-        {
-            return await ProcessRequest(HttpMethod.Delete, path, null);
-        }
-
-        public async Task<HttpResponseMessage> PatchTaskAsync<T>(string path, T data)
-        {
-            return await ProcessRequest(new HttpMethod("PATCH"), path, data);
-        }
-
-        public async Task<HttpResponseMessage> Listen(string path)
-        {
-            var uri = PrepareUri(path);
-
-            var request = new HttpRequestMessage(HttpMethod.Get, uri);
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("text/event-stream"));
-
-            var response = await _client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
-            response.EnsureSuccessStatusCode();
-
-            return response;
         }
 
         private Task<HttpResponseMessage> ProcessRequest(HttpMethod method, string path, object payload)
