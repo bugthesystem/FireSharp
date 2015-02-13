@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using FireSharp.Interfaces;
 
@@ -18,9 +19,9 @@ namespace FireSharp.WebApp.Controllers
             return View();
         }
 
-        public ActionResult CallFirebase()
+        public async Task<RedirectToRouteResult> CallFirebase()
         {
-            _firebaseClient.Push("chat/", new
+            await _firebaseClient.PushAsync("chat/", new
             {
                 name = "someone",
                 text = "Hello from backend :" + DateTime.Now.ToString("f")

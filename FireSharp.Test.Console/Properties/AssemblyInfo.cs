@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("FireSharp.Serialization.JsonNet")]
-[assembly: AssemblyDescription("Provides JSON serialization support using Newtonsoft.JsonNet.")]
+[assembly: AssemblyTitle("FireSharp.Test.Console")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("FireSharp.Serialization.JsonNet")]
-[assembly: AssemblyCopyright("Copyright ©  2013")]
+[assembly: AssemblyProduct("FireSharp.Test.Console")]
+[assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -22,7 +22,7 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 
-[assembly: Guid("2eda7645-3da5-4131-971f-b2861facd164")]
+[assembly: Guid("36e73638-c60a-48e8-a807-e705468013a1")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -35,5 +35,5 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("1.1.0")]
-[assembly: AssemblyFileVersion("1.1.0")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]

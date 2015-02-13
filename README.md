@@ -5,6 +5,8 @@
 Changes are sent to all subscribed clients automatically, so you can
 update your clients **in realtime from the backend**.
 
+[![Circle CI](https://circleci.com/gh/ziyasal/FireSharp/tree/v2.svg?style=svg)](https://circleci.com/gh/ziyasal/FireSharp/tree/v2)
+
 ####Installation (NuGet)
 ```csharp
 Install-Package FireSharp

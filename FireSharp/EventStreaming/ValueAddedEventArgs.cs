@@ -1,6 +1,7 @@
+using System;
+
 namespace FireSharp.EventStreaming
 {
-    using System;
     public class ValueAddedEventArgs : EventArgs
     {
         public ValueAddedEventArgs(string path, string data)

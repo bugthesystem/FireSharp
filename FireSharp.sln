@@ -1,10 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30324.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FireSharp", "FireSharp\FireSharp.csproj", "{7613B723-E81B-4C02-A3EC-54F8F02C60F6}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FireSharp.Tests", "FireSharp.Tests\FireSharp.Tests.csproj", "{F7C691EB-249D-48D7-BE52-DF33C55B1F96}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FireSharp.WebApp", "FireSharp.WebApp\FireSharp.WebApp.csproj", "{36E7801E-AF0D-47F7-9C6C-7BE3DBB9DF30}"
@@ -16,9 +14,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{83537A
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FireSharp.Serialization.ServiceStack", "FireSharp.Serialization.ServiceStack\FireSharp.Serialization.ServiceStack.csproj", "{7B0E3BC1-4C1D-4748-B678-3197E8E194FC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FireSharp", "FireSharp\FireSharp.csproj", "{67B7EA6F-DC34-4F48-8331-58DF137D78C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FireSharp.Serialization.JsonNet", "FireSharp.Serialization.JsonNet\FireSharp.Serialization.JsonNet.csproj", "{A5F20EAF-9E8E-4CED-90F3-F19869570B7C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FireSharp.Test.Console", "FireSharp.Test.Console\FireSharp.Test.Console.csproj", "{0DF0042E-769D-409B-A9F7-19449FD0AFD0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,10 +24,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7613B723-E81B-4C02-A3EC-54F8F02C60F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7613B723-E81B-4C02-A3EC-54F8F02C60F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7613B723-E81B-4C02-A3EC-54F8F02C60F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7613B723-E81B-4C02-A3EC-54F8F02C60F6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F7C691EB-249D-48D7-BE52-DF33C55B1F96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F7C691EB-249D-48D7-BE52-DF33C55B1F96}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7C691EB-249D-48D7-BE52-DF33C55B1F96}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -38,14 +32,14 @@ Global
 		{36E7801E-AF0D-47F7-9C6C-7BE3DBB9DF30}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36E7801E-AF0D-47F7-9C6C-7BE3DBB9DF30}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36E7801E-AF0D-47F7-9C6C-7BE3DBB9DF30}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7B0E3BC1-4C1D-4748-B678-3197E8E194FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7B0E3BC1-4C1D-4748-B678-3197E8E194FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7B0E3BC1-4C1D-4748-B678-3197E8E194FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7B0E3BC1-4C1D-4748-B678-3197E8E194FC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A5F20EAF-9E8E-4CED-90F3-F19869570B7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A5F20EAF-9E8E-4CED-90F3-F19869570B7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A5F20EAF-9E8E-4CED-90F3-F19869570B7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A5F20EAF-9E8E-4CED-90F3-F19869570B7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67B7EA6F-DC34-4F48-8331-58DF137D78C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67B7EA6F-DC34-4F48-8331-58DF137D78C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67B7EA6F-DC34-4F48-8331-58DF137D78C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67B7EA6F-DC34-4F48-8331-58DF137D78C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DF0042E-769D-409B-A9F7-19449FD0AFD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DF0042E-769D-409B-A9F7-19449FD0AFD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DF0042E-769D-409B-A9F7-19449FD0AFD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DF0042E-769D-409B-A9F7-19449FD0AFD0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,12 +1,12 @@
-﻿namespace FireSharp.Response
-{
-    using System.Net;
-    using RestSharp;
+﻿using System.Net;
+using System.Net.Http;
 
+namespace FireSharp.Response
+{
     public class DeleteResponse : FirebaseResponse
     {
-        public DeleteResponse(IRestResponse response)
-            : base(response)
+        public DeleteResponse(HttpResponseMessage httpResponse)
+            : base(httpResponse)
         {
         }
 
@@ -16,7 +16,11 @@
 
         public bool Success
         {
-            get { return Response.StatusCode == HttpStatusCode.OK || Response.StatusCode == HttpStatusCode.NoContent; }
+            get
+            {
+                return HttpResponse.StatusCode == HttpStatusCode.OK ||
+                       HttpResponse.StatusCode == HttpStatusCode.NoContent;
+            }
         }
     }
 }

@@ -139,7 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FireSharp\FireSharp.csproj">
-      <Project>{7613B723-E81B-4C02-A3EC-54F8F02C60F6}</Project>
+      <Project>{67b7ea6f-dc34-4f48-8331-58df137d78c9}</Project>
       <Name>FireSharp</Name>
     </ProjectReference>
   </ItemGroup>

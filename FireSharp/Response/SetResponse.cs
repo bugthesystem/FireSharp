@@ -1,11 +1,11 @@
-﻿namespace FireSharp.Response
-{
-    using RestSharp;
+﻿using System.Net.Http;
 
+namespace FireSharp.Response
+{
     public class SetResponse : FirebaseResponse
     {
-        public SetResponse(IRestResponse response)
-            : base(response)
+        public SetResponse(HttpResponseMessage httpResponse)
+            : base(httpResponse)
         {
         }
 

@@ -1,162 +1,116 @@
-﻿namespace FireSharp
-{
-    using System.Threading.Tasks;
-    using Exceptions;
-    using Interfaces;
-    using Response;
-    using Config;
+﻿using System;
+using System.Threading.Tasks;
+using FireSharp.Config;
+using FireSharp.EventStreaming;
+using FireSharp.Exceptions;
+using FireSharp.Interfaces;
+using FireSharp.Response;
 
-    public class FirebaseClient : IFirebaseClient
+namespace FireSharp
+{
+    public class FirebaseClient : IFirebaseClient, IDisposable
     {
-        private readonly IFirebaseRequestManager _requestManager;
+        private readonly IRequestManager _requestManager;
 
         public FirebaseClient(IFirebaseConfig config)
-            : this(new FirebaseRequestManager(config))
+            : this(new RequestManager(config))
         {
         }
 
-        internal FirebaseClient(IFirebaseRequestManager requestManager)
+        internal FirebaseClient(IRequestManager requestManager)
         {
             _requestManager = requestManager;
         }
 
-        public FirebaseResponse Get(string path)
+        public void Dispose()
+        {
+            using (_requestManager) { }
+        }
+
+        public async Task<FirebaseResponse> GetAsync(string path)
         {
             FirebaseResponse response;
             try
             {
-                response = new FirebaseResponse(_requestManager.Get(path));
+                response = new FirebaseResponse(await _requestManager.GetAsync(path));
             }
             catch (FirebaseException ex)
             {
-                response = new FirebaseResponse {Exception = ex};
+                response = new FirebaseResponse { Exception = ex };
             }
             return response;
         }
 
-        public SetResponse Set<T>(string path, T data)
+        public async Task<SetResponse> SetAsync<T>(string path, T data)
         {
             SetResponse response;
             try
             {
-                response = new SetResponse(_requestManager.Put(path, data));
+                response = new SetResponse(await _requestManager.PutAsync(path, data));
             }
             catch (FirebaseException ex)
             {
-                response = new SetResponse {Exception = ex};
+                response = new SetResponse { Exception = ex };
             }
             return response;
         }
 
-        public PushResponse Push<T>(string path, T data)
+        public async Task<PushResponse> PushAsync<T>(string path, T data)
         {
             PushResponse response;
             try
             {
-                response = new PushResponse(_requestManager.Post(path, data));
+                response = new PushResponse(await _requestManager.PostAsync(path, data));
             }
             catch (FirebaseException ex)
             {
-                response = new PushResponse {Exception = ex};
+                response = new PushResponse { Exception = ex };
             }
             return response;
         }
 
-        public DeleteResponse Delete(string path)
+        public async Task<DeleteResponse> DeleteAsync(string path)
         {
             DeleteResponse response;
             try
             {
-                response = new DeleteResponse(_requestManager.Delete(path));
+                response = new DeleteResponse(await _requestManager.DeleteAsync(path));
             }
             catch (FirebaseException ex)
             {
-                response = new DeleteResponse {Exception = ex};
+                response = new DeleteResponse { Exception = ex };
             }
             return response;
         }
 
-        public FirebaseResponse Update<T>(string path, T data)
+        public async Task<FirebaseResponse> UpdateAsync<T>(string path, T data)
         {
             FirebaseResponse response;
             try
             {
-                response = new FirebaseResponse(_requestManager.Patch(path, data));
+                response = new FirebaseResponse(await _requestManager.PatchAsync(path, data));
             }
             catch (FirebaseException ex)
             {
-                response = new FirebaseResponse {Exception = ex};
+                response = new FirebaseResponse { Exception = ex };
             }
             return response;
         }
 
-        public async Task<FirebaseResponse> GetTaskAsync(string path)
+        public async Task<FirebaseResponse> ListenAsync(string path, ValueAddedEventHandler added = null,
+            ValueChangedEventHandler changed = null,
+            ValueRemovedEventHandler removed = null)
         {
             FirebaseResponse response;
             try
             {
-                response = new FirebaseResponse(await _requestManager.GetTaskAsync(path));
+                response = new FirebaseResponse(await _requestManager.ListenAsync(path), added, changed, removed);
             }
             catch (FirebaseException ex)
             {
-                response = new FirebaseResponse {Exception = ex};
+                response = new FirebaseResponse { Exception = ex };
             }
-            return response;
-        }
 
-        public async Task<SetResponse> SetTaskAsync<T>(string path, T data)
-        {
-            SetResponse response;
-            try
-            {
-                response = new SetResponse(await _requestManager.PutTaskAsync(path, data));
-            }
-            catch (FirebaseException ex)
-            {
-                response = new SetResponse {Exception = ex};
-            }
-            return response;
-        }
-
-        public async Task<PushResponse> PushTaskAsync<T>(string path, T data)
-        {
-            PushResponse response;
-            try
-            {
-                response = new PushResponse(await _requestManager.PostTaskAsync(path, data));
-            }
-            catch (FirebaseException ex)
-            {
-                response = new PushResponse {Exception = ex};
-            }
-            return response;
-        }
-
-        public async Task<DeleteResponse> DeleteTaskAsync(string path)
-        {
-            DeleteResponse response;
-            try
-            {
-                response = new DeleteResponse(await _requestManager.DeleteTaskAsync(path));
-            }
-            catch (FirebaseException ex)
-            {
-                response = new DeleteResponse {Exception = ex};
-            }
-            return response;
-        }
-
-        public async Task<FirebaseResponse> UpdateTaskAsync<T>(string path, T data)
-        {
-            FirebaseResponse response;
-            try
-            {
-                response = new FirebaseResponse(await _requestManager.PatchTaskAsync(path, data));
-            }
-            catch (FirebaseException ex)
-            {
-                response = new FirebaseResponse {Exception = ex};
-            }
             return response;
         }
     }
