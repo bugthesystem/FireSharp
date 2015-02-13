@@ -7,9 +7,14 @@ namespace FireSharp.Extensions
     {
         private static ISerializer _serializer;
 
+        static ObjectExtensions()
+        {
+            _serializer = new JsonSerializerWrapper();
+        }
+
         public static ISerializer Serializer
         {
-            get { return _serializer ?? (_serializer = new JsonSerializerWrapper()); }
+            get { return _serializer; }
             set { _serializer = value; }
         }
 

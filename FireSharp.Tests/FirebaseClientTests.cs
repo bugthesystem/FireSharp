@@ -80,10 +80,5 @@ namespace FireSharp.Tests
             Assert.NotNull(response);
             Assert.AreEqual(response.Success, true);
         }
-
-        [Test]
-        public void Added_Event_Stream()
-        {
-        }
     }
 }
