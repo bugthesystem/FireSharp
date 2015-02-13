@@ -38,6 +38,9 @@
   <ItemGroup>
     <None Include="FireSharp.nuspec" />
     <None Include="packages.config" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -45,7 +48,6 @@
     <Reference Include="System.Xml" />
     <!-- A reference to the entire .NET Framework is automatically included -->
     <None Include="app.config" />
-    <None Include="EventStreaming\TODO.md" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\FirebaseConfig.cs" />
@@ -59,6 +61,8 @@
     <Compile Include="Exceptions\FirebaseException.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="FirebaseClient.cs" />
+    <Compile Include="Interfaces\ISerializer.cs" />
+    <Compile Include="Interfaces\JsonSerializerWrapper.cs" />
     <Compile Include="RequestManager.cs" />
     <Compile Include="Interfaces\IFirebaseClient.cs" />
     <Compile Include="Interfaces\IRequestManager.cs" />
@@ -74,9 +78,6 @@
     </Reference>
     <Reference Include="Microsoft.Threading.Tasks.Extensions">
       <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\portable-net40+sl4+win8+wp71+wpa81\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.IO">
       <HintPath>..\packages\Microsoft.Bcl.1.1.9\lib\portable-net40+sl5+win8+wp8+wpa81\System.IO.dll</HintPath>
@@ -96,8 +97,6 @@
     <Reference Include="System.Threading.Tasks">
       <HintPath>..\packages\Microsoft.Bcl.1.1.9\lib\portable-net40+sl5+win8+wp8+wpa81\System.Threading.Tasks.dll</HintPath>
     </Reference>
-    <None Include="content\web.config.transform" />
-    <None Include="EventStreaming\TODO.md" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

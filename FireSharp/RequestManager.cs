@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using FireSharp.Config;
 using FireSharp.Exceptions;
 using FireSharp.Interfaces;
-using Newtonsoft.Json;
 
 namespace FireSharp
 {
@@ -109,7 +108,7 @@ namespace FireSharp
 
                 if (payload != null)
                 {
-                    var json = JsonConvert.SerializeObject(payload);
+                    var json = _config.Serializer.Serialize(payload);
                     request.Content = new StringContent(json);
                 }
 

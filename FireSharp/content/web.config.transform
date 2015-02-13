@@ -1,8 +1,0 @@
-<configuration>
-  <configSections>
-    <section name="firebase" type="FireSharp.Config.ConfigSection.FirebaseConfigurationSection, FireSharp" />
-  </configSections>
-  <firebase>
-    <connectionFactory basePath="**your firebase path**" authSecret="**your firebase auth secret**" />
-  </firebase>
-</configuration>
