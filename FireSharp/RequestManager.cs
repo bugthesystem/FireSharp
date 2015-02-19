@@ -42,7 +42,7 @@ namespace FireSharp
 
         public async Task<HttpResponseMessage> PutAsync<T>(string path, T data)
         {
-            return await ProcessRequest(new HttpMethod("PATCH"), path, data);
+            return await ProcessRequest(HttpMethod.Put, path, data);
         }
 
         public async Task<HttpResponseMessage> PostAsync<T>(string path, T data)
