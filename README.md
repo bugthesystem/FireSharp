@@ -26,9 +26,6 @@ Install-Package FireSharp
 #### How can I configure FireSharp?
 ------------------------------
 
-* `basePath` - **Required** - your firebase path
-* `authSecret` - **Optional** - your firebase auth secret
-
 ```csharp
   IFirebaseConfig config = new FirebaseConfig
   {
