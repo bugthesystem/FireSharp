@@ -7,6 +7,8 @@ update your clients **in realtime from the backend**.
 
 [![Circle CI](https://circleci.com/gh/ziyasal/FireSharp/tree/v2.svg?style=svg)](https://circleci.com/gh/ziyasal/FireSharp/tree/v2)
 
+[![Stories in Ready](https://badge.waffle.io/ziyasal/firesharp.svg?label=ready&title=Ready)](http://waffle.io/ziyasal/firesharp)
+
 ####Installation (NuGet)
 ```csharp
 Install-Package FireSharp
