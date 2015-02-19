@@ -9,55 +9,38 @@ update your clients **in realtime from the backend**.
 
 [![Stories in Ready](https://badge.waffle.io/ziyasal/firesharp.svg?label=ready&title=Ready)](http://waffle.io/ziyasal/firesharp)
 
+
+**IMPORTANT :** [**v1 docs**](https://github.com/ziyasal/FireSharp/wiki/v1-Docs) moved [here](https://github.com/ziyasal/FireSharp/wiki/v1-Docs).
+
 ####Installation (NuGet)
 ```csharp
+//**Install v2**
+Install-Package FireSharp -Pre
+
+//**Install v1**
 Install-Package FireSharp
 ```
 ### Usage
-[FirebaseClient](https://github.com/ziyasal/FireSharp/blob/master/src/FireSharp/FirebaseClient.cs) uses [RestSharp](https://github.com/restsharp/RestSharp) [JsonSerializer](https://github.com/restsharp/RestSharp/blob/master/RestSharp/Serializers/JsonSerializer.cs) by default but there are other options such as [ServiceStack.Text](https://github.com/ServiceStack/ServiceStack.Text) and [Json.Net](https://github.com/JamesNK/Newtonsoft.Json)
-Set [FirebaseConfig](https://github.com/ziyasal/FireSharp/blob/master/src/FireSharp/Config/FirebaseConfig.cs) **Serializer** property for register custom serializer.
-#### Enable Json.Net Serializer (optional)
-```csharp
-Install-Package FireSharp.Serialization.JsonNet
-```
-#### Enable ServiceStack.Text Serializer (optional)
-```csharp
-Install-Package FireSharp.Serialization.ServiceStack
-```
+[FirebaseClient](https://github.com/ziyasal/FireSharp/blob/master/FireSharp/FirebaseClient.cs) uses [Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json) by default.
+
 #### How can I configure FireSharp?
 ------------------------------
 
-There is a simple configuration section in web.config file.
-
-	<firebase>
-		<connectionFactory basePath="**your firebase path**" authSecret="**your firebase auth secret**" />
-	</firebase>
-
 * `basePath` - **Required** - your firebase path
 * `authSecret` - **Optional** - your firebase auth secret
-  
-```csharp
-IFirebaseConfig config = new FirebaseConfig ();
-                                              
-config.Serializer=new ServiceStackJsonSerializer(); //Register ServiceStack.Text
-config.Serializer=new JsonNetSerializer();          //Register Json.Net
 
+```csharp
+  IFirebaseConfig config = new FirebaseConfig
+  {
+     AuthSecret = "your_firebase_secret",
+     BasePath = "https://yourfirebase.firebaseio.com/"
+  };
+````
+```csharp
 IFirebaseClient  client = new FirebaseClient(config);
 ```
 So far, supported methods are :
-```csharp
-client.Set(path, data)
-client.Get(path)
-client.Push(path, data)
-client.Delete(path)
-client.Update(path,data)
-    
-client.SetTaskAsync(path, data)
-client.GetTaskAsync(path)
-client.PushTaskAsync(path, data)
-client.DeleteTaskAsync(path)
-client.UpdateTaskAsync(path,data)
-```
+
 ####Set
 ```csharp
 
@@ -75,13 +58,13 @@ Todo result = response.ResultAs<Todo>(); //The response will contain the data wr
                 name = "Execute PUSH",
                 priority = 2
             };
-PushResponse response = _client.Push("todos/push", todo);
+PushResponse response =await  _client.PushAsync("todos/push", todo);
 response.Result.Name //The result will contain the child name of the new data that was added
 ```
 ####Get
 ```csharp
 
- FirebaseResponse response = _client.Get("todos/set");
+ FirebaseResponse response = await _client.GetAsync("todos/set");
  Todo todo=response.ResultAs<Todo>(); //The response will contain the data being retreived
 ```
 ####Update
@@ -91,26 +74,21 @@ var todo = new Todo {
                 priority = 1
             };
 
-FirebaseResponse response = _client.Update("todos/set", todo);
+FirebaseResponse response =await  _client.UpdateAsync("todos/set", todo);
 Todo todo = response.ResultAs<Todo>(); //The response will contain the data written
 ```
 ####Delete
 ```csharp
 
-DeleteResponse response = _client.Delete("todos"); //Deletes todos collection
+DeleteResponse response = _client.DeleteAsync("todos"); //Deletes todos collection
 response.Success; //Delete success flag
 ```
-####PushTaskAsync
+####Listen **Streaming from the REST API**
 ```csharp
-var todo = new Todo {
-                name = "Do your homework!",
-                priority = 1
-            };
-
-PushResponse response = await _client.PushTaskAsync("todos", todo);
-response.Result.Name //The result will contain the child name of the new data that was added
+await _client.ListenAsync("chat", (sender, args) => { 
+       System.Console.WriteLine(args.Data); 
+});
 ```
-More features and documentation are coming soon.
 
 More information about Firebase and the Firebase API is available at the
 [official website](http://www.firebase.com/).
