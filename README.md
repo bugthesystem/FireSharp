@@ -1,6 +1,6 @@
 #   **Fire#** for Firebase
 
-.NET & Xamarin wrapper for the Firebase REST API.
+Firebase REST API wrapper for the .NET & Xamarin.
 
 Changes are sent to all subscribed clients automatically, so you can
 update your clients **in realtime from the backend**.
