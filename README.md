@@ -45,7 +45,7 @@ var todo = new Todo {
                 name = "Execute SET",
                 priority = 2
             };
-SetResponse response = _client.Set("todos/set", todo);
+SetResponse response = await _client.Set("todos/set", todo);
 Todo result = response.ResultAs<Todo>(); //The response will contain the data written
 ```
 ####Push
@@ -77,7 +77,7 @@ Todo todo = response.ResultAs<Todo>(); //The response will contain the data writ
 ####Delete
 ```csharp
 
-DeleteResponse response = _client.DeleteAsync("todos"); //Deletes todos collection
+DeleteResponse response =await  _client.DeleteAsync("todos"); //Deletes todos collection
 response.Success; //Delete success flag
 ```
 ####Listen **Streaming from the REST API**
