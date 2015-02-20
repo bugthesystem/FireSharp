@@ -50,6 +50,12 @@ namespace FireSharp.Tests
             var result = response.ResultAs<Todo>();
             Assert.NotNull(response);
             Assert.AreEqual(todo.name, result.name);
+
+            // overwrite the todo we just set
+            response = await _client.SetAsync("todos", todo);
+            var getResponse = await _client.GetAsync("/todos/set");
+            result = getResponse.ResultAs<Todo>();
+            Assert.Null(result);
         }
 
         [Test, Category("INTEGRATION")]
