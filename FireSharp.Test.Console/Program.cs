@@ -26,13 +26,13 @@ namespace FireSharp.Test.Console
 
         private static async void Crud()
         {
-            var setResponse = await _client.SetAsync("todos", new {name = "SET CALL"});
+            var setResponse = await _client.SetAsync("todos", new { name = "SET CALL" });
             System.Console.WriteLine(setResponse.Body);
         }
 
         private static async void EventStreaming()
         {
-            await _client.ListenAsync("chat", (sender, args) => { System.Console.WriteLine(args.Data); });
+            await _client.OnAsync("chat", (sender, args) => { System.Console.WriteLine(args.Data); });
         }
     }
 }

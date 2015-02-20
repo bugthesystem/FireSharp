@@ -73,31 +73,6 @@ namespace FireSharp
             return response;
         }
 
-        public Task<HttpResponseMessage> Get(string path)
-        {
-            return ProcessRequest(HttpMethod.Get, path, null);
-        }
-
-        public Task<HttpResponseMessage> Put<T>(string path, T data)
-        {
-            return ProcessRequest(HttpMethod.Put, path, data);
-        }
-
-        public Task<HttpResponseMessage> Post<T>(string path, T data)
-        {
-            return ProcessRequest(HttpMethod.Post, path, data);
-        }
-
-        public Task<HttpResponseMessage> Delete(string path)
-        {
-            return ProcessRequest(HttpMethod.Delete, path, null);
-        }
-
-        public Task<HttpResponseMessage> Patch<T>(string path, T data)
-        {
-            return ProcessRequest(new HttpMethod("PATCH"), path, data);
-        }
-
         private Task<HttpResponseMessage> ProcessRequest(HttpMethod method, string path, object payload)
         {
             try

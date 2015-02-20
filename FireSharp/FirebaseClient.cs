@@ -97,8 +97,25 @@ namespace FireSharp
             return response;
         }
 
+        [Obsolete("This method is obsolete use OnAsync instead.")]
         public async Task<FirebaseResponse> ListenAsync(string path, ValueAddedEventHandler added = null,
             ValueChangedEventHandler changed = null,
+            ValueRemovedEventHandler removed = null)
+        {
+            FirebaseResponse response;
+            try
+            {
+                response = new FirebaseResponse(await _requestManager.ListenAsync(path), added, changed, removed);
+            }
+            catch (FirebaseException ex)
+            {
+                response = new FirebaseResponse { Exception = ex };
+            }
+
+            return response;
+        }
+
+        public async Task<FirebaseResponse> OnAsync(string path, ValueAddedEventHandler added = null, ValueChangedEventHandler changed = null,
             ValueRemovedEventHandler removed = null)
         {
             FirebaseResponse response;

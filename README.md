@@ -82,7 +82,7 @@ response.Success; //Delete success flag
 ```
 ####Listen **Streaming from the REST API**
 ```csharp
-await _client.ListenAsync("chat", (sender, args) => { 
+await _client.OnAsync("chat", (sender, args) => { 
        System.Console.WriteLine(args.Data); 
 });
 ```
