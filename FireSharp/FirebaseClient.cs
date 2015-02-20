@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using FireSharp.Config;
 using FireSharp.EventStreaming;
@@ -29,72 +31,72 @@ namespace FireSharp
 
         public async Task<FirebaseResponse> GetAsync(string path)
         {
-            FirebaseResponse response;
             try
             {
-                response = new FirebaseResponse(await _requestManager.GetAsync(path));
+                HttpResponseMessage response = await _requestManager.GetAsync(path);
+                VerifyResponse(response);
+                return new FirebaseResponse(response);
             }
-            catch (FirebaseException ex)
+            catch (HttpRequestException ex)
             {
-                response = new FirebaseResponse { Exception = ex };
+                throw new FirebaseException(ex);
             }
-            return response;
         }
 
         public async Task<SetResponse> SetAsync<T>(string path, T data)
         {
-            SetResponse response;
             try
             {
-                response = new SetResponse(await _requestManager.PutAsync(path, data));
+                HttpResponseMessage response = await _requestManager.PutAsync(path, data);
+                VerifyResponse(response);
+                return new SetResponse(response);
             }
-            catch (FirebaseException ex)
+            catch (HttpRequestException ex)
             {
-                response = new SetResponse { Exception = ex };
+                throw new FirebaseException(ex);
             }
-            return response;
         }
 
         public async Task<PushResponse> PushAsync<T>(string path, T data)
         {
-            PushResponse response;
             try
             {
-                response = new PushResponse(await _requestManager.PostAsync(path, data));
+                HttpResponseMessage response = await _requestManager.PostAsync(path, data);
+                VerifyResponse(response);
+                return new PushResponse(response);
             }
-            catch (FirebaseException ex)
+            catch (HttpRequestException ex)
             {
-                response = new PushResponse { Exception = ex };
+                throw new FirebaseException(ex);
             }
-            return response;
-        }
+        }   
 
         public async Task<DeleteResponse> DeleteAsync(string path)
         {
-            DeleteResponse response;
             try
             {
-                response = new DeleteResponse(await _requestManager.DeleteAsync(path));
+                HttpResponseMessage response = await _requestManager.DeleteAsync(path);
+                VerifyResponse(response);
+                return new DeleteResponse(response);
             }
-            catch (FirebaseException ex)
+            catch (HttpRequestException ex)
             {
-                response = new DeleteResponse { Exception = ex };
+                throw new FirebaseException(ex);
             }
-            return response;
         }
 
         public async Task<FirebaseResponse> UpdateAsync<T>(string path, T data)
         {
-            FirebaseResponse response;
             try
             {
-                response = new FirebaseResponse(await _requestManager.PatchAsync(path, data));
+                HttpResponseMessage response = await _requestManager.PatchAsync(path, data);
+                VerifyResponse(response);
+                return new FirebaseResponse(response);
             }
-            catch (FirebaseException ex)
+            catch (HttpRequestException ex)
             {
-                response = new FirebaseResponse { Exception = ex };
+                throw new FirebaseException(ex);
             }
-            return response;
         }
 
         [Obsolete("This method is obsolete use OnAsync instead.")]
@@ -102,33 +104,26 @@ namespace FireSharp
             ValueChangedEventHandler changed = null,
             ValueRemovedEventHandler removed = null)
         {
-            FirebaseResponse response;
-            try
-            {
-                response = new FirebaseResponse(await _requestManager.ListenAsync(path), added, changed, removed);
-            }
-            catch (FirebaseException ex)
-            {
-                response = new FirebaseResponse { Exception = ex };
-            }
+            return new FirebaseResponse(await _requestManager.ListenAsync(path), added, changed, removed);
+        }
 
-            return response;
+        private void VerifyResponse(HttpResponseMessage response)
+        {
+            if (response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.NoContent)
+                return;
+
+            string body = response.Content.ReadAsStringAsync().Result ?? "";
+            if (response.StatusCode == HttpStatusCode.BadRequest)
+                throw new FirebaseException("Bad Request: " + body);
+
+            throw new FirebaseException(String.Format("Request failed, status code: {0} {1}",
+                response.StatusCode, body));
         }
 
         public async Task<FirebaseResponse> OnAsync(string path, ValueAddedEventHandler added = null, ValueChangedEventHandler changed = null,
             ValueRemovedEventHandler removed = null)
         {
-            FirebaseResponse response;
-            try
-            {
-                response = new FirebaseResponse(await _requestManager.ListenAsync(path), added, changed, removed);
-            }
-            catch (FirebaseException ex)
-            {
-                response = new FirebaseResponse { Exception = ex };
-            }
-
-            return response;
+            return new FirebaseResponse(await _requestManager.ListenAsync(path), added, changed, removed);
         }
     }
 }

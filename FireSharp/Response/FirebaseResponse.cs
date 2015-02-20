@@ -16,16 +16,11 @@ namespace FireSharp.Response
         private readonly TemporaryCache _cache;
         private readonly CancellationTokenSource _cancel;
         private readonly Task _pollingTask;
-        protected HttpResponseMessage HttpResponse;
+        protected readonly HttpResponseMessage HttpResponse;
 
         public FirebaseResponse(HttpResponseMessage httpResponse)
         {
             HttpResponse = httpResponse;
-        }
-
-        public FirebaseResponse()
-        {
-            HttpResponse = null;
         }
 
         internal FirebaseResponse(HttpResponseMessage httpResponse,
@@ -57,8 +52,6 @@ namespace FireSharp.Response
         {
             get { return HttpResponse.Content.ReadAsStringAsync().Result; }
         }
-
-        public FirebaseException Exception { get; set; }
 
         public virtual T ResultAs<T>()
         {
