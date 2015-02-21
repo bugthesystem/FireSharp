@@ -13,5 +13,10 @@ namespace FireSharp.Exceptions
             : base(message, innerException)
         {
         }
+
+        public FirebaseException(Exception innerException)
+            : base(innerException.Message, innerException)
+        {
+        }
     }
 }

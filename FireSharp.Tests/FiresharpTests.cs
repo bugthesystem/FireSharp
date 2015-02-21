@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 using FireSharp.Config;
+using FireSharp.Exceptions;
 using FireSharp.Interfaces;
 using FireSharp.Tests.Models;
 using NUnit.Framework;
@@ -13,7 +15,7 @@ namespace FireSharp.Tests
         protected const string FIREBASE_SECRET = "fubr9j2Kany9KU3SHCIHBLm142anWCzvlBs1D977";
         private IFirebaseClient _client;
 
-        protected override async void FinalizeSetUp()
+        protected override void FinalizeSetUp()
         {
             IFirebaseConfig config = new FirebaseConfig
             {
@@ -21,11 +23,11 @@ namespace FireSharp.Tests
                 BasePath = BASE_PATH
             };
             _client = new FirebaseClient(config); //Uses RestSharp JsonSerializer as default
-            await _client.DeleteAsync("todos");
+            _client.DeleteAsync("todos").Wait();
         }
 
         [Test, Category("INTEGRATION")]
-        public async void Delete()
+        public async Task Delete()
         {
             await _client.PushAsync("todos/push", new Todo
             {
@@ -72,6 +74,12 @@ namespace FireSharp.Tests
             Assert.NotNull(response.Result);
             Assert.NotNull(response.Result.Name); /*Returns pushed data name like -J8LR7PDCdz_i9H41kf7*/
             Console.WriteLine(response.Result.Name);
+        }
+
+        [Test, ExpectedException(typeof(FirebaseException)), Category("INTEGRATION")]
+        public async void UpdateFailure()
+        {
+            var response = await _client.UpdateAsync("todos", true);
         }
 
         [Test, Category("INTEGRATION")]

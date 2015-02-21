@@ -10,10 +10,6 @@ namespace FireSharp.Response
         {
         }
 
-        public DeleteResponse()
-        {
-        }
-
         public bool Success
         {
             get

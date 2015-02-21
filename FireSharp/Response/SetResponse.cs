@@ -8,9 +8,5 @@ namespace FireSharp.Response
             : base(httpResponse)
         {
         }
-
-        public SetResponse()
-        {
-        }
     }
 }
