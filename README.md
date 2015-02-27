@@ -45,7 +45,7 @@ var todo = new Todo {
                 name = "Execute SET",
                 priority = 2
             };
-SetResponse response = await _client.Set("todos/set", todo);
+SetResponse response = await _client.SetAsync("todos/set", todo);
 Todo result = response.ResultAs<Todo>(); //The response will contain the data written
 ```
 ####Push
