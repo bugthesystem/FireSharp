@@ -15,10 +15,10 @@ update your clients **in realtime from the backend**.
 ####Installation (NuGet)
 ```csharp
 //**Install v2**
-Install-Package FireSharp -Pre
+Install-Package FireSharp
 
 //**Install v1**
-Install-Package FireSharp
+Install-Package FireSharp -Version 1.1.0
 ```
 ### Usage
 [FirebaseClient](https://github.com/ziyasal/FireSharp/blob/master/FireSharp/FirebaseClient.cs) uses [Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json) by default.
@@ -82,8 +82,8 @@ response.Success; //Delete success flag
 ```
 ####Listen **Streaming from the REST API**
 ```csharp
-await _client.OnAsync("chat", (sender, args) => { 
-       System.Console.WriteLine(args.Data); 
+await _client.OnAsync("chat", (sender, args) => {
+       System.Console.WriteLine(args.Data);
 });
 ```
 
