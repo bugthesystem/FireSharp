@@ -10,6 +10,12 @@ update your clients **in realtime from the backend**.
 [![Stories in Ready](https://badge.waffle.io/ziyasal/firesharp.svg?label=ready&title=Ready)](http://waffle.io/ziyasal/firesharp)
 
 
+## Release Notes
+- Use Microsoft HTTP Client Libraries instead of RestSharp
+- FireSharp is now Portable Library
+- Supports Streaming from the REST API
+- It is fully asynchronous and designed to be non-blocking
+
 **IMPORTANT :** [**v1 docs**](https://github.com/ziyasal/FireSharp/wiki/v1-Docs) moved [here](https://github.com/ziyasal/FireSharp/wiki/v1-Docs).
 
 ####Installation (NuGet)
