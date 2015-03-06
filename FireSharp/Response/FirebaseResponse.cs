@@ -74,12 +74,8 @@ namespace FireSharp.Response
                 while (true)
                 {
                     cancellationToken.ThrowIfCancellationRequested();
-
-                    // TODO: it really sucks that this does not take a cancellation token
                     var read = await sr.ReadLineAsync();
-
                     Debug.WriteLine(read);
-
                     if (read.StartsWith("event: "))
                     {
                         eventName = read.Substring(7);
