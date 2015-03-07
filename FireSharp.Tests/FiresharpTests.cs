@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using FireSharp.Config;
 using FireSharp.Exceptions;
 using FireSharp.Interfaces;
+using FireSharp.Response;
 using FireSharp.Tests.Models;
 using NUnit.Framework;
 
@@ -35,6 +37,7 @@ namespace FireSharp.Tests
                 priority = 2
             });
 
+            Thread.Sleep(1000);
             var response = await _client.DeleteAsync("todos");
             Assert.NotNull(response);
             Assert.IsTrue(response.Success);
@@ -118,6 +121,33 @@ namespace FireSharp.Tests
             var actual = response.ResultAs<Todo>();
             Assert.AreEqual(todoToUpdate.name, actual.name);
             Assert.AreEqual(todoToUpdate.priority, actual.priority);
+        }
+
+        [Test, Category("INTEGRATION")]
+        public async void Get_List()
+        {
+            List<Todo> expected = new List<Todo>
+            {
+                new Todo {name = "Execute PUSH4GET1", priority = 2},
+                new Todo {name = "Execute PUSH4GET2", priority = 2},
+                new Todo {name = "Execute PUSH4GET3", priority = 2},
+                new Todo {name = "Execute PUSH4GET4", priority = 2},
+                new Todo {name = "Execute PUSH4GET5", priority = 2}
+            };
+
+            PushResponse pushResponse = await _client.PushAsync("todos/list", expected);
+            string id = pushResponse.Result.Name;
+
+            Thread.Sleep(400);
+
+            var getResponse = await _client.GetAsync(string.Format("todos/list/{0}", id));
+
+            List<Todo> actual = getResponse.ResultAs<List<Todo>>();
+
+            Assert.NotNull(pushResponse);
+            Assert.NotNull(getResponse);
+            Assert.NotNull(actual);
+            Assert.AreEqual(expected, actual);
         }
     }
 }
