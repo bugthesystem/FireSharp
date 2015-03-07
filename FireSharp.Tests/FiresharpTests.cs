@@ -29,7 +29,7 @@ namespace FireSharp.Tests
         }
 
         [Test, Category("INTEGRATION")]
-        public async Task Delete()
+        public async void Delete()
         {
             await _client.PushAsync("todos/push", new Todo
             {
