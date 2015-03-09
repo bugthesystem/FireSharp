@@ -5,7 +5,7 @@ Firebase REST API wrapper for the .NET & Xamarin.
 Changes are sent to all subscribed clients automatically, so you can
 update your clients **in realtime from the backend**.
 
-[![Circle CI](https://circleci.com/gh/ziyasal/FireSharp/tree/v2.svg?style=svg)](https://circleci.com/gh/ziyasal/FireSharp/tree/v2)
+[![Circle CI](https://circleci.com/gh/ziyasal/InfluxDB.Net.svg?style=svg)](https://circleci.com/gh/ziyasal/InfluxDB.Net)
 
 [![Stories in Ready](https://badge.waffle.io/ziyasal/firesharp.svg?label=ready&title=Ready)](http://waffle.io/ziyasal/firesharp)
 
