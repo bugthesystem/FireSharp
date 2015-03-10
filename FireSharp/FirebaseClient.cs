@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -104,7 +105,7 @@ namespace FireSharp
             ValueChangedEventHandler changed = null,
             ValueRemovedEventHandler removed = null)
         {
-            return new FirebaseResponse(await _requestManager.ListenAsync(path), added, changed, removed);
+            return new EventStreamResponse(await _requestManager.ListenAsync(path), added, changed, removed);
         }
 
         private void VerifyResponse(HttpResponseMessage response)
@@ -123,7 +124,7 @@ namespace FireSharp
         public async Task<FirebaseResponse> OnAsync(string path, ValueAddedEventHandler added = null, ValueChangedEventHandler changed = null,
             ValueRemovedEventHandler removed = null)
         {
-            return new FirebaseResponse(await _requestManager.ListenAsync(path), added, changed, removed);
+            return new EventStreamResponse(await _requestManager.ListenAsync(path), added, changed, removed);
         }
     }
 }

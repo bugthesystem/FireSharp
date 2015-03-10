@@ -147,7 +147,7 @@ namespace FireSharp.Tests
             Assert.NotNull(pushResponse);
             Assert.NotNull(getResponse);
             Assert.NotNull(actual);
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected.Count, actual.Count);
         }
     }
 }
