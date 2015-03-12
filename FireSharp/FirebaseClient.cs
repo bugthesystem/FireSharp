@@ -30,6 +30,88 @@ namespace FireSharp
             using (_requestManager) { }
         }
 
+        public FirebaseResponse Get(string path)
+        {
+            try
+            {
+                HttpResponseMessage response = _requestManager.Get(path);
+                VerifyResponse(response);
+                return new FirebaseResponse(response);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new FirebaseException(ex);
+            }
+        }
+
+        public SetResponse Set<T>(string path, T data)
+        {
+            try
+            {
+                HttpResponseMessage response = _requestManager.Put(path, data);
+                VerifyResponse(response);
+                return new SetResponse(response);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new FirebaseException(ex);
+            }
+        }
+
+        public PushResponse Push<T>(string path, T data)
+        {
+            try
+            {
+                HttpResponseMessage response = _requestManager.Post(path, data);
+                VerifyResponse(response);
+                return new PushResponse(response);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new FirebaseException(ex);
+            }
+        }
+
+        public DeleteResponse Delete(string path)
+        {
+            try
+            {
+                HttpResponseMessage response = _requestManager.Delete(path);
+                VerifyResponse(response);
+                return new DeleteResponse(response);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new FirebaseException(ex);
+            }
+        }
+
+        public FirebaseResponse Update<T>(string path, T data)
+        {
+            try
+            {
+                HttpResponseMessage response = _requestManager.Patch(path, data);
+                VerifyResponse(response);
+                return new FirebaseResponse(response);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new FirebaseException(ex);
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
         public async Task<FirebaseResponse> GetAsync(string path)
         {
             try
