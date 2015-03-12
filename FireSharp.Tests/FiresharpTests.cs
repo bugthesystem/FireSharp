@@ -101,7 +101,7 @@ namespace FireSharp.Tests
         }
 
         [Test, Category("INTEGRATION"), Category("SYNC")]
-        public async void Update()
+        public void Update()
         {
             _client.Set("todos/set", new Todo
             {
@@ -161,7 +161,7 @@ namespace FireSharp.Tests
         }
 
         [Test, Category("INTEGRATION"), Category("SYNC")]
-        public async void Set()
+        public void Set()
         {
             var todo = new Todo
             {
@@ -181,7 +181,7 @@ namespace FireSharp.Tests
         }
 
         [Test, Category("INTEGRATION"), Category("SYNC")]
-        public async void Push()
+        public void Push()
         {
             var todo = new Todo
             {
@@ -203,7 +203,7 @@ namespace FireSharp.Tests
         }
 
         [Test, Category("INTEGRATION"), Category("SYNC")]
-        public async void Get()
+        public void Get()
         {
             _client.Push("todos/push", new Todo
             {
