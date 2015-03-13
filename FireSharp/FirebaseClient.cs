@@ -100,18 +100,6 @@ namespace FireSharp
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
         public async Task<FirebaseResponse> GetAsync(string path)
         {
             try
@@ -201,6 +189,11 @@ namespace FireSharp
 
             throw new FirebaseException(String.Format("Request failed, status code: {0} {1}",
                 response.StatusCode, body));
+        }
+
+        public async Task<EventRootResponse<T>> OnChangeGetAsync<T>(string path, ValueRootAddedEventHandler<T> added = null)
+        {
+            return new EventRootResponse<T>(await _requestManager.ListenAsync(path), added, _requestManager, path);
         }
 
         public async Task<FirebaseResponse> OnAsync(string path, ValueAddedEventHandler added = null, ValueChangedEventHandler changed = null,

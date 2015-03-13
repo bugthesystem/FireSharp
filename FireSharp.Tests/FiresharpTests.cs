@@ -13,8 +13,8 @@ namespace FireSharp.Tests
 {
     public class FiresharpTests : TestBase
     {
-        protected const string BASE_PATH = "https://firesharp.firebaseio.com/";
-        protected const string FIREBASE_SECRET = "fubr9j2Kany9KU3SHCIHBLm142anWCzvlBs1D977";
+        protected const string BASE_PATH = "https://nasa-homolog.firebaseIO.com/";
+        protected const string FIREBASE_SECRET = "GzHrF3LHbclKP7Ymoj37siBtS0UgVOFQbfHMeFkW";
         private IFirebaseClient _client;
 
         protected override void FinalizeSetUp()
@@ -244,6 +244,30 @@ namespace FireSharp.Tests
             Assert.NotNull(getResponse);
             Assert.NotNull(actual);
             Assert.AreEqual(expected.Count, actual.Count);
+        }
+
+        [Test, Category("INTEGRATION")]
+        public async void OnChangeGetAsync()
+        {
+            var expected = new Todo { name = "Execute PUSH4GET1", priority = 2 };
+            var changes = 0;
+            var observer = _client.OnChangeGetAsync<Todo>("todos/OnGetAsync/", (events, arg) =>
+            {
+                Interlocked.Increment(ref changes);
+                Assert.NotNull(arg);
+                Assert.AreEqual(expected.name, arg.name);
+            });
+            
+            var setResponse = await _client.SetAsync("todos/OnGetAsync/", expected);
+
+            Thread.Sleep(400);
+
+            expected = new Todo { name = "PUSH4GET1", priority = 3 };
+
+            setResponse = await _client.SetAsync("todos/OnGetAsync/name", expected.name);
+
+            Assert.AreEqual(2, changes);
+            observer.Result.Cancel();
         }
     }
 }
