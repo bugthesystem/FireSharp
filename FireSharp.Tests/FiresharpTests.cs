@@ -13,8 +13,8 @@ namespace FireSharp.Tests
 {
     public class FiresharpTests : TestBase
     {
-        protected const string BASE_PATH = "https://nasa-homolog.firebaseIO.com/";
-        protected const string FIREBASE_SECRET = "GzHrF3LHbclKP7Ymoj37siBtS0UgVOFQbfHMeFkW";
+        protected const string BASE_PATH = "https://firesharp.firebaseio.com/";
+        protected const string FIREBASE_SECRET = "fubr9j2Kany9KU3SHCIHBLm142anWCzvlBs1D977";
         private IFirebaseClient _client;
 
         protected override void FinalizeSetUp()
@@ -260,11 +260,13 @@ namespace FireSharp.Tests
             
             var setResponse = await _client.SetAsync("todos/OnGetAsync/", expected);
 
-            Thread.Sleep(400);
+            Thread.Sleep(800);
 
             expected = new Todo { name = "PUSH4GET1", priority = 3 };
 
             setResponse = await _client.SetAsync("todos/OnGetAsync/name", expected.name);
+
+            Thread.Sleep(800);
 
             Assert.AreEqual(2, changes);
             observer.Result.Cancel();
