@@ -7,7 +7,7 @@ namespace FireSharp.Config
         public FirebaseConfig()
         {
             TimeoutInMinute = 1;
-            Serializer = new JsonSerializerWrapper();
+            Serializer = new JsonNetSerializer();
         }
 
         public string BasePath { get; set; }

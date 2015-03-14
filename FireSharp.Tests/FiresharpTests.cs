@@ -13,16 +13,16 @@ namespace FireSharp.Tests
 {
     public class FiresharpTests : TestBase
     {
-        protected const string BASE_PATH = "https://firesharp.firebaseio.com/";
-        protected const string FIREBASE_SECRET = "fubr9j2Kany9KU3SHCIHBLm142anWCzvlBs1D977";
+        protected const string BasePath = "https://firesharp.firebaseio.com/";
+        protected const string FirebaseSecret = "fubr9j2Kany9KU3SHCIHBLm142anWCzvlBs1D977";
         private IFirebaseClient _client;
 
         protected override void FinalizeSetUp()
         {
             IFirebaseConfig config = new FirebaseConfig
             {
-                AuthSecret = FIREBASE_SECRET,
-                BasePath = BASE_PATH
+                AuthSecret = FirebaseSecret,
+                BasePath = BasePath
             };
             _client = new FirebaseClient(config); //Uses RestSharp JsonSerializer as default
             _client.DeleteAsync("todos").Wait();
@@ -197,7 +197,7 @@ namespace FireSharp.Tests
         }
 
         [Test, ExpectedException(typeof(FirebaseException)), Category("INTEGRATION"), Category("SYNC")]
-        public async void UpdateFailure()
+        public void UpdateFailure()
         {
             var response = _client.Update("todos", true);
         }

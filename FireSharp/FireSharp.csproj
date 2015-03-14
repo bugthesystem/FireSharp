@@ -64,7 +64,7 @@
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="FirebaseClient.cs" />
     <Compile Include="Interfaces\ISerializer.cs" />
-    <Compile Include="Interfaces\JsonSerializerWrapper.cs" />
+    <Compile Include="Interfaces\JsonNetSerializer.cs" />
     <Compile Include="RequestManager.cs" />
     <Compile Include="Interfaces\IFirebaseClient.cs" />
     <Compile Include="Interfaces\IRequestManager.cs" />

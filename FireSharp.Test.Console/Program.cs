@@ -4,16 +4,16 @@ namespace FireSharp.Test.Console
 {
     public class Program
     {
-        protected const string BASE_PATH = "https://firesharp.firebaseio.com/";
-        protected const string FIREBASE_SECRET = "fubr9j2Kany9KU3SHCIHBLm142anWCzvlBs1D977";
+        protected const string BasePath = "https://firesharp.firebaseio.com/";
+        protected const string FirebaseSecret = "fubr9j2Kany9KU3SHCIHBLm142anWCzvlBs1D977";
         private static FirebaseClient _client;
 
         private static void Main()
         {
             IFirebaseConfig config = new FirebaseConfig
             {
-                AuthSecret = FIREBASE_SECRET,
-                BasePath = BASE_PATH
+                AuthSecret = FirebaseSecret,
+                BasePath = BasePath
             };
 
             _client = new FirebaseClient(config); //Uses JsonNet default
@@ -33,13 +33,13 @@ namespace FireSharp.Test.Console
         private static void EventStreaming()
         {
             _client.OnAsync("chat",
-                added: (sender, args) => { System.Console.WriteLine(args.Data); },
+                added: (sender, args) => { System.Console.WriteLine(args.Data + "1"); },
                 changed: (sender, args) => { System.Console.WriteLine(args.Data); },
                 removed: (sender, args) => { System.Console.WriteLine(args.Path); })
                 .Wait();
 
             _client.OnAsync("chat",
-                   added: (sender, args) => { System.Console.WriteLine(args.Data); },
+                   added: (sender, args) => { System.Console.WriteLine(args.Data + "2"); },
                    changed: (sender, args) => { System.Console.WriteLine(args.Data); },
                    removed: (sender, args) => { System.Console.WriteLine(args.Path); })
                    .Wait();

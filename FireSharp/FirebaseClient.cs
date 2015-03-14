@@ -140,7 +140,7 @@ namespace FireSharp
             {
                 throw new FirebaseException(ex);
             }
-        }   
+        }
 
         public async Task<DeleteResponse> DeleteAsync(string path)
         {
@@ -187,8 +187,7 @@ namespace FireSharp
             if (response.StatusCode == HttpStatusCode.BadRequest)
                 throw new FirebaseException("Bad Request: " + body);
 
-            throw new FirebaseException(String.Format("Request failed, status code: {0} {1}",
-                response.StatusCode, body));
+            throw new FirebaseException(String.Format("Request failed, status code: {0} {1}", response.StatusCode, body));
         }
 
         public async Task<EventRootResponse<T>> OnChangeGetAsync<T>(string path, ValueRootAddedEventHandler<T> added = null)
