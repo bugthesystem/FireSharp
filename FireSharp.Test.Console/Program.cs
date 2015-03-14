@@ -19,7 +19,7 @@ namespace FireSharp.Test.Console
             _client = new FirebaseClient(config); //Uses JsonNet default
 
             EventStreaming();
-            Crud();
+            //Crud();
 
             System.Console.Read();
         }
@@ -30,9 +30,20 @@ namespace FireSharp.Test.Console
             System.Console.WriteLine(setResponse.Body);
         }
 
-        private static async void EventStreaming()
+        private static void EventStreaming()
         {
-            await _client.OnAsync("chat", (sender, args) => { System.Console.WriteLine(args.Data); });
+            _client.OnAsync("chat",
+                added: (sender, args) => { System.Console.WriteLine(args.Data); },
+                changed: (sender, args) => { System.Console.WriteLine(args.Data); },
+                removed: (sender, args) => { System.Console.WriteLine(args.Path); })
+                .Wait();
+
+            _client.OnAsync("chat",
+                   added: (sender, args) => { System.Console.WriteLine(args.Data); },
+                   changed: (sender, args) => { System.Console.WriteLine(args.Data); },
+                   removed: (sender, args) => { System.Console.WriteLine(args.Path); })
+                   .Wait();
         }
+
     }
 }

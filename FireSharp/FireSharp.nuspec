@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>FireSharp</id>
-    <version>2.0.1-beta1</version>
+    <version>2.0.1-beta2</version>
     <title>Fire#</title>
     <authors>ziyasal</authors>
     <owners>ziyasal</owners>
@@ -20,6 +20,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\Release\FireSharp.dll" target="lib\net45\FireSharp.dll" />
+    <file src="bin\Release\FireSharp.dll" target="lib\portable-net45+sl5+wp8+win8\FireSharp.dll" />
   </files>
 </package>
