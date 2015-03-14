@@ -30,6 +30,76 @@ namespace FireSharp
             using (_requestManager) { }
         }
 
+        public FirebaseResponse Get(string path)
+        {
+            try
+            {
+                HttpResponseMessage response = _requestManager.Get(path);
+                VerifyResponse(response);
+                return new FirebaseResponse(response);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new FirebaseException(ex);
+            }
+        }
+
+        public SetResponse Set<T>(string path, T data)
+        {
+            try
+            {
+                HttpResponseMessage response = _requestManager.Put(path, data);
+                VerifyResponse(response);
+                return new SetResponse(response);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new FirebaseException(ex);
+            }
+        }
+
+        public PushResponse Push<T>(string path, T data)
+        {
+            try
+            {
+                HttpResponseMessage response = _requestManager.Post(path, data);
+                VerifyResponse(response);
+                return new PushResponse(response);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new FirebaseException(ex);
+            }
+        }
+
+        public DeleteResponse Delete(string path)
+        {
+            try
+            {
+                HttpResponseMessage response = _requestManager.Delete(path);
+                VerifyResponse(response);
+                return new DeleteResponse(response);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new FirebaseException(ex);
+            }
+        }
+
+        public FirebaseResponse Update<T>(string path, T data)
+        {
+            try
+            {
+                HttpResponseMessage response = _requestManager.Patch(path, data);
+                VerifyResponse(response);
+                return new FirebaseResponse(response);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new FirebaseException(ex);
+            }
+        }
+
         public async Task<FirebaseResponse> GetAsync(string path)
         {
             try
@@ -119,6 +189,11 @@ namespace FireSharp
 
             throw new FirebaseException(String.Format("Request failed, status code: {0} {1}",
                 response.StatusCode, body));
+        }
+
+        public async Task<EventRootResponse<T>> OnChangeGetAsync<T>(string path, ValueRootAddedEventHandler<T> added = null)
+        {
+            return new EventRootResponse<T>(await _requestManager.ListenAsync(path), added, _requestManager, path);
         }
 
         public async Task<FirebaseResponse> OnAsync(string path, ValueAddedEventHandler added = null, ValueChangedEventHandler changed = null,

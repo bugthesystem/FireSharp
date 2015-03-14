@@ -12,5 +12,11 @@ namespace FireSharp.Interfaces
         Task<HttpResponseMessage> PostAsync<T>(string path, T data);
         Task<HttpResponseMessage> DeleteAsync(string path);
         Task<HttpResponseMessage> PatchAsync<T>(string path, T data);
+        HttpResponseMessage Listen(string path);
+        HttpResponseMessage Get(string path);
+        HttpResponseMessage Put<T>(string path, T data);
+        HttpResponseMessage Post<T>(string path, T data);
+        HttpResponseMessage Delete(string path);
+        HttpResponseMessage Patch<T>(string path, T data);
     }
 }

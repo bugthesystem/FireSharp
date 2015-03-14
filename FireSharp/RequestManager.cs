@@ -60,6 +60,45 @@ namespace FireSharp
             return await ProcessRequest(new HttpMethod("PATCH"), path, data);
         }
 
+
+        public HttpResponseMessage Get(string path)
+        {
+            return ProcessRequest(HttpMethod.Get, path, null).Result;
+        }
+
+        public HttpResponseMessage Put<T>(string path, T data)
+        {
+            return ProcessRequest(HttpMethod.Put, path, data).Result;
+        }
+
+        public HttpResponseMessage Post<T>(string path, T data)
+        {
+            return this.ProcessRequest(HttpMethod.Post, path, data).Result;
+        }
+
+        public HttpResponseMessage Delete(string path)
+        {
+            return ProcessRequest(HttpMethod.Delete, path, null).Result;
+        }
+
+        public HttpResponseMessage Patch<T>(string path, T data)
+        {
+            return ProcessRequest(new HttpMethod("PATCH"), path, data).Result;
+        }
+
+        public HttpResponseMessage Listen(string path)
+        {
+            var uri = PrepareUri(path);
+
+            var request = new HttpRequestMessage(HttpMethod.Get, uri);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("text/event-stream"));
+
+            var response = _client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead).Result;
+            response.EnsureSuccessStatusCode();
+
+            return response;
+        }
+
         public async Task<HttpResponseMessage> ListenAsync(string path)
         {
             var uri = PrepareUri(path);

@@ -70,6 +70,7 @@
     <Compile Include="Interfaces\IRequestManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Response\DeleteResponse.cs" />
+    <Compile Include="Response\EventRootResponse.cs" />
     <Compile Include="Response\EventStreamResponse.cs" />
     <Compile Include="Response\FirebaseResponse.cs" />
     <Compile Include="Response\PushResponse.cs" />
