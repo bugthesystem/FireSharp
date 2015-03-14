@@ -88,9 +88,9 @@ response.Success; //Delete success flag
 ```
 ####Listen **Streaming from the REST API**
 ```csharp
-await _client.OnAsync("chat", (sender, args) => {
+_client.OnAsync("chat", (sender, args) => {
        System.Console.WriteLine(args.Data);
-});
+}).Wait();
 ```
 
 More information about Firebase and the Firebase API is available at the
