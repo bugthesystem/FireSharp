@@ -1,4 +1,5 @@
-﻿using FireSharp.Interfaces;
+﻿using System;
+using FireSharp.Interfaces;
 
 namespace FireSharp.Config
 {
@@ -6,7 +7,7 @@ namespace FireSharp.Config
     {
         string BasePath { get; set; }
         string AuthSecret { get; set; }
-        int TimeoutInMinute { get; set; }
+        TimeSpan? RequestTimeout { get; set; }
         ISerializer Serializer { get; set; }
     }
 }

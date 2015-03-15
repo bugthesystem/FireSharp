@@ -1,4 +1,5 @@
-﻿using FireSharp.Config;
+﻿using System;
+using FireSharp.Config;
 
 namespace FireSharp.Test.Console
 {
@@ -32,13 +33,23 @@ namespace FireSharp.Test.Console
 
         private static async void EventStreaming()
         {
+            await _client.DeleteAsync("chat");
+
             await _client.OnAsync("chat",
-                added: (sender, args) => { System.Console.WriteLine(args.Data + "1"); },
+                added: async (sender, args) =>
+                {
+                    System.Console.WriteLine(args.Data + "-> 1\n");
+                    await _client.PushAsync("chat/", new
+                    {
+                        name = "someone",
+                        text = "Console 1:" + DateTime.Now.ToString("f")
+                    });
+                },
                 changed: (sender, args) => { System.Console.WriteLine(args.Data); },
                 removed: (sender, args) => { System.Console.WriteLine(args.Path); });
 
             await _client.OnAsync("chat",
-                 added: (sender, args) => { System.Console.WriteLine(args.Data + "2"); },
+                 added: (sender, args) => { System.Console.WriteLine(args.Data + " -> 2\n"); },
                  changed: (sender, args) => { System.Console.WriteLine(args.Data); },
                  removed: (sender, args) => { System.Console.WriteLine(args.Path); });
         }

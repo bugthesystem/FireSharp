@@ -19,13 +19,18 @@ namespace FireSharp
             _client = GetClient();
         }
 
-        private HttpClient GetClient()
+        private HttpClient GetClient(HttpClientHandler handler = null)
         {
-            return new HttpClient
+            var client = handler == null ? new HttpClient() : new HttpClient(handler, true);
+
+            client.BaseAddress = new Uri(_config.BasePath);
+
+            if (_config.RequestTimeout.HasValue)
             {
-                BaseAddress = new Uri(_config.BasePath),
-                Timeout = TimeSpan.FromMinutes(_config.TimeoutInMinute)
-            };
+                client.Timeout = _config.RequestTimeout.Value;
+            }
+
+            return client;
         }
 
         public void Dispose()
@@ -88,35 +93,19 @@ namespace FireSharp
 
         public HttpResponseMessage Listen(string path)
         {
-            var client = new HttpClient(new HttpClientHandler { AllowAutoRedirect = true }, true)
-            {
-                BaseAddress = new Uri(_config.BasePath),
-                Timeout = TimeSpan.FromMinutes(_config.TimeoutInMinute)
-            };
-            var uri = PrepareUri(path);
-
-            var request = new HttpRequestMessage(HttpMethod.Get, uri);
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("text/event-stream"));
+            HttpRequestMessage request;
+            var client = PrepareEventStreamRequest(path, out request);
 
             var response = client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead).Result;
             response.EnsureSuccessStatusCode();
 
             return response;
-
         }
 
         public async Task<HttpResponseMessage> ListenAsync(string path)
         {
-            var client = new HttpClient(new HttpClientHandler { AllowAutoRedirect = true }, true)
-            {
-                BaseAddress = new Uri(_config.BasePath),
-                Timeout = TimeSpan.FromMinutes(_config.TimeoutInMinute)
-            };
-
-            var uri = PrepareUri(path);
-
-            var request = new HttpRequestMessage(HttpMethod.Get, uri);
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("text/event-stream"));
+            HttpRequestMessage request;
+            var client = PrepareEventStreamRequest(path, out request);
 
             var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
             response.EnsureSuccessStatusCode();
@@ -152,6 +141,16 @@ namespace FireSharp
                 throw new FirebaseException(
                     string.Format("An error occured while execute request. Path : {0} , Method : {1}", path, method), ex);
             }
+        }
+
+        private HttpClient PrepareEventStreamRequest(string path, out HttpRequestMessage request)
+        {
+            var client = GetClient(new HttpClientHandler { AllowAutoRedirect = true });
+            var uri = PrepareUri(path);
+
+            request = new HttpRequestMessage(HttpMethod.Get, uri);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("text/event-stream"));
+            return client;
         }
 
         private HttpRequestMessage PrepareRequest(HttpMethod method, string path, object payload)
