@@ -52,7 +52,7 @@ namespace FireSharp
 
         public async Task<HttpResponseMessage> DeleteAsync(string path)
         {
-            return await ProcessRequestAsync(HttpMethod.Delete, path, null, HttpCompletionOption.ResponseHeadersRead);
+            return await ProcessRequestAsync(HttpMethod.Delete, path, null);
         }
 
         public async Task<HttpResponseMessage> PatchAsync<T>(string path, T data)
@@ -118,7 +118,7 @@ namespace FireSharp
             var request = new HttpRequestMessage(HttpMethod.Get, uri);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("text/event-stream"));
 
-            var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
+            var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
             response.EnsureSuccessStatusCode();
 
             return response;
@@ -130,7 +130,7 @@ namespace FireSharp
             {
                 var request = PrepareRequest(method, path, payload);
 
-                return await GetClient().SendAsync(request, httpCompletionOption).ConfigureAwait(false);
+                return await GetClient().SendAsync(request, httpCompletionOption);
             }
             catch (Exception ex)
             {
@@ -145,7 +145,7 @@ namespace FireSharp
             {
                 var request = PrepareRequest(method, path, payload);
 
-                return _client.SendAsync(request, httpCompletionOption).ConfigureAwait(false).GetAwaiter().GetResult();
+                return _client.SendAsync(request, httpCompletionOption).Result;
             }
             catch (Exception ex)
             {
