@@ -1,11 +1,17 @@
-﻿using System.Net.Http;
+﻿using System.Net;
+using System.Net.Http;
 
 namespace FireSharp.Response
 {
     public class PushResponse : FirebaseResponse
     {
-        public PushResponse(HttpResponseMessage httpResponse)
-            : base(httpResponse)
+        public PushResponse(string body, HttpStatusCode statusCode, HttpResponseMessage httpResponse)
+            : base(body, statusCode, httpResponse)
+        {
+        }
+
+        public PushResponse(string body, HttpStatusCode statusCode)
+            : base(body, statusCode)
         {
         }
 

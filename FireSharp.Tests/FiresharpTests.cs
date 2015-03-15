@@ -7,6 +7,7 @@ using FireSharp.Exceptions;
 using FireSharp.Interfaces;
 using FireSharp.Response;
 using FireSharp.Tests.Models;
+using FireSharp.Tests.NunitExtensions;
 using NUnit.Framework;
 
 namespace FireSharp.Tests
@@ -16,6 +17,14 @@ namespace FireSharp.Tests
         protected const string BasePath = "https://firesharp.firebaseio.com/";
         protected const string FirebaseSecret = "fubr9j2Kany9KU3SHCIHBLm142anWCzvlBs1D977";
         private IFirebaseClient _client;
+
+        [TestFixtureSetUp]
+        public async void TestFixtureSetUp()
+        {
+            Task<DeleteResponse> task1 = _client.DeleteAsync("todos");
+            Task<DeleteResponse> task2 = _client.DeleteAsync("fakepath");
+            await Task.WhenAll(task1, task2);
+        }
 
         protected override void FinalizeSetUp()
         {
@@ -31,13 +40,13 @@ namespace FireSharp.Tests
         [Test, Category("INTEGRATION"), Category("ASYNC")]
         public async Task DeleteAsync()
         {
-            await _client.PushAsync("todos/pushAync", new Todo
+            await _client.PushAsync("todos/pushAsync", new Todo
             {
                 name = "Execute PUSH4GET",
                 priority = 2
             });
 
-            var response = await _client.DeleteAsync("todos");
+            var response = await _client.DeleteAsync("todos/pushAsync");
             Assert.NotNull(response);
             Assert.IsTrue(response.Success);
         }
@@ -71,23 +80,17 @@ namespace FireSharp.Tests
                 priority = 2
             };
 
-            var response = await _client.PushAsync("todos/pushAsync", todo);
+            var response = await _client.PushAsync("todos/push/pushAsync", todo);
             Assert.NotNull(response);
             Assert.NotNull(response.Result);
             Assert.NotNull(response.Result.Name); /*Returns pushed data name like -J8LR7PDCdz_i9H41kf7*/
             Console.WriteLine(response.Result.Name);
         }
 
-        [Test, ExpectedException(typeof(FirebaseException)), Category("INTEGRATION"), Category("ASYNC")]
-        public async void UpdateFailureAsync()
-        {
-            var response = await _client.UpdateAsync("todos", true);
-        }
-
         [Test, Category("INTEGRATION"), Category("ASYNC")]
         public async void GetAsync()
         {
-            await _client.PushAsync("todos/pushAsync", new Todo
+            await _client.PushAsync("todos/get/pushAsync", new Todo
             {
                 name = "Execute PUSH4GET",
                 priority = 2
@@ -95,38 +98,15 @@ namespace FireSharp.Tests
 
             Thread.Sleep(400);
 
-            var response = await _client.GetAsync("todos");
+            var response = await _client.GetAsync("todos/get/");
             Assert.NotNull(response);
             Assert.IsTrue(response.Body.Contains("name"));
         }
 
-        [Test, Category("INTEGRATION"), Category("SYNC")]
-        public void Update()
-        {
-            _client.Set("todos/set", new Todo
-            {
-                name = "Execute SET",
-                priority = 2
-            });
-
-            var todoToUpdate = new Todo
-            {
-                name = "Execute UPDATE!",
-                priority = 1
-            };
-
-            var response = _client.Update("todos/set", todoToUpdate);
-            Assert.NotNull(response);
-            var actual = response.ResultAs<Todo>();
-            Assert.AreEqual(todoToUpdate.name, actual.name);
-            Assert.AreEqual(todoToUpdate.priority, actual.priority);
-        }
-
-
         [Test, Category("INTEGRATION"), Category("ASYNC")]
         public async void UpdateAsync()
         {
-            await _client.SetAsync("todos/setAsync", new Todo
+            await _client.SetAsync("todos/set/setAsync", new Todo
             {
                 name = "Execute SET",
                 priority = 2
@@ -138,13 +118,48 @@ namespace FireSharp.Tests
                 priority = 1
             };
 
-            var response = await _client.UpdateAsync("todos/setAsync", todoToUpdate);
+            var response = await _client.UpdateAsync("todos/set/setAsync", todoToUpdate);
             Assert.NotNull(response);
             var actual = response.ResultAs<Todo>();
             Assert.AreEqual(todoToUpdate.name, actual.name);
             Assert.AreEqual(todoToUpdate.priority, actual.priority);
         }
 
+        [Test, Category("INTEGRATION"), Category("ASYNC")]
+        public async void UpdateFailureAsync()
+        {
+            await AssertExtensions.ThrowsAsync<FirebaseException>(async () =>
+            {
+                var response = await _client.UpdateAsync("todos", true);
+            });
+        }
+
+        [Test, Category("INTEGRATION")]
+        public async void GetListAsync()
+        {
+            List<Todo> expected = new List<Todo>
+            {
+                new Todo {name = "Execute PUSH4GET1", priority = 2},
+                new Todo {name = "Execute PUSH4GET2", priority = 2},
+                new Todo {name = "Execute PUSH4GET3", priority = 2},
+                new Todo {name = "Execute PUSH4GET4", priority = 2},
+                new Todo {name = "Execute PUSH4GET5", priority = 2}
+            };
+
+            PushResponse pushResponse = await _client.PushAsync("todos/list/pushAsync", expected);
+            string id = pushResponse.Result.Name;
+
+            Thread.Sleep(400);
+
+            var getResponse = await _client.GetAsync(string.Format("todos/list/pushAsync/{0}", id));
+
+            List<Todo> actual = getResponse.ResultAs<List<Todo>>();
+
+            Assert.NotNull(pushResponse);
+            Assert.NotNull(getResponse);
+            Assert.NotNull(actual);
+            Assert.AreEqual(expected.Count, actual.Count);
+        }
 
         [Test, Category("INTEGRATION")]
         public void Delete()
@@ -155,7 +170,7 @@ namespace FireSharp.Tests
                 priority = 2
             });
 
-            var response = _client.Delete("todos");
+            var response = _client.Delete("todos/push");
             Assert.NotNull(response);
             Assert.IsTrue(response.Success);
         }
@@ -196,16 +211,10 @@ namespace FireSharp.Tests
             Console.WriteLine(response.Result.Name);
         }
 
-        [Test, ExpectedException(typeof(FirebaseException)), Category("INTEGRATION"), Category("SYNC")]
-        public void UpdateFailure()
-        {
-            var response = _client.Update("todos", true);
-        }
-
         [Test, Category("INTEGRATION"), Category("SYNC")]
         public void Get()
         {
-            _client.Push("todos/push", new Todo
+            _client.Push("todos/gettest/push", new Todo
             {
                 name = "Execute PUSH4GET",
                 priority = 2
@@ -213,37 +222,37 @@ namespace FireSharp.Tests
 
             Thread.Sleep(400);
 
-            var response = _client.Get("todos");
+            var response = _client.Get("todos/gettest");
             Assert.NotNull(response);
             Assert.IsTrue(response.Body.Contains("name"));
         }
 
-
-        [Test, Category("INTEGRATION")]
-        public async void Get_List()
+        [Test, Category("INTEGRATION"), Category("SYNC")]
+        public void Update()
         {
-            List<Todo> expected = new List<Todo>
+            _client.Set("todos/updatetest/set", new Todo
             {
-                new Todo {name = "Execute PUSH4GET1", priority = 2},
-                new Todo {name = "Execute PUSH4GET2", priority = 2},
-                new Todo {name = "Execute PUSH4GET3", priority = 2},
-                new Todo {name = "Execute PUSH4GET4", priority = 2},
-                new Todo {name = "Execute PUSH4GET5", priority = 2}
+                name = "Execute SET",
+                priority = 2
+            });
+
+            var todoToUpdate = new Todo
+            {
+                name = "Execute UPDATE!",
+                priority = 1
             };
 
-            PushResponse pushResponse = await _client.PushAsync("todos/list", expected);
-            string id = pushResponse.Result.Name;
+            var response = _client.Update("todos/updatetest/set", todoToUpdate);
+            Assert.NotNull(response);
+            var actual = response.ResultAs<Todo>();
+            Assert.AreEqual(todoToUpdate.name, actual.name);
+            Assert.AreEqual(todoToUpdate.priority, actual.priority);
+        }
 
-            Thread.Sleep(400);
-
-            var getResponse = await _client.GetAsync(string.Format("todos/list/{0}", id));
-
-            List<Todo> actual = getResponse.ResultAs<List<Todo>>();
-
-            Assert.NotNull(pushResponse);
-            Assert.NotNull(getResponse);
-            Assert.NotNull(actual);
-            Assert.AreEqual(expected.Count, actual.Count);
+        [Test, ExpectedException(typeof(FirebaseException)), Category("INTEGRATION"), Category("SYNC")]
+        public void UpdateFailure()
+        {
+            var response = _client.Update("todos", true);
         }
 
         [Test, Category("INTEGRATION")]
@@ -251,22 +260,20 @@ namespace FireSharp.Tests
         {
             var expected = new Todo { name = "Execute PUSH4GET1", priority = 2 };
             var changes = 0;
-            var observer = _client.OnChangeGetAsync<Todo>("todos/OnGetAsync/", (events, arg) =>
+            var observer = _client.OnChangeGetAsync<Todo>("fakepath/OnGetAsync/", (events, arg) =>
             {
                 Interlocked.Increment(ref changes);
                 Assert.NotNull(arg);
                 Assert.AreEqual(expected.name, arg.name);
             });
-            
-            var setResponse = await _client.SetAsync("todos/OnGetAsync/", expected);
 
-            Thread.Sleep(800);
+            await _client.SetAsync("fakepath/OnGetAsync/", expected);
 
-            expected = new Todo { name = "PUSH4GET1", priority = 3 };
+            Thread.Sleep(4000);
 
-            setResponse = await _client.SetAsync("todos/OnGetAsync/name", expected.name);
+            await _client.SetAsync("fakepath/OnGetAsync/name", "PUSH4GET1");
 
-            Thread.Sleep(800);
+            Thread.Sleep(4000);
 
             Assert.AreEqual(2, changes);
             observer.Result.Cancel();

@@ -21,12 +21,12 @@ namespace FireSharp.Interfaces
         FirebaseResponse Update<T>(string path, T data);
 
         [Obsolete("This method is obsolete use OnAsync instead.")]
-        Task<FirebaseResponse> ListenAsync(string path,
+        Task<EventStreamResponse> ListenAsync(string path,
             ValueAddedEventHandler added = null,
             ValueChangedEventHandler changed = null,
             ValueRemovedEventHandler removed = null);
 
-        Task<FirebaseResponse> OnAsync(string path,
+        Task<EventStreamResponse> OnAsync(string path,
             ValueAddedEventHandler added = null,
             ValueChangedEventHandler changed = null,
             ValueRemovedEventHandler removed = null);

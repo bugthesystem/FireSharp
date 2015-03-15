@@ -30,20 +30,17 @@ namespace FireSharp.Test.Console
             System.Console.WriteLine(setResponse.Body);
         }
 
-        private static void EventStreaming()
+        private static async void EventStreaming()
         {
-            _client.OnAsync("chat",
+            await _client.OnAsync("chat",
                 added: (sender, args) => { System.Console.WriteLine(args.Data + "1"); },
                 changed: (sender, args) => { System.Console.WriteLine(args.Data); },
-                removed: (sender, args) => { System.Console.WriteLine(args.Path); })
-                .Wait();
+                removed: (sender, args) => { System.Console.WriteLine(args.Path); });
 
-            _client.OnAsync("chat",
-                   added: (sender, args) => { System.Console.WriteLine(args.Data + "2"); },
-                   changed: (sender, args) => { System.Console.WriteLine(args.Data); },
-                   removed: (sender, args) => { System.Console.WriteLine(args.Path); })
-                   .Wait();
+            await _client.OnAsync("chat",
+                 added: (sender, args) => { System.Console.WriteLine(args.Data + "2"); },
+                 changed: (sender, args) => { System.Console.WriteLine(args.Data); },
+                 removed: (sender, args) => { System.Console.WriteLine(args.Path); });
         }
-
     }
 }

@@ -26,8 +26,13 @@ namespace FireSharp.Extensions
 
         public static T ReadAs<T>(this HttpResponseMessage response)
         {
-            var task = response.Content.ReadAsStringAsync();
-            return _serializer.Deserialize<T>(task.Result);
+            var json = response.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            return _serializer.Deserialize<T>(json);
+        }
+
+        public static T ReadAs<T>(this string content)
+        {
+            return _serializer.Deserialize<T>(content);
         }
     }
 }

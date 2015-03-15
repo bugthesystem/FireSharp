@@ -9,22 +9,16 @@ using Newtonsoft.Json;
 
 namespace FireSharp.Response
 {
-    public class EventStreamResponse : FirebaseResponse
+    public class EventStreamResponse
     {
         private readonly TemporaryCache _cache;
         private readonly CancellationTokenSource _cancel;
         private readonly Task _pollingTask;
 
-        public EventStreamResponse(HttpResponseMessage httpResponse)
-            : base(httpResponse)
-        {
-        }
-
         internal EventStreamResponse(HttpResponseMessage httpResponse,
             ValueAddedEventHandler added = null,
             ValueChangedEventHandler changed = null,
             ValueRemovedEventHandler removed = null)
-            : this(httpResponse)
         {
             _cancel = new CancellationTokenSource();
 
@@ -51,38 +45,42 @@ namespace FireSharp.Response
             await Task.Factory.StartNew(async () =>
             {
                 using (httpResponse)
-                using (var content = await httpResponse.Content.ReadAsStreamAsync())
-                using (var sr = new StreamReader(content))
                 {
-                    string eventName = null;
-
-                    while (true)
+                    using (var content = await httpResponse.Content.ReadAsStreamAsync().ConfigureAwait(false))
                     {
-                        _cancel.Token.ThrowIfCancellationRequested();
-                        var read = await sr.ReadLineAsync();
-                        Debug.WriteLine(read);
-                        if (read.StartsWith("event: "))
+                        using (var sr = new StreamReader(content))
                         {
-                            eventName = read.Substring(7);
-                            continue;
-                        }
+                            string eventName = null;
 
-                        if (read.StartsWith("data: "))
-                        {
-                            if (string.IsNullOrEmpty(eventName))
+                            while (true)
                             {
-                                throw new InvalidOperationException("Payload data was received but an event did not preceed it.");
+                                _cancel.Token.ThrowIfCancellationRequested();
+                                var read = await sr.ReadLineAsync().ConfigureAwait(false);
+                                Debug.WriteLine(read);
+                                if (read.StartsWith("event: "))
+                                {
+                                    eventName = read.Substring(7);
+                                    continue;
+                                }
+
+                                if (read.StartsWith("data: "))
+                                {
+                                    if (string.IsNullOrEmpty(eventName))
+                                    {
+                                        throw new InvalidOperationException("Payload data was received but an event did not preceed it.");
+                                    }
+
+                                    Update(eventName, read.Substring(6));
+                                }
+
+                                // start over
+                                eventName = null;
                             }
-
-                            Update(eventName, read.Substring(6));
                         }
-
-                        // start over
-                        eventName = null;
                     }
                 }
 
-            }, token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+            }, TaskCreationOptions.LongRunning);
         }
 
 

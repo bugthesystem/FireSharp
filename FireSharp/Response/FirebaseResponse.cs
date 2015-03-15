@@ -1,24 +1,42 @@
-﻿using System.Net.Http;
+﻿using System.Net;
+using System.Net.Http;
 using FireSharp.Extensions;
 
 namespace FireSharp.Response
 {
     public class FirebaseResponse
     {
-        protected readonly HttpResponseMessage HttpResponse;
+        private readonly HttpStatusCode _statusCode;
 
-        public FirebaseResponse(HttpResponseMessage httpResponse)
+        protected readonly HttpResponseMessage HttpResponse;
+        private readonly string _body;
+
+        public FirebaseResponse(string body, HttpStatusCode statusCode, HttpResponseMessage httpResponse)
         {
+            _statusCode = statusCode;
+            _body = body;
             HttpResponse = httpResponse;
         }
+
+        public FirebaseResponse(string body, HttpStatusCode statusCode)
+        {
+            _statusCode = statusCode;
+            _body = body;
+        }
+
         public string Body
         {
-            get { return HttpResponse.Content.ReadAsStringAsync().Result; }
+            get { return _body; }
+        }
+
+        public HttpStatusCode StatusCode
+        {
+            get { return _statusCode; }
         }
 
         public virtual T ResultAs<T>()
         {
-            return HttpResponse.ReadAs<T>();
+            return Body.ReadAs<T>();
         }
     }
 }

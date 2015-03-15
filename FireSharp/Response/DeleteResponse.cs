@@ -5,8 +5,13 @@ namespace FireSharp.Response
 {
     public class DeleteResponse : FirebaseResponse
     {
-        public DeleteResponse(HttpResponseMessage httpResponse)
-            : base(httpResponse)
+        public DeleteResponse(string body, HttpStatusCode statusCode, HttpResponseMessage httpResponse)
+            : base(body, statusCode, httpResponse)
+        {
+        }
+
+        public DeleteResponse(string body, HttpStatusCode statusCode)
+            : base(body, statusCode)
         {
         }
 
@@ -14,8 +19,7 @@ namespace FireSharp.Response
         {
             get
             {
-                return HttpResponse.StatusCode == HttpStatusCode.OK ||
-                       HttpResponse.StatusCode == HttpStatusCode.NoContent;
+                return StatusCode == HttpStatusCode.OK || StatusCode == HttpStatusCode.NoContent;
             }
         }
     }

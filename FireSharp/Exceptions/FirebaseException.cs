@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 
 namespace FireSharp.Exceptions
 {
@@ -17,6 +18,12 @@ namespace FireSharp.Exceptions
         public FirebaseException(Exception innerException)
             : base(innerException.Message, innerException)
         {
+        }
+
+        public FirebaseException(HttpStatusCode statusCode, string responseBody)
+            : base(string.Format("Request responded with status code={0}, response={1}", statusCode, responseBody))
+        {
+
         }
     }
 }

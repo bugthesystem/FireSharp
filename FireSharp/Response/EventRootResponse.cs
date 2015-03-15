@@ -10,7 +10,7 @@ using FireSharp.Interfaces;
 
 namespace FireSharp.Response
 {
-    public class EventRootResponse<T> : FirebaseResponse, IDisposable
+    public class EventRootResponse<T>
     {
         private readonly ValueRootAddedEventHandler<T> _added;
         private readonly IRequestManager _requestManager;
@@ -19,11 +19,10 @@ namespace FireSharp.Response
         private readonly Task _pollingTask;
 
         internal EventRootResponse(HttpResponseMessage httpResponse, ValueRootAddedEventHandler<T> added, IRequestManager requestManager, string path)
-            : base(httpResponse)
         {
-            this._added = added;
-            this._requestManager = requestManager;
-            this._path = path;
+            _added = added;
+            _requestManager = requestManager;
+            _path = path;
 
             _cancel = new CancellationTokenSource();
             _pollingTask = ReadLoop(httpResponse, _cancel.Token);
@@ -34,35 +33,40 @@ namespace FireSharp.Response
             await Task.Factory.StartNew(async () =>
             {
                 using (httpResponse)
-                using (var content = await httpResponse.Content.ReadAsStreamAsync())
-                using (var sr = new StreamReader(content))
                 {
-                    string eventName = null;
-
-                    while (true)
+                    using (var content = await httpResponse.Content.ReadAsStreamAsync().ConfigureAwait(false))
                     {
-                        _cancel.Token.ThrowIfCancellationRequested();
-                        var read = await sr.ReadLineAsync();
-                        Debug.WriteLine(read);
-                        if (read.StartsWith("event: "))
+                        using (var sr = new StreamReader(content))
                         {
-                            eventName = read.Substring(7);
-                            continue;
-                        }
+                            string eventName = null;
 
-                        if (read.StartsWith("data: "))
-                        {
-                            if (string.IsNullOrEmpty(eventName))
+                            while (true)
                             {
-                                throw new InvalidOperationException("Payload data was received but an event did not preceed it.");
-                            }
-                            // Every change on child, will get entyre object again.
-                            var request = _requestManager.Get(_path);
-                            _added(this, request.ReadAs<T>());
-                        }
+                                _cancel.Token.ThrowIfCancellationRequested();
+                                var read = await sr.ReadLineAsync().ConfigureAwait(false);
+                                Debug.WriteLine(read);
+                                if (read.StartsWith("event: "))
+                                {
+                                    eventName = read.Substring(7);
+                                    continue;
+                                }
 
-                        // start over
-                        eventName = null;
+                                if (read.StartsWith("data: "))
+                                {
+                                    if (string.IsNullOrEmpty(eventName))
+                                    {
+                                        throw new InvalidOperationException("Payload data was received but an event did not preceed it.");
+                                    }
+                                    // Every change on child, will get entire object again.
+                                    var request = await _requestManager.GetAsync(_path).ConfigureAwait(false);
+                                    var jsonStr = await request.Content.ReadAsStringAsync().ConfigureAwait(false);
+                                    _added(this, jsonStr.ReadAs<T>());
+                                }
+
+                                // start over
+                                eventName = null;
+                            }
+                        }
                     }
                 }
 

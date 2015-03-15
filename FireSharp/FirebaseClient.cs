@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -14,6 +13,15 @@ namespace FireSharp
     public class FirebaseClient : IFirebaseClient, IDisposable
     {
         private readonly IRequestManager _requestManager;
+
+        private readonly Action<HttpStatusCode, string> _defaultErrorHandler = (statusCode, body) =>
+        {
+            if (statusCode < HttpStatusCode.OK || statusCode >= HttpStatusCode.BadRequest)
+            {
+                throw new FirebaseException(statusCode, body);
+            }
+        };
+
 
         public FirebaseClient(IFirebaseConfig config)
             : this(new RequestManager(config))
@@ -35,8 +43,9 @@ namespace FireSharp
             try
             {
                 HttpResponseMessage response = _requestManager.Get(path);
-                VerifyResponse(response);
-                return new FirebaseResponse(response);
+                string content = response.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                HandleIfErrorResponse(response.StatusCode, content);
+                return new FirebaseResponse(content, response.StatusCode);
             }
             catch (HttpRequestException ex)
             {
@@ -49,8 +58,9 @@ namespace FireSharp
             try
             {
                 HttpResponseMessage response = _requestManager.Put(path, data);
-                VerifyResponse(response);
-                return new SetResponse(response);
+                string content = response.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                HandleIfErrorResponse(response.StatusCode, content);
+                return new SetResponse(content, response.StatusCode);
             }
             catch (HttpRequestException ex)
             {
@@ -63,8 +73,9 @@ namespace FireSharp
             try
             {
                 HttpResponseMessage response = _requestManager.Post(path, data);
-                VerifyResponse(response);
-                return new PushResponse(response);
+                string content = response.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                HandleIfErrorResponse(response.StatusCode, content);
+                return new PushResponse(content, response.StatusCode);
             }
             catch (HttpRequestException ex)
             {
@@ -77,8 +88,9 @@ namespace FireSharp
             try
             {
                 HttpResponseMessage response = _requestManager.Delete(path);
-                VerifyResponse(response);
-                return new DeleteResponse(response);
+                string content = response.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                HandleIfErrorResponse(response.StatusCode, content);
+                return new DeleteResponse(content, response.StatusCode);
             }
             catch (HttpRequestException ex)
             {
@@ -91,8 +103,9 @@ namespace FireSharp
             try
             {
                 HttpResponseMessage response = _requestManager.Patch(path, data);
-                VerifyResponse(response);
-                return new FirebaseResponse(response);
+                string content = response.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                HandleIfErrorResponse(response.StatusCode, content);
+                return new FirebaseResponse(content, response.StatusCode);
             }
             catch (HttpRequestException ex)
             {
@@ -104,9 +117,10 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = await _requestManager.GetAsync(path);
-                VerifyResponse(response);
-                return new FirebaseResponse(response);
+                HttpResponseMessage response = await _requestManager.GetAsync(path).ConfigureAwait(false);
+                string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                HandleIfErrorResponse(response.StatusCode, content);
+                return new FirebaseResponse(content, response.StatusCode);
             }
             catch (HttpRequestException ex)
             {
@@ -118,9 +132,10 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = await _requestManager.PutAsync(path, data);
-                VerifyResponse(response);
-                return new SetResponse(response);
+                HttpResponseMessage response = await _requestManager.PutAsync(path, data).ConfigureAwait(false);
+                string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                HandleIfErrorResponse(response.StatusCode, content);
+                return new SetResponse(content, response.StatusCode);
             }
             catch (HttpRequestException ex)
             {
@@ -132,9 +147,10 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = await _requestManager.PostAsync(path, data);
-                VerifyResponse(response);
-                return new PushResponse(response);
+                HttpResponseMessage response = await _requestManager.PostAsync(path, data).ConfigureAwait(false);
+                string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                HandleIfErrorResponse(response.StatusCode, content);
+                return new PushResponse(content, response.StatusCode);
             }
             catch (HttpRequestException ex)
             {
@@ -146,9 +162,10 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = await _requestManager.DeleteAsync(path);
-                VerifyResponse(response);
-                return new DeleteResponse(response);
+                HttpResponseMessage response = await _requestManager.DeleteAsync(path).ConfigureAwait(false);
+                string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                HandleIfErrorResponse(response.StatusCode, content);
+                return new DeleteResponse(content, response.StatusCode);
             }
             catch (HttpRequestException ex)
             {
@@ -160,9 +177,10 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = await _requestManager.PatchAsync(path, data);
-                VerifyResponse(response);
-                return new FirebaseResponse(response);
+                HttpResponseMessage response = await _requestManager.PatchAsync(path, data).ConfigureAwait(false);
+                string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                HandleIfErrorResponse(response.StatusCode, content);
+                return new FirebaseResponse(content, response.StatusCode);
             }
             catch (HttpRequestException ex)
             {
@@ -171,23 +189,11 @@ namespace FireSharp
         }
 
         [Obsolete("This method is obsolete use OnAsync instead.")]
-        public async Task<FirebaseResponse> ListenAsync(string path, ValueAddedEventHandler added = null,
+        public async Task<EventStreamResponse> ListenAsync(string path, ValueAddedEventHandler added = null,
             ValueChangedEventHandler changed = null,
             ValueRemovedEventHandler removed = null)
         {
             return new EventStreamResponse(await _requestManager.ListenAsync(path), added, changed, removed);
-        }
-
-        private void VerifyResponse(HttpResponseMessage response)
-        {
-            if (response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.NoContent)
-                return;
-
-            string body = response.Content.ReadAsStringAsync().Result ?? "";
-            if (response.StatusCode == HttpStatusCode.BadRequest)
-                throw new FirebaseException("Bad Request: " + body);
-
-            throw new FirebaseException(String.Format("Request failed, status code: {0} {1}", response.StatusCode, body));
         }
 
         public async Task<EventRootResponse<T>> OnChangeGetAsync<T>(string path, ValueRootAddedEventHandler<T> added = null)
@@ -195,10 +201,22 @@ namespace FireSharp
             return new EventRootResponse<T>(await _requestManager.ListenAsync(path), added, _requestManager, path);
         }
 
-        public async Task<FirebaseResponse> OnAsync(string path, ValueAddedEventHandler added = null, ValueChangedEventHandler changed = null,
+        public async Task<EventStreamResponse> OnAsync(string path, ValueAddedEventHandler added = null, ValueChangedEventHandler changed = null,
             ValueRemovedEventHandler removed = null)
         {
-            return new EventStreamResponse(await _requestManager.ListenAsync(path), added, changed, removed);
+            return new EventStreamResponse(await _requestManager.ListenAsync(path).ConfigureAwait(false), added, changed, removed);
+        }
+
+        private void HandleIfErrorResponse(HttpStatusCode statusCode, string content, Action<HttpStatusCode, string> errorHandler = null)
+        {
+            if (errorHandler != null)
+            {
+                errorHandler(statusCode, content);
+            }
+            else
+            {
+                _defaultErrorHandler(statusCode, content);
+            }
         }
     }
 }
