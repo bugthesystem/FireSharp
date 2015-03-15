@@ -2,7 +2,7 @@
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
   <Identity Name="c4a370fa-5a47-4de0-a3c9-eb887cb45700" Publisher="CN=ziyasal" Version="1.0.0.0" />
   <Properties>
-    <DisplayName>FireSharp.Test.Windows8App</DisplayName>
+    <DisplayName>FireSharp.Sample.Windows8App</DisplayName>
     <PublisherDisplayName>ziyasal</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -14,8 +14,8 @@
     <Resource Language="x-generate" />
   </Resources>
   <Applications>
-    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="FireSharp.Test.Windows8App.App">
-      <m2:VisualElements DisplayName="FireSharp.Test.Windows8App" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png" Description="FireSharp.Test.Windows8App" ForegroundText="light" BackgroundColor="#464646">
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="FireSharp.Sample.Windows8App">
+      <m2:VisualElements DisplayName="FireSharp.Sample.Windows8App" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png" Description="FireSharp.Sample.Windows8App" ForegroundText="light" BackgroundColor="#464646">
         <m2:SplashScreen Image="Assets\SplashScreen.png" />
       </m2:VisualElements>
     </Application>

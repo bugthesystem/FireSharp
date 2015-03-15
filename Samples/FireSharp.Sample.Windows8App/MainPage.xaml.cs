@@ -5,7 +5,7 @@ using Windows.UI.Xaml.Controls;
 using FireSharp.Config;
 using FireSharp.Response;
 
-namespace FireSharp.Test.Windows8App
+namespace FireSharp.Sample.Windows8App
 {
     public class ChatMessage
     {
