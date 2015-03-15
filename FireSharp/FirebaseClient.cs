@@ -117,7 +117,7 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = await _requestManager.GetAsync(path).ConfigureAwait(false);
+                HttpResponseMessage response = await _requestManager.GetAsync(path);
                 string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
@@ -132,7 +132,7 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = await _requestManager.PutAsync(path, data).ConfigureAwait(false);
+                HttpResponseMessage response = await _requestManager.PutAsync(path, data);
                 string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new SetResponse(content, response.StatusCode);
@@ -147,7 +147,7 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = await _requestManager.PostAsync(path, data).ConfigureAwait(false);
+                HttpResponseMessage response = await _requestManager.PostAsync(path, data);
                 string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new PushResponse(content, response.StatusCode);
@@ -162,7 +162,7 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = await _requestManager.DeleteAsync(path).ConfigureAwait(false);
+                HttpResponseMessage response = await _requestManager.DeleteAsync(path);
                 string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new DeleteResponse(content, response.StatusCode);
@@ -177,7 +177,7 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = await _requestManager.PatchAsync(path, data).ConfigureAwait(false);
+                HttpResponseMessage response = await _requestManager.PatchAsync(path, data);
                 string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);

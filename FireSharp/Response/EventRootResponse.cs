@@ -58,7 +58,7 @@ namespace FireSharp.Response
                                         throw new InvalidOperationException("Payload data was received but an event did not preceed it.");
                                     }
                                     // Every change on child, will get entire object again.
-                                    var request = await _requestManager.GetAsync(_path).ConfigureAwait(false);
+                                    var request = await _requestManager.GetAsync(_path);
                                     var jsonStr = await request.Content.ReadAsStringAsync().ConfigureAwait(false);
                                     _added(this, jsonStr.ReadAs<T>());
                                 }
