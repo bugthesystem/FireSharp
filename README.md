@@ -11,6 +11,7 @@ update your clients **in realtime from the backend**.
 
 
 ## Release Notes
+**2.0**
 - Use Microsoft HTTP Client Libraries instead of RestSharp
 - FireSharp is now Portable Library
 - Supports Streaming from the REST API
