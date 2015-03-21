@@ -46,7 +46,7 @@ namespace FireSharp.Response
             {
                 using (httpResponse)
                 {
-                    using (var content = await httpResponse.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                    using (var content = await httpResponse.Content.ReadAsStreamAsync())
                     {
                         using (var sr = new StreamReader(content))
                         {
@@ -55,7 +55,7 @@ namespace FireSharp.Response
                             while (true)
                             {
                                 _cancel.Token.ThrowIfCancellationRequested();
-                                var read = await sr.ReadLineAsync().ConfigureAwait(false);
+                                var read = await sr.ReadLineAsync();
                                 Debug.WriteLine(read);
                                 if (read.StartsWith("event: "))
                                 {

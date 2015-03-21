@@ -10,13 +10,11 @@ namespace FireSharp
 {
     internal class RequestManager : IRequestManager
     {
-        private readonly HttpClient _client;
         private readonly IFirebaseConfig _config;
 
         internal RequestManager(IFirebaseConfig config)
         {
             _config = config;
-            _client = GetClient();
         }
 
         private HttpClient GetClient(HttpClientHandler handler = null)
@@ -35,9 +33,6 @@ namespace FireSharp
 
         public void Dispose()
         {
-            using (_client)
-            {
-            }
         }
 
         public async Task<HttpResponseMessage> GetAsync(string path)
@@ -134,7 +129,7 @@ namespace FireSharp
             {
                 var request = PrepareRequest(method, path, payload);
 
-                return _client.SendAsync(request, httpCompletionOption).Result;
+                return GetClient().SendAsync(request, httpCompletionOption).Result;
             }
             catch (Exception ex)
             {
@@ -150,6 +145,7 @@ namespace FireSharp
 
             request = new HttpRequestMessage(HttpMethod.Get, uri);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("text/event-stream"));
+
             return client;
         }
 
