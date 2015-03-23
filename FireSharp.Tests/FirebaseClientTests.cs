@@ -114,7 +114,6 @@ namespace FireSharp.Tests
 
             var response = await _firebaseClient.DeleteAsync("todos");
             Assert.NotNull(response);
-            Assert.AreEqual(response.Success, true);
         }
 
         [Test]

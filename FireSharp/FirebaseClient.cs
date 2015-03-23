@@ -83,14 +83,14 @@ namespace FireSharp
             }
         }
 
-        public DeleteResponse Delete(string path)
+        public FirebaseResponse Delete(string path)
         {
             try
             {
                 HttpResponseMessage response = _requestManager.Delete(path);
                 string content = response.Content.ReadAsStringAsync().Result;
                 HandleIfErrorResponse(response.StatusCode, content);
-                return new DeleteResponse(content, response.StatusCode);
+                return new FirebaseResponse(content, response.StatusCode);
             }
             catch (HttpRequestException ex)
             {
@@ -158,14 +158,14 @@ namespace FireSharp
             }
         }
 
-        public async Task<DeleteResponse> DeleteAsync(string path)
+        public async Task<FirebaseResponse> DeleteAsync(string path)
         {
             try
             {
                 HttpResponseMessage response = await _requestManager.DeleteAsync(path);
                 string content = await response.Content.ReadAsStringAsync();
                 HandleIfErrorResponse(response.StatusCode, content);
-                return new DeleteResponse(content, response.StatusCode);
+                return new FirebaseResponse(content, response.StatusCode);
             }
             catch (HttpRequestException ex)
             {
