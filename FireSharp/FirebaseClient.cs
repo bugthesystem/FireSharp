@@ -42,7 +42,7 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = _requestManager.Get(path);
+                HttpResponseMessage response = _requestManager.GetAsync(path).Result;
                 string content = response.Content.ReadAsStringAsync().Result;
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
@@ -57,7 +57,7 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = _requestManager.Put(path, data);
+                HttpResponseMessage response = _requestManager.PutAsync(path, data).Result;
                 string content = response.Content.ReadAsStringAsync().Result;
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new SetResponse(content, response.StatusCode);
@@ -72,7 +72,7 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = _requestManager.Post(path, data);
+                HttpResponseMessage response = _requestManager.PostAsync(path, data).Result;
                 string content = response.Content.ReadAsStringAsync().Result;
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new PushResponse(content, response.StatusCode);
@@ -87,7 +87,7 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = _requestManager.Delete(path);
+                HttpResponseMessage response = _requestManager.DeleteAsync(path).Result;
                 string content = response.Content.ReadAsStringAsync().Result;
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
@@ -102,7 +102,7 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = _requestManager.Patch(path, data);
+                HttpResponseMessage response = _requestManager.PatchAsync(path, data).Result;
                 string content = response.Content.ReadAsStringAsync().Result;
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
@@ -117,8 +117,8 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = await _requestManager.GetAsync(path);
-                string content = await response.Content.ReadAsStringAsync();
+                HttpResponseMessage response = await _requestManager.GetAsync(path).ConfigureAwait(false);
+                string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
             }
@@ -132,8 +132,8 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = await _requestManager.PutAsync(path, data);
-                string content = await response.Content.ReadAsStringAsync();
+                HttpResponseMessage response = await _requestManager.PutAsync(path, data).ConfigureAwait(false);
+                string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new SetResponse(content, response.StatusCode);
             }
@@ -147,8 +147,8 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = await _requestManager.PostAsync(path, data);
-                string content = await response.Content.ReadAsStringAsync();
+                HttpResponseMessage response = await _requestManager.PostAsync(path, data).ConfigureAwait(false);
+                string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new PushResponse(content, response.StatusCode);
             }
@@ -162,8 +162,8 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = await _requestManager.DeleteAsync(path);
-                string content = await response.Content.ReadAsStringAsync();
+                HttpResponseMessage response = await _requestManager.DeleteAsync(path).ConfigureAwait(false);
+                string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
             }
@@ -177,8 +177,8 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = await _requestManager.PatchAsync(path, data);
-                string content = await response.Content.ReadAsStringAsync();
+                HttpResponseMessage response = await _requestManager.PatchAsync(path, data).ConfigureAwait(false);
+                string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
             }
@@ -193,18 +193,18 @@ namespace FireSharp
             ValueChangedEventHandler changed = null,
             ValueRemovedEventHandler removed = null)
         {
-            return new EventStreamResponse(await _requestManager.ListenAsync(path), added, changed, removed);
+            return new EventStreamResponse(await _requestManager.ListenAsync(path).ConfigureAwait(false), added, changed, removed);
         }
 
         public async Task<EventRootResponse<T>> OnChangeGetAsync<T>(string path, ValueRootAddedEventHandler<T> added = null)
         {
-            return new EventRootResponse<T>(await _requestManager.ListenAsync(path), added, _requestManager, path);
+            return new EventRootResponse<T>(await _requestManager.ListenAsync(path).ConfigureAwait(false), added, _requestManager, path);
         }
 
         public async Task<EventStreamResponse> OnAsync(string path, ValueAddedEventHandler added = null, ValueChangedEventHandler changed = null,
             ValueRemovedEventHandler removed = null)
         {
-            return new EventStreamResponse(await _requestManager.ListenAsync(path), added, changed, removed);
+            return new EventStreamResponse(await _requestManager.ListenAsync(path).ConfigureAwait(false), added, changed, removed);
         }
 
         private void HandleIfErrorResponse(HttpStatusCode statusCode, string content, Action<HttpStatusCode, string> errorHandler = null)
