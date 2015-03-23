@@ -21,8 +21,8 @@ namespace FireSharp.Tests
         [TestFixtureSetUp]
         public async void TestFixtureSetUp()
         {
-            Task<DeleteResponse> task1 = _client.DeleteAsync("todos");
-            Task<DeleteResponse> task2 = _client.DeleteAsync("fakepath");
+            Task<FirebaseResponse> task1 = _client.DeleteAsync("todos");
+            Task<FirebaseResponse> task2 = _client.DeleteAsync("fakepath");
             await Task.WhenAll(task1, task2);
         }
 
@@ -48,7 +48,6 @@ namespace FireSharp.Tests
 
             var response = await _client.DeleteAsync("todos/pushAsync");
             Assert.NotNull(response);
-            Assert.IsTrue(response.Success);
         }
 
         [Test, Category("INTEGRATION"), Category("ASYNC")]
@@ -172,7 +171,6 @@ namespace FireSharp.Tests
 
             var response = _client.Delete("todos/push");
             Assert.NotNull(response);
-            Assert.IsTrue(response.Success);
         }
 
         [Test, Category("INTEGRATION"), Category("SYNC")]
