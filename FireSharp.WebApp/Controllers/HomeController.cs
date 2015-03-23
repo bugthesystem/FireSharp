@@ -29,5 +29,26 @@ namespace FireSharp.WebApp.Controllers
 
             return RedirectToAction("Index");
         }
+
+        public ActionResult CallFirebaseSync()
+        {
+            _client.Push("chat/", new 
+            {
+                name = "someone",
+                text = "Hello from backend :" + DateTime.Now.ToString("f")
+            });
+
+            return Content("hello");
+        }
+
+        public ActionResult CallFirebaseSync2()
+        {
+            _client.PushAsync("chat/", new {
+                name = "someone",
+                text = "Hello from backend :" + DateTime.Now.ToString("f")
+            }).Wait();
+
+            return Content("hello");
+        }
     }
 }
