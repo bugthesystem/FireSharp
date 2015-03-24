@@ -84,8 +84,8 @@ Todo todo = response.ResultAs<Todo>(); //The response will contain the data writ
 ####Delete
 ```csharp
 
-DeleteResponse response =await  _client.DeleteAsync("todos"); //Deletes todos collection
-response.Success; //Delete success flag
+FirebaseResponse response =await  _client.DeleteAsync("todos"); //Deletes todos collection
+Console.WriteLine(response.StatusCode);
 ```
 ####Listen **Streaming from the REST API**
 ```csharp
