@@ -42,7 +42,7 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = _requestManager.GetAsync(path).Result;
+                HttpResponseMessage response = _requestManager.RequestAsync(HttpMethod.Get, path).Result;
                 string content = response.Content.ReadAsStringAsync().Result;
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
@@ -57,7 +57,7 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = _requestManager.PutAsync(path, data).Result;
+                HttpResponseMessage response = _requestManager.RequestAsync(HttpMethod.Put, path, data).Result;
                 string content = response.Content.ReadAsStringAsync().Result;
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new SetResponse(content, response.StatusCode);
@@ -72,7 +72,7 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = _requestManager.PostAsync(path, data).Result;
+                HttpResponseMessage response = _requestManager.RequestAsync(HttpMethod.Post, path, data).Result;
                 string content = response.Content.ReadAsStringAsync().Result;
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new PushResponse(content, response.StatusCode);
@@ -87,7 +87,7 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = _requestManager.DeleteAsync(path).Result;
+                HttpResponseMessage response = _requestManager.RequestAsync(HttpMethod.Delete, path).Result;
                 string content = response.Content.ReadAsStringAsync().Result;
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
@@ -102,7 +102,7 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = _requestManager.PatchAsync(path, data).Result;
+                HttpResponseMessage response = _requestManager.RequestAsync(RequestManager.Patch, path, data).Result;
                 string content = response.Content.ReadAsStringAsync().Result;
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
@@ -117,7 +117,7 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = await _requestManager.GetAsync(path).ConfigureAwait(false);
+                HttpResponseMessage response = await _requestManager.RequestAsync(HttpMethod.Get, path).ConfigureAwait(false);
                 string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
@@ -132,7 +132,7 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = await _requestManager.PutAsync(path, data).ConfigureAwait(false);
+                HttpResponseMessage response = await _requestManager.RequestAsync(HttpMethod.Put, path, data).ConfigureAwait(false);
                 string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new SetResponse(content, response.StatusCode);
@@ -147,7 +147,7 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = await _requestManager.PostAsync(path, data).ConfigureAwait(false);
+                HttpResponseMessage response = await _requestManager.RequestAsync(HttpMethod.Post, path, data).ConfigureAwait(false);
                 string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new PushResponse(content, response.StatusCode);
@@ -162,7 +162,7 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = await _requestManager.DeleteAsync(path).ConfigureAwait(false);
+                HttpResponseMessage response = await _requestManager.RequestAsync(HttpMethod.Delete, path).ConfigureAwait(false);
                 string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
@@ -177,7 +177,7 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = await _requestManager.PatchAsync(path, data).ConfigureAwait(false);
+                HttpResponseMessage response = await _requestManager.RequestAsync(RequestManager.Patch, path, data).ConfigureAwait(false);
                 string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);

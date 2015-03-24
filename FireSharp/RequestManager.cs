@@ -10,6 +10,8 @@ namespace FireSharp
 {
     internal class RequestManager : IRequestManager
     {
+        internal static readonly HttpMethod Patch = new HttpMethod("PATCH");
+
         private readonly IFirebaseConfig _config;
 
         internal RequestManager(IFirebaseConfig config)
@@ -35,31 +37,6 @@ namespace FireSharp
         {
         }
 
-        public Task<HttpResponseMessage> GetAsync(string path)
-        {
-            return ProcessRequestAsync(HttpMethod.Get, path, null);
-        }
-
-        public Task<HttpResponseMessage> PutAsync<T>(string path, T data)
-        {
-            return ProcessRequestAsync(HttpMethod.Put, path, data);
-        }
-
-        public Task<HttpResponseMessage> PostAsync<T>(string path, T data)
-        {
-            return ProcessRequestAsync(HttpMethod.Post, path, data);
-        }
-
-        public Task<HttpResponseMessage> DeleteAsync(string path)
-        {
-            return ProcessRequestAsync(HttpMethod.Delete, path, null);
-        }
-
-        public Task<HttpResponseMessage> PatchAsync<T>(string path, T data)
-        {
-            return ProcessRequestAsync(new HttpMethod("PATCH"), path, data);
-        }
-
         public async Task<HttpResponseMessage> ListenAsync(string path)
         {
             HttpRequestMessage request;
@@ -71,13 +48,13 @@ namespace FireSharp
             return response;
         }
 
-        private Task<HttpResponseMessage> ProcessRequestAsync(HttpMethod method, string path, object payload, HttpCompletionOption httpCompletionOption = HttpCompletionOption.ResponseContentRead)
+        public Task<HttpResponseMessage> RequestAsync(HttpMethod method, string path, object payload)
         {
             try
             {
                 var request = PrepareRequest(method, path, payload);
 
-                return GetClient().SendAsync(request, httpCompletionOption);
+                return GetClient().SendAsync(request, HttpCompletionOption.ResponseContentRead);
             }
             catch (Exception ex)
             {
