@@ -27,7 +27,7 @@ using System.Runtime.CompilerServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("2.0.2")]
-[assembly: AssemblyFileVersion("2.0.2")]
+[assembly: AssemblyVersion("2.0.3")]
+[assembly: AssemblyFileVersion("2.0.3")]
 [assembly: InternalsVisibleTo("FireSharp.Tests")]
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]

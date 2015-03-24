@@ -33,7 +33,7 @@ namespace FireSharp.Tests
                 AuthSecret = FirebaseSecret,
                 BasePath = BasePath
             };
-            _client = new FirebaseClient(config); //Uses RestSharp JsonSerializer as default
+            _client = new FirebaseClient(config); //Uses Newtonsoft.Json Json Serializer
             _client.DeleteAsync("todos").Wait();
         }
 
