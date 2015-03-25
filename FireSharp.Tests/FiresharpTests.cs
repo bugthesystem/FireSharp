@@ -21,20 +21,22 @@ namespace FireSharp.Tests
         [TestFixtureSetUp]
         public async void TestFixtureSetUp()
         {
-            Task<FirebaseResponse> task1 = _client.DeleteAsync("todos");
-            Task<FirebaseResponse> task2 = _client.DeleteAsync("fakepath");
-            await Task.WhenAll(task1, task2);
-        }
-
-        protected override void FinalizeSetUp()
-        {
             IFirebaseConfig config = new FirebaseConfig
             {
                 AuthSecret = FirebaseSecret,
                 BasePath = BasePath
             };
             _client = new FirebaseClient(config); //Uses Newtonsoft.Json Json Serializer
-            _client.DeleteAsync("todos").Wait();
+
+            Task<FirebaseResponse> task1 = _client.DeleteAsync("todos");
+            Task<FirebaseResponse> task2 = _client.DeleteAsync("fakepath");
+
+            await Task.WhenAll(task1, task2);
+        }
+
+        protected override void FinalizeSetUp()
+        {
+
         }
 
         [Test, Category("INTEGRATION"), Category("ASYNC")]
