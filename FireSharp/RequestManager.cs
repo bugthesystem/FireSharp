@@ -40,7 +40,18 @@ namespace FireSharp
         public async Task<HttpResponseMessage> ListenAsync(string path)
         {
             HttpRequestMessage request;
-            var client = PrepareEventStreamRequest(path, out request);
+            var client = PrepareEventStreamRequest(path, string.Empty, out request);
+
+            var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+            response.EnsureSuccessStatusCode();
+
+            return response;
+        }
+
+        public async Task<HttpResponseMessage> ListenAsync(string path, string query)
+        {
+            HttpRequestMessage request;
+            var client = PrepareEventStreamRequest(path, query, out request);
 
             var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
             response.EnsureSuccessStatusCode();
@@ -52,7 +63,7 @@ namespace FireSharp
         {
             try
             {
-                var request = PrepareRequest(method, path, payload);
+                var request = PrepareRequest(method, path, string.Empty, payload);
 
                 return GetClient().SendAsync(request, HttpCompletionOption.ResponseContentRead);
             }
@@ -63,10 +74,25 @@ namespace FireSharp
             }
         }
 
-        private HttpClient PrepareEventStreamRequest(string path, out HttpRequestMessage request)
+        public Task<HttpResponseMessage> RequestAsync(HttpMethod method, string path, string query, object payload)
+        {
+            try
+            {
+                var request = PrepareRequest(method, path, query, payload);
+
+                return GetClient().SendAsync(request, HttpCompletionOption.ResponseContentRead);
+            }
+            catch (Exception ex)
+            {
+                throw new FirebaseException(
+                    string.Format("An error occured while execute request. Path : {0} , Method : {1}", path, method), ex);
+            }
+        }
+
+        private HttpClient PrepareEventStreamRequest(string path, string query, out HttpRequestMessage request)
         {
             var client = GetClient(new HttpClientHandler { AllowAutoRedirect = true });
-            var uri = PrepareUri(path);
+            var uri = PrepareUri(path,query);
 
             request = new HttpRequestMessage(HttpMethod.Get, uri);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("text/event-stream"));
@@ -74,9 +100,9 @@ namespace FireSharp
             return client;
         }
 
-        private HttpRequestMessage PrepareRequest(HttpMethod method, string path, object payload)
+        private HttpRequestMessage PrepareRequest(HttpMethod method, string path, string query, object payload)
         {
-            var uri = PrepareUri(path);
+            var uri = PrepareUri(path,query);
 
             var request = new HttpRequestMessage(method, uri);
 
@@ -89,13 +115,17 @@ namespace FireSharp
             return request;
         }
 
-        private Uri PrepareUri(string path)
+        private Uri PrepareUri(string path, string query)
         {
             var authToken = !string.IsNullOrWhiteSpace(_config.AuthSecret)
                 ? string.Format("{0}.json?auth={1}", path, _config.AuthSecret)
                 : string.Format("{0}.json", path);
-
-            var url = string.Format("{0}{1}", _config.BasePath, authToken);
+            string addl = string.Empty;
+            if (!string.IsNullOrEmpty(query))
+            {
+                addl = "&" + query;
+            }
+            var url = string.Format("{0}{1}{2}", _config.BasePath, authToken, addl);
 
             return new Uri(url);
         }

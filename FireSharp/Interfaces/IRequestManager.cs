@@ -8,5 +8,7 @@ namespace FireSharp.Interfaces
     {
         Task<HttpResponseMessage> ListenAsync(string path);
         Task<HttpResponseMessage> RequestAsync(HttpMethod method, string path, object payload = null);
+        Task<HttpResponseMessage> ListenAsync(string path, string query);
+        Task<HttpResponseMessage> RequestAsync(HttpMethod method, string path, string query, object payload = null);
     }
 }

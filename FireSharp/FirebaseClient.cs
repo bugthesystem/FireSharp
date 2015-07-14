@@ -53,6 +53,21 @@ namespace FireSharp
             }
         }
 
+        public FirebaseResponse Get(string path, string query)
+        {
+            try
+            {
+                HttpResponseMessage response = _requestManager.RequestAsync(HttpMethod.Get, path, query).Result;
+                string content = response.Content.ReadAsStringAsync().Result;
+                HandleIfErrorResponse(response.StatusCode, content);
+                return new FirebaseResponse(content, response.StatusCode);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new FirebaseException(ex);
+            }
+        }
+
         public SetResponse Set<T>(string path, T data)
         {
             try
@@ -104,6 +119,21 @@ namespace FireSharp
             {
                 HttpResponseMessage response = _requestManager.RequestAsync(RequestManager.Patch, path, data).Result;
                 string content = response.Content.ReadAsStringAsync().Result;
+                HandleIfErrorResponse(response.StatusCode, content);
+                return new FirebaseResponse(content, response.StatusCode);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new FirebaseException(ex);
+            }
+        }
+
+        public async Task<FirebaseResponse> GetAsync(string path, string query)
+        {
+            try
+            {
+                HttpResponseMessage response = await _requestManager.RequestAsync(HttpMethod.Get, path, query).ConfigureAwait(false);
+                string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
             }
