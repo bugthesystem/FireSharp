@@ -23,7 +23,8 @@ namespace FireSharp
         {
             var client = handler == null ? new HttpClient() : new HttpClient(handler, true);
 
-            client.BaseAddress = new Uri(_config.BasePath);
+            var basePath = _config.BasePath.EndsWith("/") ? _config.BasePath : _config.BasePath + "/";
+            client.BaseAddress = new Uri(basePath);
 
             if (_config.RequestTimeout.HasValue)
             {
@@ -95,7 +96,8 @@ namespace FireSharp
                 ? string.Format("{0}.json?auth={1}", path, _config.AuthSecret)
                 : string.Format("{0}.json", path);
 
-            var url = string.Format("{0}{1}", _config.BasePath, authToken);
+            var basePath = _config.BasePath.EndsWith("/") ? _config.BasePath : _config.BasePath + "/";
+            var url = string.Format("{0}{1}", basePath, authToken);
 
             return new Uri(url);
         }
