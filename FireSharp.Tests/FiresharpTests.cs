@@ -15,6 +15,7 @@ namespace FireSharp.Tests
     public class FiresharpTests : TestBase
     {
         protected const string BasePath = "https://firesharp.firebaseio.com/";
+        protected const string BasePathWithoutSlash = "https://firesharp.firebaseio.com";
         protected const string FirebaseSecret = "fubr9j2Kany9KU3SHCIHBLm142anWCzvlBs1D977";
         private IFirebaseClient _client;
 
@@ -225,6 +226,7 @@ namespace FireSharp.Tests
             var response = _client.Get("todos/gettest");
             Assert.NotNull(response);
             Assert.IsTrue(response.Body.Contains("name"));
+            Assert.IsTrue(response.Body.Contains("Execute PUSH4GET"));
         }
 
         [Test, Category("INTEGRATION"), Category("SYNC")]
@@ -277,6 +279,32 @@ namespace FireSharp.Tests
 
             Assert.AreEqual(2, changes);
             observer.Result.Cancel();
+        }
+
+        [Test, Category("INTEGRATION"), Category("ASYNC")]
+        public async Task SecondConnectionWithoutSlash()
+        {
+            // This integration test will write from _config but read from a second Firebase connection to
+            // the same DB, but with a BasePath which does not contain the unnecessary trailing slash.
+            IFirebaseConfig config2 = new FirebaseConfig
+            {
+                AuthSecret = FirebaseSecret,
+                BasePath = BasePathWithoutSlash,
+            };
+            var client2 = new FirebaseClient(config2);
+
+            await _client.PushAsync("todos/get/pushAsync", new Todo
+            {
+                name = "SecondConnectionWithoutSlash",
+                priority = 3
+            });
+
+            Thread.Sleep(400);
+
+            var response = await client2.GetAsync("todos/get/");
+            Assert.NotNull(response);
+            Assert.IsTrue(response.Body.Contains("name"));
+            Assert.IsTrue(response.Body.Contains("SecondConnectionWithoutSlash"));
         }
     }
 }
