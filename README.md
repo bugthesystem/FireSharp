@@ -1,5 +1,7 @@
 #   **Fire#** for Firebase
 
+![](https://raw.githubusercontent.com/ziyasal/FireSharp/master/misc/logo.png)  
+
 Firebase REST API wrapper for the .NET & Xamarin.
 
 Changes are sent to all subscribed clients automatically, so you can
