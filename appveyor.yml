@@ -1,0 +1,10 @@
+configuration: Release
+branches:
+  only:
+    - master
+before_build:
+  - nuget restore FireSharp.sln
+
+build:
+  project: FireSharp.sln       
+  verbosity: minimal
