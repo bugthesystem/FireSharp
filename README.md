@@ -89,9 +89,12 @@ Console.WriteLine(response.StatusCode);
 ```
 ####Listen **Streaming from the REST API**
 ```csharp
-await _client.OnAsync("chat", (sender, args) => {
+EventStreamResponse response = await _client.OnAsync("chat", (sender, args) => {
        System.Console.WriteLine(args.Data);
 });
+
+//Call dispose to stop listening for events
+response.Dispose();
 ```
 
 More information about Firebase and the Firebase API is available at the
