@@ -1,5 +1,6 @@
 ﻿using System;
 using FireSharp.Config;
+using FireSharp.Response;
 
 namespace FireSharp.Test.Console
 {
@@ -48,10 +49,13 @@ namespace FireSharp.Test.Console
                 changed: (sender, args) => { System.Console.WriteLine(args.Data); },
                 removed: (sender, args) => { System.Console.WriteLine(args.Path); });
 
-            await _client.OnAsync("chat",
-                 added: (sender, args) => { System.Console.WriteLine(args.Data + " -> 2\n"); },
-                 changed: (sender, args) => { System.Console.WriteLine(args.Data); },
-                 removed: (sender, args) => { System.Console.WriteLine(args.Path); });
+            EventStreamResponse response = await _client.OnAsync("chat",
+                added: (sender, args) => { System.Console.WriteLine(args.Data + " -> 2\n"); },
+                changed: (sender, args) => { System.Console.WriteLine(args.Data); },
+                removed: (sender, args) => { System.Console.WriteLine(args.Path); });
+
+            //Call dispose to stop listening for events
+            //response.Dispose();
         }
     }
 }
