@@ -74,6 +74,21 @@ namespace FireSharp
             }
         }
 
+        public Task<HttpResponseMessage> RequestApiAsync(HttpMethod method, string path, string query, object payload)
+        {
+            try
+            {
+                var request = PrepareApiRequest(method, path, query, payload);
+                
+                return GetClient().SendAsync(request, HttpCompletionOption.ResponseContentRead);
+            }
+            catch (Exception ex)
+            {
+                throw new FirebaseException(
+                    string.Format("An error occured while execute request. Path : {0} , Method : {1}", path, method), ex);
+            }
+        }
+
         public Task<HttpResponseMessage> RequestAsync(HttpMethod method, string path, string query, object payload)
         {
             try
@@ -115,6 +130,21 @@ namespace FireSharp
             return request;
         }
 
+        private HttpRequestMessage PrepareApiRequest(HttpMethod method, string path, string query, object payload)
+        {
+            var uri = PrepareApiUri(path,query);
+
+            var request = new HttpRequestMessage(method, uri);
+
+            if (payload != null)
+            {
+                var json = _config.Serializer.Serialize(payload);
+                request.Content = new StringContent(json);
+            }
+
+            return request;
+        }
+
         private Uri PrepareUri(string path, string query)
         {
             var authToken = !string.IsNullOrWhiteSpace(_config.AuthSecret)
@@ -127,6 +157,13 @@ namespace FireSharp
             }
             var url = string.Format("{0}{1}{2}", _config.BasePath, authToken, addl);
 
+            return new Uri(url);
+        }
+
+        private Uri PrepareApiUri(string path, string query)
+        {
+            var url = string.Format("{0}/{1}/{2}?{3}", "https://auth.firebase.com/v2",_config.Host,path,query);
+            
             return new Uri(url);
         }
     }

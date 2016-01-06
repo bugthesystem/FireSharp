@@ -11,6 +11,7 @@ namespace FireSharp.Config
         }
 
         public string BasePath { get; set; }
+        public string Host { get; set; }
         public string AuthSecret { get; set; }
 
         public TimeSpan? RequestTimeout { get; set; }
