@@ -30,6 +30,7 @@ namespace FireSharp.Response
 
         private async Task ReadLoop(HttpResponseMessage httpResponse, CancellationToken token)
         {
+            Debug.WriteLine("ReadLoop");
             await Task.Factory.StartNew(async () =>
             {
                 using (httpResponse)
@@ -46,7 +47,7 @@ namespace FireSharp.Response
                                 {
                                     _cancel.Token.ThrowIfCancellationRequested();
                                     var read = await sr.ReadLineAsync().ConfigureAwait(false);
-                                    Debug.WriteLine(read);
+                                    //Debug.WriteLine(read);
                                     if (read.StartsWith("event: "))
                                     {
                                         eventName = read.Substring(7);
