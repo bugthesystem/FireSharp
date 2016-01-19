@@ -42,29 +42,36 @@ namespace FireSharp.Response
 
                             while (true)
                             {
-                                _cancel.Token.ThrowIfCancellationRequested();
-                                var read = await sr.ReadLineAsync().ConfigureAwait(false);
-                                Debug.WriteLine(read);
-                                if (read.StartsWith("event: "))
+                                try
                                 {
-                                    eventName = read.Substring(7);
-                                    continue;
-                                }
-
-                                if (read.StartsWith("data: "))
-                                {
-                                    if (string.IsNullOrEmpty(eventName))
+                                    _cancel.Token.ThrowIfCancellationRequested();
+                                    var read = await sr.ReadLineAsync().ConfigureAwait(false);
+                                    Debug.WriteLine(read);
+                                    if (read.StartsWith("event: "))
                                     {
-                                        throw new InvalidOperationException("Payload data was received but an event did not preceed it.");
+                                        eventName = read.Substring(7);
+                                        continue;
                                     }
-                                    // Every change on child, will get entire object again.
-                                    var request = await _requestManager.RequestAsync(HttpMethod.Get, _path);
-                                    var jsonStr = await request.Content.ReadAsStringAsync().ConfigureAwait(false);
-                                    _added(this, jsonStr.ReadAs<T>());
-                                }
 
-                                // start over
-                                eventName = null;
+                                    if (read.StartsWith("data: "))
+                                    {
+                                        if (string.IsNullOrEmpty(eventName))
+                                        {
+                                            throw new InvalidOperationException("Payload data was received but an event did not preceed it.");
+                                        }
+                                        // Every change on child, will get entire object again.
+                                        var request = await _requestManager.RequestAsync(HttpMethod.Get, _path);
+                                        var jsonStr = await request.Content.ReadAsStringAsync().ConfigureAwait(false);
+                                        _added(this, jsonStr.ReadAs<T>());
+                                    }
+
+                                    // start over
+                                    eventName = null;
+                                }
+                                catch (Exception e)
+                                {
+                                    Debug.WriteLine(e);
+                                }
                             }
                         }
                     }
