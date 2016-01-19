@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -40,6 +41,7 @@ namespace FireSharp
 
         public async Task<HttpResponseMessage> ListenAsync(string path)
         {
+            Debug.WriteLine("ListenAsync");
             HttpRequestMessage request;
             var client = PrepareEventStreamRequest(path, out request);
 

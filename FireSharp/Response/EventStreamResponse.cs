@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using FireSharp.EventStreaming;
+using FireSharp.Interfaces;
 using Newtonsoft.Json;
 
 namespace FireSharp.Response
@@ -14,12 +15,45 @@ namespace FireSharp.Response
         private readonly TemporaryCache _cache;
         private readonly CancellationTokenSource _cancel;
         private readonly Task _pollingTask;
+        private readonly IRequestManager _requestManager;
+        private readonly string _listenPath;
 
-        internal EventStreamResponse(HttpResponseMessage httpResponse,
+        //internal EventStreamResponse(
+        //    HttpResponseMessage httpResponse,
+        //    ValueAddedEventHandler added = null,
+        //    ValueChangedEventHandler changed = null,
+        //    ValueRemovedEventHandler removed = null)
+        //{
+        //    _cancel = new CancellationTokenSource();
+
+        //    _cache = new TemporaryCache();
+
+        //    if (added != null)
+        //    {
+        //        _cache.Added += added;
+        //    }
+        //    if (changed != null)
+        //    {
+        //        _cache.Changed += changed;
+        //    }
+        //    if (removed != null)
+        //    {
+        //        _cache.Removed += removed;
+        //    }
+
+        //    _pollingTask = ReadLoop(httpResponse, _cancel.Token);
+        //}
+
+        internal EventStreamResponse(
+            IRequestManager requestManager,
+            string listenPath,
             ValueAddedEventHandler added = null,
             ValueChangedEventHandler changed = null,
             ValueRemovedEventHandler removed = null)
         {
+            this._requestManager = requestManager;
+            this._listenPath = listenPath;
+
             _cancel = new CancellationTokenSource();
 
             _cache = new TemporaryCache();
@@ -36,12 +70,72 @@ namespace FireSharp.Response
             {
                 _cache.Removed += removed;
             }
+        }
 
-            _pollingTask = ReadLoop(httpResponse, _cancel.Token);
+        public async Task<EventStreamResponse> Run()
+        {
+            await ReadLoop2(_cancel.Token);
+            return this;
+        }
+
+        private async Task ReadLoop2(CancellationToken token)
+        {
+            Debug.WriteLine("ReadLoop2");
+            await Task.Factory.StartNew(async () =>
+            {
+                while (true)
+                {
+                    try
+                    {
+                        var httpResponse = await _requestManager.ListenAsync(this._listenPath).ConfigureAwait(false);
+                        Debug.WriteLine("httpResponse fetched");
+                        using (httpResponse)
+                        {
+                            using (var content = await httpResponse.Content.ReadAsStreamAsync())
+                            {
+                                using (var sr = new StreamReader(content))
+                                {
+                                    string eventName = null;
+
+                                    while (true)
+                                    {
+                                        _cancel.Token.ThrowIfCancellationRequested();
+                                        var read = await sr.ReadLineAsync();
+                                        //Debug.WriteLine(read);
+                                        if (read.StartsWith("event: "))
+                                        {
+                                            eventName = read.Substring(7);
+                                            continue;
+                                        }
+
+                                        if (read.StartsWith("data: "))
+                                        {
+                                            if (string.IsNullOrEmpty(eventName))
+                                            {
+                                                throw new InvalidOperationException("Payload data was received but an event did not preceed it.");
+                                            }
+
+                                            Update(eventName, read.Substring(6));
+                                        }
+
+                                        // start over
+                                        eventName = null;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine(e);
+                    }
+                }
+            }, TaskCreationOptions.LongRunning);
         }
 
         private async Task ReadLoop(HttpResponseMessage httpResponse, CancellationToken token)
         {
+            Debug.WriteLine("ReadLoop");
             await Task.Factory.StartNew(async () =>
             {
                 using (httpResponse)
@@ -54,27 +148,34 @@ namespace FireSharp.Response
 
                             while (true)
                             {
-                                _cancel.Token.ThrowIfCancellationRequested();
-                                var read = await sr.ReadLineAsync();
-                                Debug.WriteLine(read);
-                                if (read.StartsWith("event: "))
+                                try
                                 {
-                                    eventName = read.Substring(7);
-                                    continue;
-                                }
-
-                                if (read.StartsWith("data: "))
-                                {
-                                    if (string.IsNullOrEmpty(eventName))
+                                    _cancel.Token.ThrowIfCancellationRequested();
+                                    var read = await sr.ReadLineAsync();
+                                    //Debug.WriteLine(read);
+                                    if (read.StartsWith("event: "))
                                     {
-                                        throw new InvalidOperationException("Payload data was received but an event did not preceed it.");
+                                        eventName = read.Substring(7);
+                                        continue;
                                     }
 
-                                    Update(eventName, read.Substring(6));
-                                }
+                                    if (read.StartsWith("data: "))
+                                    {
+                                        if (string.IsNullOrEmpty(eventName))
+                                        {
+                                            throw new InvalidOperationException("Payload data was received but an event did not preceed it.");
+                                        }
 
-                                // start over
-                                eventName = null;
+                                        Update(eventName, read.Substring(6));
+                                    }
+
+                                    // start over
+                                    eventName = null;
+                                }
+                                catch (Exception e)
+                                {
+                                    Debug.WriteLine(e);
+                                }
                             }
                         }
                     }
