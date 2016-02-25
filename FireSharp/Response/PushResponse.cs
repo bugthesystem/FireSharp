@@ -23,6 +23,6 @@ namespace FireSharp.Response
 
     public class PushResult
     {
-        public string Name { get; set; }
+        public string name { get; set; }
     }
 }
