@@ -64,7 +64,7 @@ Todo result = response.ResultAs<Todo>(); //The response will contain the data wr
                 priority = 2
             };
 PushResponse response =await  _client.PushAsync("todos/push", todo);
-response.Result.Name //The result will contain the child name of the new data that was added
+response.Result.name //The result will contain the child name of the new data that was added
 ```
 ####Get
 ```csharp
