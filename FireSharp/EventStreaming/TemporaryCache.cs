@@ -175,25 +175,27 @@ namespace FireSharp.EventStreaming
         {
             var added = Added;
             if (added == null) return;
-            added(this, args);
+            added(this, args, Context);
         }
 
         private void OnUpdated(ValueChangedEventArgs args)
         {
             var updated = Changed;
             if (updated == null) return;
-            updated(this, args);
+            updated(this, args, Context);
         }
 
         private void OnRemoved(ValueRemovedEventArgs args)
         {
             var removed = Removed;
             if (removed == null) return;
-            removed(this, args);
+            removed(this, args, Context);
         }
 
         public event ValueAddedEventHandler Added;
         public event ValueChangedEventHandler Changed;
         public event ValueRemovedEventHandler Removed;
+
+        public object Context = null;
     }
 }

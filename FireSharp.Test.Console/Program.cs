@@ -37,7 +37,7 @@ namespace FireSharp.Test.Console
             await _client.DeleteAsync("chat");
 
             await _client.OnAsync("chat",
-                added: async (sender, args) =>
+                added: async (sender, args, context) =>
                 {
                     System.Console.WriteLine(args.Data + "-> 1\n");
                     await _client.PushAsync("chat/", new
@@ -46,13 +46,13 @@ namespace FireSharp.Test.Console
                         text = "Console 1:" + DateTime.Now.ToString("f")
                     });
                 },
-                changed: (sender, args) => { System.Console.WriteLine(args.Data); },
-                removed: (sender, args) => { System.Console.WriteLine(args.Path); });
+                changed: (sender, args, context) => { System.Console.WriteLine(args.Data); },
+                removed: (sender, args, context) => { System.Console.WriteLine(args.Path); });
 
             EventStreamResponse response = await _client.OnAsync("chat",
-                added: (sender, args) => { System.Console.WriteLine(args.Data + " -> 2\n"); },
-                changed: (sender, args) => { System.Console.WriteLine(args.Data); },
-                removed: (sender, args) => { System.Console.WriteLine(args.Path); });
+                added: (sender, args, context) => { System.Console.WriteLine(args.Data + " -> 2\n"); },
+                changed: (sender, args, context) => { System.Console.WriteLine(args.Data); },
+                removed: (sender, args, context) => { System.Console.WriteLine(args.Path); });
 
             //Call dispose to stop listening for events
             //response.Dispose();
