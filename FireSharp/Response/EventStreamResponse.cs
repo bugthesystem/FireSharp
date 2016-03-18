@@ -18,7 +18,8 @@ namespace FireSharp.Response
         internal EventStreamResponse(HttpResponseMessage httpResponse,
             ValueAddedEventHandler added = null,
             ValueChangedEventHandler changed = null,
-            ValueRemovedEventHandler removed = null)
+            ValueRemovedEventHandler removed = null, 
+            object context = null)
         {
             _cancel = new CancellationTokenSource();
 
@@ -35,6 +36,10 @@ namespace FireSharp.Response
             if (removed != null)
             {
                 _cache.Removed += removed;
+            }
+            if (context != null)
+            {
+                _cache.Context = context;
             }
 
             _pollingTask = ReadLoop(httpResponse, _cancel.Token);
