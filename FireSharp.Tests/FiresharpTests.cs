@@ -85,8 +85,8 @@ namespace FireSharp.Tests
             var response = await _client.PushAsync("todos/push/pushAsync", todo);
             Assert.NotNull(response);
             Assert.NotNull(response.Result);
-            Assert.NotNull(response.Result.Name); /*Returns pushed data name like -J8LR7PDCdz_i9H41kf7*/
-            Console.WriteLine(response.Result.Name);
+            Assert.NotNull(response.Result.name); /*Returns pushed data name like -J8LR7PDCdz_i9H41kf7*/
+            Console.WriteLine(response.Result.name);
         }
 
         [Test, Category("INTEGRATION"), Category("ASYNC")]
@@ -149,7 +149,7 @@ namespace FireSharp.Tests
             };
 
             PushResponse pushResponse = await _client.PushAsync("todos/list/pushAsync", expected);
-            string id = pushResponse.Result.Name;
+            string id = pushResponse.Result.name;
 
             Thread.Sleep(400);
 
@@ -208,8 +208,8 @@ namespace FireSharp.Tests
             var response = _client.Push("todos/push", todo);
             Assert.NotNull(response);
             Assert.NotNull(response.Result);
-            Assert.NotNull(response.Result.Name); /*Returns pushed data name like -J8LR7PDCdz_i9H41kf7*/
-            Console.WriteLine(response.Result.Name);
+            Assert.NotNull(response.Result.name); /*Returns pushed data name like -J8LR7PDCdz_i9H41kf7*/
+            Console.WriteLine(response.Result.name);
         }
 
         [Test, Category("INTEGRATION"), Category("SYNC")]
