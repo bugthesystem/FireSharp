@@ -138,11 +138,11 @@ namespace FireSharp.Tests
 
             await _client.SetAsync("fakepath/OnGetAsync/", expected);
 
-            Thread.Sleep(4000);
+            Thread.Sleep(2000);
 
             await _client.SetAsync("fakepath/OnGetAsync/name", "PUSH4GET1");
 
-            Thread.Sleep(4000);
+            Thread.Sleep(2000);
 
             Assert.AreEqual(2, changes);
             observer.Result.Cancel();
