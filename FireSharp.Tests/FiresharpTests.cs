@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Common.Testing.NUnit;
 using FireSharp.Config;
 using FireSharp.Exceptions;
 using FireSharp.Interfaces;
 using FireSharp.Response;
 using FireSharp.Tests.Models;
-using FireSharp.Tests.NunitExtensions;
 using NUnit.Framework;
 
 namespace FireSharp.Tests
