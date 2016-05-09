@@ -18,7 +18,7 @@ namespace FireSharp.Response
         internal EventStreamResponse(HttpResponseMessage httpResponse,
             ValueAddedEventHandler added = null,
             ValueChangedEventHandler changed = null,
-            ValueRemovedEventHandler removed = null, 
+            ValueRemovedEventHandler removed = null,
             object context = null)
         {
             _cancel = new CancellationTokenSource();
@@ -72,7 +72,8 @@ namespace FireSharp.Response
                                 {
                                     if (string.IsNullOrEmpty(eventName))
                                     {
-                                        throw new InvalidOperationException("Payload data was received but an event did not preceed it.");
+                                        throw new InvalidOperationException(
+                                            "Payload data was received but an event did not preceed it.");
                                     }
 
                                     Update(eventName, read.Substring(6));
@@ -84,7 +85,6 @@ namespace FireSharp.Response
                         }
                     }
                 }
-
             }, TaskCreationOptions.LongRunning);
         }
 

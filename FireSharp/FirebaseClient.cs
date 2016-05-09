@@ -2,7 +2,6 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using FireSharp.Config;
 using FireSharp.EventStreaming;
 using FireSharp.Exceptions;
 using FireSharp.Interfaces;
@@ -12,9 +11,6 @@ namespace FireSharp
 {
     public class FirebaseClient : IFirebaseClient, IDisposable
     {
-        private readonly IRequestManager _requestManager;
-        private readonly IFirebaseConfig _config;
-
         private readonly Action<HttpStatusCode, string> _defaultErrorHandler = (statusCode, body) =>
         {
             if (statusCode < HttpStatusCode.OK || statusCode >= HttpStatusCode.BadRequest)
@@ -23,11 +19,12 @@ namespace FireSharp
             }
         };
 
+        private readonly IRequestManager _requestManager;
+
 
         public FirebaseClient(IFirebaseConfig config)
             : this(new RequestManager(config))
         {
-            _config = config;
         }
 
         internal FirebaseClient(IRequestManager requestManager)
@@ -37,15 +34,17 @@ namespace FireSharp
 
         public void Dispose()
         {
-            using (_requestManager) { }
+            using (_requestManager)
+            {
+            }
         }
 
         public FirebaseResponse Get(string path)
         {
             try
             {
-                HttpResponseMessage response = _requestManager.RequestAsync(HttpMethod.Get, path).Result;
-                string content = response.Content.ReadAsStringAsync().Result;
+                var response = _requestManager.RequestAsync(HttpMethod.Get, path).Result;
+                var content = response.Content.ReadAsStringAsync().Result;
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
             }
@@ -59,8 +58,8 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = _requestManager.RequestAsync(HttpMethod.Get, path, query).Result;
-                string content = response.Content.ReadAsStringAsync().Result;
+                var response = _requestManager.RequestAsync(HttpMethod.Get, path, query).Result;
+                var content = response.Content.ReadAsStringAsync().Result;
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
             }
@@ -74,8 +73,8 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = _requestManager.RequestAsync(HttpMethod.Put, path, data).Result;
-                string content = response.Content.ReadAsStringAsync().Result;
+                var response = _requestManager.RequestAsync(HttpMethod.Put, path, data).Result;
+                var content = response.Content.ReadAsStringAsync().Result;
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new SetResponse(content, response.StatusCode);
             }
@@ -89,8 +88,8 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = _requestManager.RequestAsync(HttpMethod.Post, path, data).Result;
-                string content = response.Content.ReadAsStringAsync().Result;
+                var response = _requestManager.RequestAsync(HttpMethod.Post, path, data).Result;
+                var content = response.Content.ReadAsStringAsync().Result;
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new PushResponse(content, response.StatusCode);
             }
@@ -104,8 +103,8 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = _requestManager.RequestAsync(HttpMethod.Delete, path).Result;
-                string content = response.Content.ReadAsStringAsync().Result;
+                var response = _requestManager.RequestAsync(HttpMethod.Delete, path).Result;
+                var content = response.Content.ReadAsStringAsync().Result;
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
             }
@@ -119,8 +118,8 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = _requestManager.RequestAsync(RequestManager.Patch, path, data).Result;
-                string content = response.Content.ReadAsStringAsync().Result;
+                var response = _requestManager.RequestAsync(RequestManager.Patch, path, data).Result;
+                var content = response.Content.ReadAsStringAsync().Result;
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
             }
@@ -134,8 +133,8 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = await _requestManager.RequestAsync(HttpMethod.Get, path, query).ConfigureAwait(false);
-                string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                var response = await _requestManager.RequestAsync(HttpMethod.Get, path, query).ConfigureAwait(false);
+                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
             }
@@ -149,8 +148,8 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = await _requestManager.RequestAsync(HttpMethod.Get, path).ConfigureAwait(false);
-                string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                var response = await _requestManager.RequestAsync(HttpMethod.Get, path).ConfigureAwait(false);
+                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
             }
@@ -164,8 +163,8 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = await _requestManager.RequestAsync(HttpMethod.Put, path, data).ConfigureAwait(false);
-                string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                var response = await _requestManager.RequestAsync(HttpMethod.Put, path, data).ConfigureAwait(false);
+                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new SetResponse(content, response.StatusCode);
             }
@@ -179,8 +178,8 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = await _requestManager.RequestAsync(HttpMethod.Post, path, data).ConfigureAwait(false);
-                string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                var response = await _requestManager.RequestAsync(HttpMethod.Post, path, data).ConfigureAwait(false);
+                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new PushResponse(content, response.StatusCode);
             }
@@ -197,11 +196,12 @@ namespace FireSharp
              * */
             try
             {
-                string query = string.Format(@"&email={0}&_method=POST&transport=json&suppress_status_codes=true", Uri.EscapeDataString(email));
-                string path = string.Format("users/{0}/password", email);
+                string query =
+                    $@"&email={Uri.EscapeDataString(email)}&_method=POST&transport=json&suppress_status_codes=true";
+                string path = $"users/{email}/password";
 
-                HttpResponseMessage response = _requestManager.RequestApiAsync(HttpMethod.Post, path, query, null).Result;
-                string content = response.Content.ReadAsStringAsync().Result;
+                var response = _requestManager.RequestApiAsync(HttpMethod.Post, path, query).Result;
+                var content = response.Content.ReadAsStringAsync().Result;
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
             }
@@ -214,15 +214,18 @@ namespace FireSharp
         public FirebaseResponse ChangePassword(string email, string oldPassword, string newPassword)
         {
             /*
-            /v2/luminous-heat-7934/users/tedwards@hachisoft.com/password?&email=tedwards%40hachisoft.com&oldPassword=oldPassword&newPassword=newPassword&_method=PUT&password=newPassword&v=node-2.3.2&transport=json&suppress_status_codes=true
+            /v2/luminous-heat-7934/users/tedwards@hachisoft.com/password?&email=tedwards%40hachisoft.com&oldPassword=oldPassword
+            &newPassword=newPassword&_method=PUT&password=newPassword&v=node-2.3.2&transport=json&suppress_status_codes=true
              * */
             try
             {
-                string query = string.Format(@"&email={0}&oldPassword={1}&newPassword={2}&_method=PUT&password={2}&v=node-2.3.2&transport=json&suppress_status_codes=true", Uri.EscapeDataString(email), Uri.EscapeDataString(oldPassword), Uri.EscapeDataString(newPassword));
-                string path = string.Format("users/{0}/password", email);
+                string query =
+                    $@"&email={Uri.EscapeDataString(email)}&oldPassword={Uri.EscapeDataString(oldPassword)}&newPassword={Uri
+                        .EscapeDataString(newPassword)}&_method=PUT&password={Uri.EscapeDataString(newPassword)}&v=node-2.3.2&transport=json&suppress_status_codes=true";
+                string path = $"users/{email}/password";
 
-                HttpResponseMessage response = _requestManager.RequestApiAsync(HttpMethod.Put, path, query, null).Result;
-                string content = response.Content.ReadAsStringAsync().Result;
+                var response = _requestManager.RequestApiAsync(HttpMethod.Put, path, query).Result;
+                var content = response.Content.ReadAsStringAsync().Result;
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
             }
@@ -236,11 +239,12 @@ namespace FireSharp
         {
             try
             {
-                string query = string.Format(@"&email={0}&password={1}&_method=POST&v=node-2.3.2&transport=json&suppress_status_codes=true", Uri.EscapeDataString(email), Uri.EscapeDataString(password));
-                string path = "users";
+                var query =
+                    $@"&email={Uri.EscapeDataString(email)}&password={Uri.EscapeDataString(password)}&_method=POST&v=node-2.3.2&transport=json&suppress_status_codes=true";
+                var path = "users";
 
-                HttpResponseMessage response = _requestManager.RequestApiAsync(HttpMethod.Post, path, query, null).Result;
-                string content = response.Content.ReadAsStringAsync().Result;
+                var response = _requestManager.RequestApiAsync(HttpMethod.Post, path, query).Result;
+                var content = response.Content.ReadAsStringAsync().Result;
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
             }
@@ -257,11 +261,12 @@ namespace FireSharp
              * */
             try
             {
-                string query = string.Format(@"&email={0}&password={1}&_method=DELETE&transport=json&suppress_status_codes=true", Uri.EscapeDataString(email), Uri.EscapeDataString(password));
-                string path = string.Format("users/{0}", email);
+                var query =
+                    $@"&email={Uri.EscapeDataString(email)}&password={Uri.EscapeDataString(password)}&_method=DELETE&transport=json&suppress_status_codes=true";
+                var path = $"users/{email}";
 
-                HttpResponseMessage response = _requestManager.RequestApiAsync(HttpMethod.Delete, path, query, null).Result;
-                string content = response.Content.ReadAsStringAsync().Result;
+                var response = _requestManager.RequestApiAsync(HttpMethod.Delete, path, query).Result;
+                var content = response.Content.ReadAsStringAsync().Result;
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
             }
@@ -280,14 +285,14 @@ namespace FireSharp
              * */
             try
             {
-                string query =
+                var query =
                     string.Format(
                         @"&oldEmail={0}&password={1}&newEmail={2}&_method=PUT&email={2}&v=node-2.3.2&transport=json&suppress_status_codes=true",
                         Uri.EscapeDataString(oldEmail), Uri.EscapeDataString(password), Uri.EscapeDataString(newEmail));
-                string path = string.Format("users/{0}/email", oldEmail);
+                var path = $"users/{oldEmail}/email";
 
-                HttpResponseMessage response = _requestManager.RequestApiAsync(HttpMethod.Put, path, query, null).Result;
-                string content = response.Content.ReadAsStringAsync().Result;
+                var response = _requestManager.RequestApiAsync(HttpMethod.Put, path, query).Result;
+                var content = response.Content.ReadAsStringAsync().Result;
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
             }
@@ -298,13 +303,12 @@ namespace FireSharp
         }
 
 
-
         public async Task<FirebaseResponse> DeleteAsync(string path)
         {
             try
             {
-                HttpResponseMessage response = await _requestManager.RequestAsync(HttpMethod.Delete, path).ConfigureAwait(false);
-                string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                var response = await _requestManager.RequestAsync(HttpMethod.Delete, path).ConfigureAwait(false);
+                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
             }
@@ -318,8 +322,9 @@ namespace FireSharp
         {
             try
             {
-                HttpResponseMessage response = await _requestManager.RequestAsync(RequestManager.Patch, path, data).ConfigureAwait(false);
-                string content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                var response =
+                    await _requestManager.RequestAsync(RequestManager.Patch, path, data).ConfigureAwait(false);
+                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
             }
@@ -334,21 +339,27 @@ namespace FireSharp
             ValueChangedEventHandler changed = null,
             ValueRemovedEventHandler removed = null)
         {
-            return new EventStreamResponse(await _requestManager.ListenAsync(path).ConfigureAwait(false), added, changed, removed);
+            return new EventStreamResponse(await _requestManager.ListenAsync(path).ConfigureAwait(false), added, changed,
+                removed);
         }
 
-        public async Task<EventRootResponse<T>> OnChangeGetAsync<T>(string path, ValueRootAddedEventHandler<T> added = null)
+        public async Task<EventRootResponse<T>> OnChangeGetAsync<T>(string path,
+            ValueRootAddedEventHandler<T> added = null)
         {
-            return new EventRootResponse<T>(await _requestManager.ListenAsync(path).ConfigureAwait(false), added, _requestManager, path);
+            return new EventRootResponse<T>(await _requestManager.ListenAsync(path).ConfigureAwait(false), added,
+                _requestManager, path);
         }
 
-        public async Task<EventStreamResponse> OnAsync(string path, ValueAddedEventHandler added = null, ValueChangedEventHandler changed = null,
+        public async Task<EventStreamResponse> OnAsync(string path, ValueAddedEventHandler added = null,
+            ValueChangedEventHandler changed = null,
             ValueRemovedEventHandler removed = null, object context = null)
         {
-            return new EventStreamResponse(await _requestManager.ListenAsync(path).ConfigureAwait(false), added, changed, removed, context);
+            return new EventStreamResponse(await _requestManager.ListenAsync(path).ConfigureAwait(false), added, changed,
+                removed, context);
         }
 
-        private void HandleIfErrorResponse(HttpStatusCode statusCode, string content, Action<HttpStatusCode, string> errorHandler = null)
+        private void HandleIfErrorResponse(HttpStatusCode statusCode, string content,
+            Action<HttpStatusCode, string> errorHandler = null)
         {
             if (errorHandler != null)
             {

@@ -1,6 +1,6 @@
 ﻿using System;
 using FireSharp.Config;
-using FireSharp.Response;
+using FireSharp.Interfaces;
 
 namespace FireSharp.Test.Console
 {
@@ -28,7 +28,7 @@ namespace FireSharp.Test.Console
 
         private static async void Crud()
         {
-            var setResponse = await _client.SetAsync("todos", new { name = "SET CALL" });
+            var setResponse = await _client.SetAsync("todos", new {name = "SET CALL"});
             System.Console.WriteLine(setResponse.Body);
         }
 
@@ -37,7 +37,7 @@ namespace FireSharp.Test.Console
             await _client.DeleteAsync("chat");
 
             await _client.OnAsync("chat",
-                added: async (sender, args, context) =>
+                async (sender, args, context) =>
                 {
                     System.Console.WriteLine(args.Data + "-> 1\n");
                     await _client.PushAsync("chat/", new
@@ -46,13 +46,13 @@ namespace FireSharp.Test.Console
                         text = "Console 1:" + DateTime.Now.ToString("f")
                     });
                 },
-                changed: (sender, args, context) => { System.Console.WriteLine(args.Data); },
-                removed: (sender, args, context) => { System.Console.WriteLine(args.Path); });
+                (sender, args, context) => { System.Console.WriteLine(args.Data); },
+                (sender, args, context) => { System.Console.WriteLine(args.Path); });
 
-            EventStreamResponse response = await _client.OnAsync("chat",
-                added: (sender, args, context) => { System.Console.WriteLine(args.Data + " -> 2\n"); },
-                changed: (sender, args, context) => { System.Console.WriteLine(args.Data); },
-                removed: (sender, args, context) => { System.Console.WriteLine(args.Path); });
+            var response = await _client.OnAsync("chat",
+                (sender, args, context) => { System.Console.WriteLine(args.Data + " -> 2\n"); },
+                (sender, args, context) => { System.Console.WriteLine(args.Data); },
+                (sender, args, context) => { System.Console.WriteLine(args.Path); });
 
             //Call dispose to stop listening for events
             //response.Dispose();

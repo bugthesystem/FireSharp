@@ -72,7 +72,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\FirebaseConfig.cs" />
-    <Compile Include="Config\IFirebaseConfig.cs" />
     <Compile Include="EventStreaming\SimpleCacheItem.cs" />
     <Compile Include="EventStreaming\Delegates.cs" />
     <Compile Include="EventStreaming\TemporaryCache.cs" />
@@ -82,6 +81,7 @@
     <Compile Include="Exceptions\FirebaseException.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="FirebaseClient.cs" />
+    <Compile Include="Interfaces\IFirebaseConfig.cs" />
     <Compile Include="Interfaces\ISerializer.cs" />
     <Compile Include="Interfaces\JsonNetSerializer.cs" />
     <Compile Include="RequestManager.cs" />

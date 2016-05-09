@@ -2,7 +2,6 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using FireSharp.Config;
 using FireSharp.Exceptions;
 using FireSharp.Interfaces;
 
@@ -17,21 +16,6 @@ namespace FireSharp
         internal RequestManager(IFirebaseConfig config)
         {
             _config = config;
-        }
-
-        private HttpClient GetClient(HttpClientHandler handler = null)
-        {
-            var client = handler == null ? new HttpClient() : new HttpClient(handler, true);
-
-            var basePath = _config.BasePath.EndsWith("/") ? _config.BasePath : _config.BasePath + "/";
-            client.BaseAddress = new Uri(basePath);
-
-            if (_config.RequestTimeout.HasValue)
-            {
-                client.Timeout = _config.RequestTimeout.Value;
-            }
-
-            return client;
         }
 
         public void Dispose()
@@ -76,7 +60,7 @@ namespace FireSharp
             catch (Exception ex)
             {
                 throw new FirebaseException(
-                    string.Format("An error occured while execute request. Path : {0} , Method : {1}", path, method), ex);
+                    $"An error occured while execute request. Path : {path} , Method : {method}", ex);
             }
         }
 
@@ -91,13 +75,28 @@ namespace FireSharp
             catch (Exception ex)
             {
                 throw new FirebaseException(
-                    string.Format("An error occured while execute request. Path : {0} , Method : {1}", path, method), ex);
+                    $"An error occured while execute request. Path : {path} , Method : {method}", ex);
             }
+        }
+
+        private HttpClient GetClient(HttpClientHandler handler = null)
+        {
+            var client = handler == null ? new HttpClient() : new HttpClient(handler, true);
+
+            var basePath = _config.BasePath.EndsWith("/") ? _config.BasePath : _config.BasePath + "/";
+            client.BaseAddress = new Uri(basePath);
+
+            if (_config.RequestTimeout.HasValue)
+            {
+                client.Timeout = _config.RequestTimeout.Value;
+            }
+
+            return client;
         }
 
         private HttpClient PrepareEventStreamRequest(string path, string query, out HttpRequestMessage request)
         {
-            var client = GetClient(new HttpClientHandler { AllowAutoRedirect = true });
+            var client = GetClient(new HttpClientHandler {AllowAutoRedirect = true});
             var uri = PrepareUri(path, query);
 
             request = new HttpRequestMessage(HttpMethod.Get, uri);
@@ -139,24 +138,23 @@ namespace FireSharp
         private Uri PrepareUri(string path, string query)
         {
             var authToken = !string.IsNullOrWhiteSpace(_config.AuthSecret)
-                ? string.Format("{0}.json?auth={1}", path, _config.AuthSecret)
-                : string.Format("{0}.json", path);
-            string addl = string.Empty;
+                ? $"{path}.json?auth={_config.AuthSecret}"
+                : $"{path}.json";
+
+            var queryStr = string.Empty;
             if (!string.IsNullOrEmpty(query))
             {
-                addl = "&" + query;
+                queryStr = "&" + query;
             }
-            var url = string.Format("{0}{1}{2}", _config.BasePath, authToken, addl);
 
+            var url = $"{_config.BasePath}{authToken}{queryStr}";
 
             return new Uri(url);
         }
 
         private Uri PrepareApiUri(string path, string query)
         {
-            var url = string.Format("{0}/{1}/{2}?{3}", "https://auth.firebase.com/v2", _config.Host, path, query);
-
-            return new Uri(url);
+            return new Uri($"https://auth.firebase.com/v2/{_config.Host}/{path}?{query}");
         }
     }
 }

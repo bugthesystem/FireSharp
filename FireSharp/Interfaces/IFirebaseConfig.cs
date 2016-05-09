@@ -1,7 +1,6 @@
 ﻿using System;
-using FireSharp.Interfaces;
 
-namespace FireSharp.Config
+namespace FireSharp.Interfaces
 {
     public interface IFirebaseConfig
     {

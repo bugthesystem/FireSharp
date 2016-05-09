@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace FireSharp.WebApp.App_Start
+namespace FireSharp.WebApp
 {
     public class FilterConfig
     {

@@ -15,10 +15,7 @@ namespace FireSharp.Response
         {
         }
 
-        public PushResult Result
-        {
-            get { return ResultAs<PushResult>(); }
-        }
+        public PushResult Result => ResultAs<PushResult>();
     }
 
     public class PushResult

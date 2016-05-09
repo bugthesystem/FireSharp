@@ -13,12 +13,13 @@ namespace FireSharp.Response
     public class EventRootResponse<T>
     {
         private readonly ValueRootAddedEventHandler<T> _added;
-        private readonly IRequestManager _requestManager;
-        private readonly string _path;
         private readonly CancellationTokenSource _cancel;
+        private readonly string _path;
         private readonly Task _pollingTask;
+        private readonly IRequestManager _requestManager;
 
-        internal EventRootResponse(HttpResponseMessage httpResponse, ValueRootAddedEventHandler<T> added, IRequestManager requestManager, string path)
+        internal EventRootResponse(HttpResponseMessage httpResponse, ValueRootAddedEventHandler<T> added,
+            IRequestManager requestManager, string path)
         {
             _added = added;
             _requestManager = requestManager;
@@ -55,7 +56,8 @@ namespace FireSharp.Response
                                 {
                                     if (string.IsNullOrEmpty(eventName))
                                     {
-                                        throw new InvalidOperationException("Payload data was received but an event did not preceed it.");
+                                        throw new InvalidOperationException(
+                                            "Payload data was received but an event did not preceed it.");
                                     }
                                     // Every change on child, will get entire object again.
                                     var request = await _requestManager.RequestAsync(HttpMethod.Get, _path);
@@ -69,7 +71,6 @@ namespace FireSharp.Response
                         }
                     }
                 }
-
             }, token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
         }
 

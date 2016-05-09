@@ -14,7 +14,11 @@ namespace FireSharp.Config
 
         public string BasePath
         {
-            get { return _basePath.EndsWith("/") ? _basePath : _basePath + "/"; ; }
+            get
+            {
+                return _basePath.EndsWith("/") ? _basePath : $"{_basePath}/";
+                ;
+            }
             set { _basePath = value; }
         }
 
