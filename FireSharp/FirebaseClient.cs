@@ -54,11 +54,11 @@ namespace FireSharp
             }
         }
 
-        public FirebaseResponse Get(string path, string query)
+        public FirebaseResponse Get(string path, FirebaseQuery query)
         {
             try
             {
-                var response = _requestManager.RequestAsync(HttpMethod.Get, path, query).Result;
+                var response = _requestManager.RequestApiAsync(HttpMethod.Get, path, query).Result;
                 var content = response.Content.ReadAsStringAsync().Result;
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
@@ -129,11 +129,11 @@ namespace FireSharp
             }
         }
 
-        public async Task<FirebaseResponse> GetAsync(string path, string query)
+        public async Task<FirebaseResponse> GetAsync(string path, FirebaseQuery query)
         {
             try
             {
-                var response = await _requestManager.RequestAsync(HttpMethod.Get, path, query).ConfigureAwait(false);
+                var response = await _requestManager.RequestApiAsync(HttpMethod.Get, path, query).ConfigureAwait(false);
                 var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
@@ -196,8 +196,8 @@ namespace FireSharp
              * */
             try
             {
-                string query =
-                    $@"&email={Uri.EscapeDataString(email)}&_method=POST&transport=json&suppress_status_codes=true";
+                FirebaseQuery query = FirebaseQuery.New($@"&email={Uri.EscapeDataString(email)}&_method=POST&transport=json&suppress_status_codes=true")
+                    ;
                 string path = $"users/{email}/password";
 
                 var response = _requestManager.RequestApiAsync(HttpMethod.Post, path, query).Result;
@@ -219,9 +219,9 @@ namespace FireSharp
              * */
             try
             {
-                string query =
+                FirebaseQuery query = FirebaseQuery.New(
                     $@"&email={Uri.EscapeDataString(email)}&oldPassword={Uri.EscapeDataString(oldPassword)}&newPassword={Uri
-                        .EscapeDataString(newPassword)}&_method=PUT&password={Uri.EscapeDataString(newPassword)}&v=node-2.3.2&transport=json&suppress_status_codes=true";
+                        .EscapeDataString(newPassword)}&_method=PUT&password={Uri.EscapeDataString(newPassword)}&v=node-2.3.2&transport=json&suppress_status_codes=true");
                 string path = $"users/{email}/password";
 
                 var response = _requestManager.RequestApiAsync(HttpMethod.Put, path, query).Result;
@@ -239,8 +239,8 @@ namespace FireSharp
         {
             try
             {
-                var query =
-                    $@"&email={Uri.EscapeDataString(email)}&password={Uri.EscapeDataString(password)}&_method=POST&v=node-2.3.2&transport=json&suppress_status_codes=true";
+                FirebaseQuery query = FirebaseQuery.New(
+                $@"&email={Uri.EscapeDataString(email)}&password={Uri.EscapeDataString(password)}&_method=POST&v=node-2.3.2&transport=json&suppress_status_codes=true");
                 var path = "users";
 
                 var response = _requestManager.RequestApiAsync(HttpMethod.Post, path, query).Result;
@@ -261,8 +261,7 @@ namespace FireSharp
              * */
             try
             {
-                var query =
-                    $@"&email={Uri.EscapeDataString(email)}&password={Uri.EscapeDataString(password)}&_method=DELETE&transport=json&suppress_status_codes=true";
+                FirebaseQuery query = FirebaseQuery.New($@"&email={Uri.EscapeDataString(email)}&password={Uri.EscapeDataString(password)}&_method=DELETE&transport=json&suppress_status_codes=true");
                 var path = $"users/{email}";
 
                 var response = _requestManager.RequestApiAsync(HttpMethod.Delete, path, query).Result;
@@ -285,10 +284,9 @@ namespace FireSharp
              * */
             try
             {
-                var query =
-                    string.Format(
+                FirebaseQuery query = FirebaseQuery.New(string.Format(
                         @"&oldEmail={0}&password={1}&newEmail={2}&_method=PUT&email={2}&v=node-2.3.2&transport=json&suppress_status_codes=true",
-                        Uri.EscapeDataString(oldEmail), Uri.EscapeDataString(password), Uri.EscapeDataString(newEmail));
+                        Uri.EscapeDataString(oldEmail), Uri.EscapeDataString(password), Uri.EscapeDataString(newEmail)));
                 var path = $"users/{oldEmail}/email";
 
                 var response = _requestManager.RequestApiAsync(HttpMethod.Put, path, query).Result;

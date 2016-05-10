@@ -94,6 +94,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FirebaseQueryTests.cs" />
     <Compile Include="FiresharpTests.cs" />
     <Compile Include="FirebaseClientTests.cs" />
     <Compile Include="Models\Todo.cs" />

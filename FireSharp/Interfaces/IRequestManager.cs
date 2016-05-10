@@ -7,9 +7,9 @@ namespace FireSharp.Interfaces
     internal interface IRequestManager : IDisposable
     {
         Task<HttpResponseMessage> ListenAsync(string path);
-        Task<HttpResponseMessage> ListenAsync(string path, string query);
+        Task<HttpResponseMessage> ListenAsync(string path, FirebaseQuery query);
         Task<HttpResponseMessage> RequestAsync(HttpMethod method, string path, object payload = null);
-        Task<HttpResponseMessage> RequestAsync(HttpMethod method, string path, string query, object payload = null);
-        Task<HttpResponseMessage> RequestApiAsync(HttpMethod method, string path, string query, object payload = null);
+        Task<HttpResponseMessage> RequestAsync(HttpMethod method, string path, FirebaseQuery query, object payload = null);
+        Task<HttpResponseMessage> RequestApiAsync(HttpMethod method, string path, FirebaseQuery query, object payload = null);
     }
 }
