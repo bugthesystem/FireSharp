@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace FireSharp
 {
-    public class FirebaseQuery
+    public class QueryBuilder
     {
         private readonly string _initialQuery;
         private string formatParam = "format";
@@ -18,54 +18,54 @@ namespace FireSharp
 
         static Dictionary<string, object> _query = new Dictionary<string, object>();
 
-        private FirebaseQuery(string initialQuery = null)
+        private QueryBuilder(string initialQuery = "")
         {
             _initialQuery = initialQuery;
             _query = new Dictionary<string, object>();
         }
 
-        public static FirebaseQuery New(string initialQuery = null)
+        public static QueryBuilder New(string initialQuery = "")
         {
-            return new FirebaseQuery(initialQuery);
+            return new QueryBuilder(initialQuery);
         }
-        public FirebaseQuery StartAt(string value)
+        public QueryBuilder StartAt(string value)
         {
             return AddToQueryDictionary(startAtParam, value);
         }
 
-        public FirebaseQuery EndAt(string value)
+        public QueryBuilder EndAt(string value)
         {
             return AddToQueryDictionary(endAtParam, value);
         }
 
-        public FirebaseQuery OrderBy(string value)
+        public QueryBuilder OrderBy(string value)
         {
             return AddToQueryDictionary(orderByParam, value);
         }
 
-        public FirebaseQuery LimitToFirst(int value)
+        public QueryBuilder LimitToFirst(int value)
         {
             return AddToQueryDictionary(limitToFirstParam, value > 0 ? value.ToString() : string.Empty, skipEncoding: true);
         }
 
-        public FirebaseQuery LimitToLast(int value)
+        public QueryBuilder LimitToLast(int value)
         {
             return AddToQueryDictionary(limitToLastParam, value > 0 ? value.ToString() : string.Empty, skipEncoding: true);
         }
 
 
 
-        public FirebaseQuery Shallow(bool value)
+        public QueryBuilder Shallow(bool value)
         {
             return AddToQueryDictionary(shallowParam, value ? "true" : string.Empty, skipEncoding: true);
         }
 
-        public FirebaseQuery IncludePriority(bool value)
+        public QueryBuilder IncludePriority(bool value)
         {
             return AddToQueryDictionary(formatParam, value ? formatVal : string.Empty, skipEncoding: true);
         }
 
-        private FirebaseQuery AddToQueryDictionary(string parameterName, string value, bool skipEncoding = false)
+        private QueryBuilder AddToQueryDictionary(string parameterName, string value, bool skipEncoding = false)
         {
             if (!string.IsNullOrEmpty(value))
             {

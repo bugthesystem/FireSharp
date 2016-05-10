@@ -85,7 +85,7 @@
     <Compile Include="Interfaces\IFirebaseConfig.cs" />
     <Compile Include="Interfaces\ISerializer.cs" />
     <Compile Include="Interfaces\JsonNetSerializer.cs" />
-    <Compile Include="FirebaseQuery.cs" />
+    <Compile Include="QueryBuilder.cs" />
     <Compile Include="RequestManager.cs" />
     <Compile Include="Interfaces\IFirebaseClient.cs" />
     <Compile Include="Interfaces\IRequestManager.cs" />

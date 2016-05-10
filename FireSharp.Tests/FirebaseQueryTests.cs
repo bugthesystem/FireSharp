@@ -9,43 +9,43 @@ namespace FireSharp.Tests
         [Test]
         public void InitialQueryTest()
         {
-            FirebaseQuery query = FirebaseQuery.New("test=12&abc=\"xyz\"");
-            query.ToQueryString().ShouldBeEquivalentTo("test=12&abc=\"xyz\"");
+            QueryBuilder queryBuilder = QueryBuilder.New("test=12&abc=\"xyz\"");
+            queryBuilder.ToQueryString().ShouldBeEquivalentTo("test=12&abc=\"xyz\"");
         }
 
         [Test]
         public void StartAtQueryTest()
         {
-            FirebaseQuery query = FirebaseQuery.New().StartAt("a");
-            var queryString = query.ToQueryString();
+            QueryBuilder queryBuilder = QueryBuilder.New().StartAt("a");
+            var queryString = queryBuilder.ToQueryString();
             queryString.ShouldBeEquivalentTo("startAt=\"a\"");
         }
         [Test]
         public void EndAtQueryTest()
         {
-            FirebaseQuery query = FirebaseQuery.New().StartAt("a");
-            var queryString = query.ToQueryString();
+            QueryBuilder queryBuilder = QueryBuilder.New().StartAt("a");
+            var queryString = queryBuilder.ToQueryString();
             queryString.ShouldBeEquivalentTo("startAt=\"a\"");
         }
         [Test]
         public void OrderByQueryTest()
         {
-            FirebaseQuery query = FirebaseQuery.New().OrderBy("test");
-            var queryString = query.ToQueryString();
+            QueryBuilder queryBuilder = QueryBuilder.New().OrderBy("test");
+            var queryString = queryBuilder.ToQueryString();
             queryString.ShouldBeEquivalentTo("orderBy=\"test\"");
         }
         [Test]
         public void LimitToFirstQueryTest()
         {
-            FirebaseQuery query = FirebaseQuery.New().LimitToFirst(8);
-            var queryString = query.ToQueryString();
+            QueryBuilder queryBuilder = QueryBuilder.New().LimitToFirst(8);
+            var queryString = queryBuilder.ToQueryString();
             queryString.ShouldBeEquivalentTo("limitToFirst=8");
         }
         [Test]
         public void LimitToLastQueryTest()
         {
-            FirebaseQuery query = FirebaseQuery.New().LimitToLast(10);
-            var queryString = query.ToQueryString();
+            QueryBuilder queryBuilder = QueryBuilder.New().LimitToLast(10);
+            var queryString = queryBuilder.ToQueryString();
             queryString.ShouldBeEquivalentTo("limitToLast=10");
         }
 

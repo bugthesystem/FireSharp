@@ -127,7 +127,7 @@ namespace FireSharp.Tests
         [Test, Category("INTEGRATION")]
         public async void OnChangeGetAsync()
         {
-            var expected = new Todo {name = "Execute PUSH4GET1", priority = 2};
+            var expected = new Todo { name = "Execute PUSH4GET1", priority = 2 };
             var changes = 0;
             var observer = _client.OnChangeGetAsync<Todo>("fakepath/OnGetAsync/", (events, arg) =>
             {
@@ -302,6 +302,28 @@ namespace FireSharp.Tests
             {
                 var response = await _client.UpdateAsync("todos", true);
             });
+        }
+
+        [Test, Category("INTEGRATION"), Category("ASYNC")]
+        public async void GetWithQueryAsync()
+        {
+            await _client.PushAsync("todos/get/pushAsync", new Todo
+            {
+                name = "Execute PUSH4GET",
+                priority = 2
+            });
+
+            await _client.PushAsync("todos/get/pushAsync", new Todo
+            {
+                name = "You PUSH4GET",
+                priority = 2
+            });
+
+            Thread.Sleep(400);
+
+            var response = await _client.GetAsync("todos", QueryBuilder.New().OrderBy("$key").StartAt("Exe"));
+            Assert.NotNull(response);
+            Assert.IsTrue(response.Body.Contains("name"));
         }
     }
 }

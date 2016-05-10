@@ -54,11 +54,11 @@ namespace FireSharp
             }
         }
 
-        public FirebaseResponse Get(string path, FirebaseQuery query)
+        public FirebaseResponse Get(string path, QueryBuilder queryBuilder)
         {
             try
             {
-                var response = _requestManager.RequestApiAsync(HttpMethod.Get, path, query).Result;
+                var response = _requestManager.RequestAsync(HttpMethod.Get, path, queryBuilder).Result;
                 var content = response.Content.ReadAsStringAsync().Result;
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
@@ -129,11 +129,11 @@ namespace FireSharp
             }
         }
 
-        public async Task<FirebaseResponse> GetAsync(string path, FirebaseQuery query)
+        public async Task<FirebaseResponse> GetAsync(string path, QueryBuilder queryBuilder)
         {
             try
             {
-                var response = await _requestManager.RequestApiAsync(HttpMethod.Get, path, query).ConfigureAwait(false);
+                var response = await _requestManager.RequestAsync(HttpMethod.Get, path, queryBuilder).ConfigureAwait(false);
                 var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
@@ -196,11 +196,11 @@ namespace FireSharp
              * */
             try
             {
-                FirebaseQuery query = FirebaseQuery.New($@"&email={Uri.EscapeDataString(email)}&_method=POST&transport=json&suppress_status_codes=true")
+                QueryBuilder queryBuilder = QueryBuilder.New($@"&email={Uri.EscapeDataString(email)}&_method=POST&transport=json&suppress_status_codes=true")
                     ;
                 string path = $"users/{email}/password";
 
-                var response = _requestManager.RequestApiAsync(HttpMethod.Post, path, query).Result;
+                var response = _requestManager.RequestApiAsync(HttpMethod.Post, path, queryBuilder).Result;
                 var content = response.Content.ReadAsStringAsync().Result;
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
@@ -219,12 +219,12 @@ namespace FireSharp
              * */
             try
             {
-                FirebaseQuery query = FirebaseQuery.New(
+                QueryBuilder queryBuilder = QueryBuilder.New(
                     $@"&email={Uri.EscapeDataString(email)}&oldPassword={Uri.EscapeDataString(oldPassword)}&newPassword={Uri
                         .EscapeDataString(newPassword)}&_method=PUT&password={Uri.EscapeDataString(newPassword)}&v=node-2.3.2&transport=json&suppress_status_codes=true");
                 string path = $"users/{email}/password";
 
-                var response = _requestManager.RequestApiAsync(HttpMethod.Put, path, query).Result;
+                var response = _requestManager.RequestApiAsync(HttpMethod.Put, path, queryBuilder).Result;
                 var content = response.Content.ReadAsStringAsync().Result;
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
@@ -239,11 +239,11 @@ namespace FireSharp
         {
             try
             {
-                FirebaseQuery query = FirebaseQuery.New(
+                QueryBuilder queryBuilder = QueryBuilder.New(
                 $@"&email={Uri.EscapeDataString(email)}&password={Uri.EscapeDataString(password)}&_method=POST&v=node-2.3.2&transport=json&suppress_status_codes=true");
                 var path = "users";
 
-                var response = _requestManager.RequestApiAsync(HttpMethod.Post, path, query).Result;
+                var response = _requestManager.RequestApiAsync(HttpMethod.Post, path, queryBuilder).Result;
                 var content = response.Content.ReadAsStringAsync().Result;
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
@@ -261,10 +261,10 @@ namespace FireSharp
              * */
             try
             {
-                FirebaseQuery query = FirebaseQuery.New($@"&email={Uri.EscapeDataString(email)}&password={Uri.EscapeDataString(password)}&_method=DELETE&transport=json&suppress_status_codes=true");
+                QueryBuilder queryBuilder = QueryBuilder.New($@"&email={Uri.EscapeDataString(email)}&password={Uri.EscapeDataString(password)}&_method=DELETE&transport=json&suppress_status_codes=true");
                 var path = $"users/{email}";
 
-                var response = _requestManager.RequestApiAsync(HttpMethod.Delete, path, query).Result;
+                var response = _requestManager.RequestApiAsync(HttpMethod.Delete, path, queryBuilder).Result;
                 var content = response.Content.ReadAsStringAsync().Result;
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
@@ -284,12 +284,12 @@ namespace FireSharp
              * */
             try
             {
-                FirebaseQuery query = FirebaseQuery.New(string.Format(
+                QueryBuilder queryBuilder = QueryBuilder.New(string.Format(
                         @"&oldEmail={0}&password={1}&newEmail={2}&_method=PUT&email={2}&v=node-2.3.2&transport=json&suppress_status_codes=true",
                         Uri.EscapeDataString(oldEmail), Uri.EscapeDataString(password), Uri.EscapeDataString(newEmail)));
                 var path = $"users/{oldEmail}/email";
 
-                var response = _requestManager.RequestApiAsync(HttpMethod.Put, path, query).Result;
+                var response = _requestManager.RequestApiAsync(HttpMethod.Put, path, queryBuilder).Result;
                 var content = response.Content.ReadAsStringAsync().Result;
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new FirebaseResponse(content, response.StatusCode);
