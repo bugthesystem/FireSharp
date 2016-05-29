@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FireSharp.Response
 {
-    public class EventRootResponse<T>
+    public class EventRootResponse<T> : IDisposable
     {
         private readonly ValueRootAddedEventHandler<T> _added;
         private readonly CancellationTokenSource _cancel;
@@ -27,6 +27,11 @@ namespace FireSharp.Response
 
             _cancel = new CancellationTokenSource();
             _pollingTask = ReadLoop(httpResponse, _cancel.Token);
+        }
+
+        ~EventRootResponse()
+        {
+            Dispose(false);    
         }
 
         private async Task ReadLoop(HttpResponseMessage httpResponse, CancellationToken token)
@@ -60,7 +65,7 @@ namespace FireSharp.Response
                                 throw new InvalidOperationException(
                                     "Payload data was received but an event did not preceed it.");
                             }
-                            
+
                             // Every change on child, will get entire object again.
                             var request = await _requestManager.RequestAsync(HttpMethod.Get, _path);
                             var jsonStr = await request.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -82,8 +87,18 @@ namespace FireSharp.Response
 
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
             Cancel();
-            _cancel.Dispose();
+
+            if (disposing)
+            {
+                _cancel.Dispose();
+            }
         }
     }
 }
