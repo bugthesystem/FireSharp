@@ -1,12 +1,12 @@
-﻿using System;
+﻿using FireSharp.EventStreaming;
+using FireSharp.Extensions;
+using FireSharp.Interfaces;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using FireSharp.EventStreaming;
-using FireSharp.Extensions;
-using FireSharp.Interfaces;
 
 namespace FireSharp.Response
 {
@@ -34,41 +34,42 @@ namespace FireSharp.Response
             await Task.Factory.StartNew(async () =>
             {
                 using (httpResponse)
+                using (var content = await httpResponse.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                using (var sr = new StreamReader(content))
                 {
-                    using (var content = await httpResponse.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                    string eventName = null;
+
+                    while (true)
                     {
-                        using (var sr = new StreamReader(content))
+                        _cancel.Token.ThrowIfCancellationRequested();
+
+                        var read = await sr.ReadLineAsync().ConfigureAwait(false);
+
+                        Debug.WriteLine(read);
+
+                        if (read.StartsWith("event: "))
                         {
-                            string eventName = null;
-
-                            while (true)
-                            {
-                                _cancel.Token.ThrowIfCancellationRequested();
-                                var read = await sr.ReadLineAsync().ConfigureAwait(false);
-                                Debug.WriteLine(read);
-                                if (read.StartsWith("event: "))
-                                {
-                                    eventName = read.Substring(7);
-                                    continue;
-                                }
-
-                                if (read.StartsWith("data: "))
-                                {
-                                    if (string.IsNullOrEmpty(eventName))
-                                    {
-                                        throw new InvalidOperationException(
-                                            "Payload data was received but an event did not preceed it.");
-                                    }
-                                    // Every change on child, will get entire object again.
-                                    var request = await _requestManager.RequestAsync(HttpMethod.Get, _path);
-                                    var jsonStr = await request.Content.ReadAsStringAsync().ConfigureAwait(false);
-                                    _added(this, jsonStr.ReadAs<T>());
-                                }
-
-                                // start over
-                                eventName = null;
-                            }
+                            eventName = read.Substring(7);
+                            continue;
                         }
+
+                        if (read.StartsWith("data: "))
+                        {
+                            if (string.IsNullOrEmpty(eventName))
+                            {
+                                throw new InvalidOperationException(
+                                    "Payload data was received but an event did not preceed it.");
+                            }
+                            
+                            // Every change on child, will get entire object again.
+                            var request = await _requestManager.RequestAsync(HttpMethod.Get, _path);
+                            var jsonStr = await request.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                            _added(this, jsonStr.ReadAs<T>());
+                        }
+
+                        // start over
+                        eventName = null;
                     }
                 }
             }, token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
@@ -82,9 +83,7 @@ namespace FireSharp.Response
         public void Dispose()
         {
             Cancel();
-            using (_cancel)
-            {
-            }
+            _cancel.Dispose();
         }
     }
 }
