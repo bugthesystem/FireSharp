@@ -104,8 +104,7 @@ namespace FireSharp.Response
             {
                 case "put":
                 case "patch":
-                    using (var r = new StringReader(p))
-                    using (JsonReader reader = new JsonTextReader(r))
+                    using (var reader = new JsonTextReader(new StringReader(p)))
                     {
                         ReadToNamedPropertyValue(reader, "path");
                         reader.Read();
