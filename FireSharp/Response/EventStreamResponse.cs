@@ -1,20 +1,20 @@
+using FireSharp.EventStreaming;
+using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using FireSharp.EventStreaming;
-using Newtonsoft.Json;
 
 namespace FireSharp.Response
 {
-    public class EventStreamResponse
+    public class EventStreamResponse : IDisposable
     {
         private readonly TemporaryCache _cache;
         private readonly CancellationTokenSource _cancel;
         private readonly Task _pollingTask;
-
+        
         internal EventStreamResponse(HttpResponseMessage httpResponse,
             ValueAddedEventHandler added = null,
             ValueChangedEventHandler changed = null,
@@ -45,44 +45,48 @@ namespace FireSharp.Response
             _pollingTask = ReadLoop(httpResponse, _cancel.Token);
         }
 
+        ~EventStreamResponse()
+        {
+            Dispose(false);
+        }
+
         private async Task ReadLoop(HttpResponseMessage httpResponse, CancellationToken token)
         {
             await Task.Factory.StartNew(async () =>
             {
                 using (httpResponse)
+                using (var content = await httpResponse.Content.ReadAsStreamAsync())
+                using (var sr = new StreamReader(content))
                 {
-                    using (var content = await httpResponse.Content.ReadAsStreamAsync())
+                    string eventName = null;
+
+                    while (true)
                     {
-                        using (var sr = new StreamReader(content))
+                        token.ThrowIfCancellationRequested();
+
+                        var read = await sr.ReadLineAsync();
+
+                        Debug.WriteLine(read);
+
+                        if (read.StartsWith("event: "))
                         {
-                            string eventName = null;
-
-                            while (true)
-                            {
-                                _cancel.Token.ThrowIfCancellationRequested();
-                                var read = await sr.ReadLineAsync();
-                                Debug.WriteLine(read);
-                                if (read.StartsWith("event: "))
-                                {
-                                    eventName = read.Substring(7);
-                                    continue;
-                                }
-
-                                if (read.StartsWith("data: "))
-                                {
-                                    if (string.IsNullOrEmpty(eventName))
-                                    {
-                                        throw new InvalidOperationException(
-                                            "Payload data was received but an event did not preceed it.");
-                                    }
-
-                                    Update(eventName, read.Substring(6));
-                                }
-
-                                // start over
-                                eventName = null;
-                            }
+                            eventName = read.Substring(7);
+                            continue;
                         }
+
+                        if (read.StartsWith("data: "))
+                        {
+                            if (string.IsNullOrEmpty(eventName))
+                            {
+                                throw new InvalidOperationException(
+                                    "Payload data was received but an event did not preceed it.");
+                            }
+
+                            Update(eventName, read.Substring(6));
+                        }
+
+                        // start over
+                        eventName = null;
                     }
                 }
             }, TaskCreationOptions.LongRunning);
@@ -138,9 +142,18 @@ namespace FireSharp.Response
 
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
             Cancel();
-            using (_cancel)
+
+            if (disposing)
             {
+                _cache.Dispose();
+                _cancel.Dispose();
             }
         }
     }

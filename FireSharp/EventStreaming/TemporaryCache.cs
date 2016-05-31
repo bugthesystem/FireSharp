@@ -1,12 +1,12 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Newtonsoft.Json;
 
 namespace FireSharp.EventStreaming
 {
-    internal sealed class TemporaryCache
+    internal sealed class TemporaryCache : IDisposable
     {
         private readonly LinkedList<SimpleCacheItem> _pathFromRootList = new LinkedList<SimpleCacheItem>();
         private readonly char[] _seperator = {'/'};
@@ -20,6 +20,11 @@ namespace FireSharp.EventStreaming
             Root.Created = false;
             Root.Parent = null;
             Root.Name = null;
+        }
+
+        ~TemporaryCache()
+        {
+            Dispose(false);
         }
 
         internal SimpleCacheItem Root { get; } = new SimpleCacheItem();
@@ -184,5 +189,21 @@ namespace FireSharp.EventStreaming
         public event ValueAddedEventHandler Added;
         public event ValueChangedEventHandler Changed;
         public event ValueRemovedEventHandler Removed;
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                Added = null;
+                Changed = null;
+                Removed = null;
+            }
+        }
     }
 }
