@@ -10,7 +10,7 @@ namespace FireSharp.EventStreaming
             Data = data;
         }
 
-        public string Path { get; private set; }
-        public string Data { get; private set; }
+        public string Path { get; }
+        public string Data { get; }
     }
 }
