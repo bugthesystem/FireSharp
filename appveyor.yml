@@ -13,15 +13,15 @@ environment:
     
 before_build:
   - nuget restore FireSharp.sln
-  # - nuget install 
+  - nuget install -OutputDirectory packages -Version 4.6.519 OpenCover
 
 build:
   project: FireSharp.sln       
   verbosity: minimal
   
 test_script:
-  - nunit-console /noshadow /domain:single /framework:net-4.5 FireSharp.Tests\bin\%CONFIGURATION%\FireSharp.Tests.dll
- #- packages\OpenCover.4.5.3522\OpenCover.Console.exe -register:user -filter:"+[Coveralls*]*" -target:packages\NUnit.Runners.2.6.4\tools\nunit-console.exe -targetargs:"/noshadow /domain:single /framework:net-4.5 FireSharp.Tests\bin\$(configuration)\FireSharp.Tests.dll" -filter:"+[FireSharp]* -[FireSharp.Tests]*" -output:coverage.xml
+  #- nunit-console /noshadow /domain:single /framework:net-4.5 FireSharp.Tests\bin\%CONFIGURATION%\FireSharp.Tests.dll
+  - packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -filter:"+[Coveralls*]*" -target:nunit-console.exe -targetargs:"/noshadow /domain:single /framework:net-4.5 FireSharp.Tests\bin\%CONFIGURATION%\FireSharp.Tests.dll" -filter:"+[FireSharp]* -[FireSharp.Tests]*" -output:coverage.xml
 
 after_test:
   #- packages\coveralls.io.1.3.4\tools\coveralls.net.exe --opencover coverage.xml -r dEhBWtoMGvOY9L6uMDKKlhcjmj7DAKTnI
