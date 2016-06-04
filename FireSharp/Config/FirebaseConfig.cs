@@ -1,5 +1,5 @@
-﻿using System;
-using FireSharp.Interfaces;
+﻿using FireSharp.Interfaces;
+using System;
 
 namespace FireSharp.Config
 {
@@ -17,7 +17,6 @@ namespace FireSharp.Config
             get
             {
                 return _basePath.EndsWith("/") ? _basePath : $"{_basePath}/";
-                ;
             }
             set { _basePath = value; }
         }

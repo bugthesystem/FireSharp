@@ -110,7 +110,12 @@ namespace FireSharp.Tests
             };
 
             var pushResponse = await _client.PushAsync("todos/list/pushAsync", expected);
-            var id = pushResponse.Result.name;
+            var id = pushResponse.Result.Name;
+
+
+#pragma warning disable 618 // Point of the test
+            Assert.AreEqual(pushResponse.Result.name, pushResponse.Result.Name);
+#pragma warning restore 618
 
             Thread.Sleep(400);
 
@@ -171,8 +176,8 @@ namespace FireSharp.Tests
             var response = _client.Push("todos/push", todo);
             Assert.NotNull(response);
             Assert.NotNull(response.Result);
-            Assert.NotNull(response.Result.name); /*Returns pushed data name like -J8LR7PDCdz_i9H41kf7*/
-            Console.WriteLine(response.Result.name);
+            Assert.NotNull(response.Result.Name); /*Returns pushed data name like -J8LR7PDCdz_i9H41kf7*/
+            Console.WriteLine(response.Result.Name);
         }
 
         [Test, Category("INTEGRATION"), Category("ASYNC")]
@@ -187,8 +192,8 @@ namespace FireSharp.Tests
             var response = await _client.PushAsync("todos/push/pushAsync", todo);
             Assert.NotNull(response);
             Assert.NotNull(response.Result);
-            Assert.NotNull(response.Result.name); /*Returns pushed data name like -J8LR7PDCdz_i9H41kf7*/
-            Console.WriteLine(response.Result.name);
+            Assert.NotNull(response.Result.Name); /*Returns pushed data name like -J8LR7PDCdz_i9H41kf7*/
+            Console.WriteLine(response.Result.Name);
         }
 
         [Test, Category("INTEGRATION"), Category("ASYNC")]

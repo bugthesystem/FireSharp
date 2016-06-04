@@ -1,5 +1,4 @@
-﻿using System.Net.Http;
-using FireSharp.Interfaces;
+﻿using FireSharp.Interfaces;
 
 namespace FireSharp.Extensions
 {
@@ -16,12 +15,6 @@ namespace FireSharp.Extensions
         public static string ToJson(this object @object)
         {
             return Serializer.Serialize(@object);
-        }
-
-        public static T ReadAs<T>(this HttpResponseMessage response)
-        {
-            var json = response.Content.ReadAsStringAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            return Serializer.Deserialize<T>(json);
         }
 
         public static T ReadAs<T>(this string content)
