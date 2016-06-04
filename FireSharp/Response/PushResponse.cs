@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
+using System.Runtime.Serialization;
 
 namespace FireSharp.Response
 {
@@ -12,8 +14,13 @@ namespace FireSharp.Response
         public PushResult Result => ResultAs<PushResult>();
     }
 
+    [DataContract]
     public class PushResult
     {
-        public string name { get; set; }
+        [DataMember(Name = "name")]
+        public string Name { get; set; }
+
+        [Obsolete("Use the Name property instead")]
+        public string name => Name;
     }
 }
