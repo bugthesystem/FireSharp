@@ -89,10 +89,12 @@ namespace FireSharp
         {
             try
             {
-                var response = _requestManager.RequestAsync(HttpMethod.Put, path, data).Result;
-                var content = response.Content.ReadAsStringAsync().Result;
-                HandleIfErrorResponse(response.StatusCode, content);
-                return new SetResponse(content, response.StatusCode);
+                using (var response = _requestManager.RequestAsync(HttpMethod.Put, path, data).Result)
+                {
+                    var content = response.Content.ReadAsStringAsync().Result;
+                    HandleIfErrorResponse(response.StatusCode, content);
+                    return new SetResponse(content, response.StatusCode);
+                }
             }
             catch (HttpRequestException ex)
             {
@@ -104,10 +106,12 @@ namespace FireSharp
         {
             try
             {
-                var response = _requestManager.RequestAsync(HttpMethod.Post, path, data).Result;
-                var content = response.Content.ReadAsStringAsync().Result;
-                HandleIfErrorResponse(response.StatusCode, content);
-                return new PushResponse(content, response.StatusCode);
+                using (var response = _requestManager.RequestAsync(HttpMethod.Post, path, data).Result)
+                {
+                    var content = response.Content.ReadAsStringAsync().Result;
+                    HandleIfErrorResponse(response.StatusCode, content);
+                    return new PushResponse(content, response.StatusCode);
+                }
             }
             catch (HttpRequestException ex)
             {
@@ -119,10 +123,12 @@ namespace FireSharp
         {
             try
             {
-                var response = _requestManager.RequestAsync(HttpMethod.Delete, path).Result;
-                var content = response.Content.ReadAsStringAsync().Result;
-                HandleIfErrorResponse(response.StatusCode, content);
-                return new FirebaseResponse(content, response.StatusCode);
+                using (var response = _requestManager.RequestAsync(HttpMethod.Delete, path).Result)
+                {
+                    var content = response.Content.ReadAsStringAsync().Result;
+                    HandleIfErrorResponse(response.StatusCode, content);
+                    return new FirebaseResponse(content, response.StatusCode);
+                }
             }
             catch (HttpRequestException ex)
             {
@@ -185,10 +191,12 @@ namespace FireSharp
         {
             try
             {
-                var response = await _requestManager.RequestAsync(HttpMethod.Put, path, data).ConfigureAwait(false);
-                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                HandleIfErrorResponse(response.StatusCode, content);
-                return new SetResponse(content, response.StatusCode);
+                using (var response = await _requestManager.RequestAsync(HttpMethod.Put, path, data).ConfigureAwait(false))
+                {
+                    var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    HandleIfErrorResponse(response.StatusCode, content);
+                    return new SetResponse(content, response.StatusCode);
+                }
             }
             catch (HttpRequestException ex)
             {
