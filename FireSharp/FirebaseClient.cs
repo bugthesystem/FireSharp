@@ -368,12 +368,11 @@ namespace FireSharp
         }
 
         [Obsolete("This method is obsolete use OnAsync instead.")]
-        public async Task<EventStreamResponse> ListenAsync(string path, ValueAddedEventHandler added = null,
+        public Task<EventStreamResponse> ListenAsync(string path, ValueAddedEventHandler added = null,
             ValueChangedEventHandler changed = null,
             ValueRemovedEventHandler removed = null)
         {
-            return new EventStreamResponse(await _requestManager.ListenAsync(path).ConfigureAwait(false), added, changed,
-                removed);
+            return OnAsync(path, added, changed, removed);
         }
 
         public async Task<EventRootResponse<T>> OnChangeGetAsync<T>(string path,
