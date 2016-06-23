@@ -124,7 +124,7 @@ namespace FireSharp
         {
             var authToken = !string.IsNullOrWhiteSpace(_config.AuthSecret)
                 ? $"{path}.json?auth={_config.AuthSecret}"
-                : $"{path}.json";
+                : $"{path}.json?";
 
             var queryStr = string.Empty;
             if (queryBuilder != null)
