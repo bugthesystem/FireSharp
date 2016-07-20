@@ -117,8 +117,7 @@ namespace FireSharp
 
             if (payload != null)
             {
-                var json = _config.Serializer.Serialize(payload);
-                request.Content = new StringContent(json);
+                request.Content = new StringContent(payload as string ?? _config.Serializer.Serialize(payload));
             }
 
             return request;
