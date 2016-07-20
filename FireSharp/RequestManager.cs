@@ -33,6 +33,7 @@ namespace FireSharp
 
         public void Dispose()
         {
+            _httpClient.Dispose();
         }
 
         public async Task<HttpResponseMessage> ListenAsync(string path)
