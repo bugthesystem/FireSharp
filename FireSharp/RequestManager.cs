@@ -12,10 +12,23 @@ namespace FireSharp
         internal static readonly HttpMethod Patch = new HttpMethod("PATCH");
 
         private readonly IFirebaseConfig _config;
+        private readonly HttpClient _httpClient;
 
         internal RequestManager(IFirebaseConfig config)
         {
+            if (config == null) throw new ArgumentNullException(nameof(config));
+
             _config = config;
+
+            _httpClient = new HttpClient(new HttpClientHandler { AllowAutoRedirect = true });
+
+            var basePath = _config.BasePath.EndsWith("/") ? _config.BasePath : _config.BasePath + "/";
+            _httpClient.BaseAddress = new Uri(basePath);
+
+            if (_config.RequestTimeout.HasValue)
+            {
+                _httpClient.Timeout = _config.RequestTimeout.Value;
+            }
         }
 
         public void Dispose()
@@ -81,24 +94,14 @@ namespace FireSharp
             }
         }
 
-        private HttpClient GetClient(HttpClientHandler handler = null)
+        private HttpClient GetClient()
         {
-            var client = handler == null ? new HttpClient() : new HttpClient(handler, true);
-
-            var basePath = _config.BasePath.EndsWith("/") ? _config.BasePath : _config.BasePath + "/";
-            client.BaseAddress = new Uri(basePath);
-
-            if (_config.RequestTimeout.HasValue)
-            {
-                client.Timeout = _config.RequestTimeout.Value;
-            }
-
-            return client;
+            return _httpClient;
         }
 
         private HttpClient PrepareEventStreamRequest(string path, QueryBuilder queryBuilder, out HttpRequestMessage request)
         {
-            var client = GetClient(new HttpClientHandler { AllowAutoRedirect = true });
+            var client = GetClient();
             var uri = PrepareUri(path, queryBuilder);
 
             request = new HttpRequestMessage(HttpMethod.Get, uri);
