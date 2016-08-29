@@ -33,7 +33,17 @@ namespace FireSharp
             return AddToQueryDictionary(startAtParam, value);
         }
 
+        public QueryBuilder StartAt(long value)
+        {
+            return AddToQueryDictionary(startAtParam, value);
+        }
+
         public QueryBuilder EndAt(string value)
+        {
+            return AddToQueryDictionary(endAtParam, value);
+        }
+
+        public QueryBuilder EndAt(long value)
         {
             return AddToQueryDictionary(endAtParam, value);
         }
@@ -76,6 +86,12 @@ namespace FireSharp
                 _query.Remove(startAtParam);
             }
 
+            return this;
+        }
+
+        private QueryBuilder AddToQueryDictionary(string parameterName, long value)
+        {
+            _query.Add(parameterName, value);
             return this;
         }
 
