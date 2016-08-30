@@ -23,10 +23,26 @@ namespace FireSharp.Tests
         [Test]
         public void EndAtQueryTest()
         {
-            QueryBuilder queryBuilder = QueryBuilder.New().StartAt("a");
+            QueryBuilder queryBuilder = QueryBuilder.New().EndAt("a");
             var queryString = queryBuilder.ToQueryString();
-            queryString.ShouldBeEquivalentTo("startAt=\"a\"");
+            queryString.ShouldBeEquivalentTo("endAt=\"a\"");
         }
+
+        [Test]
+        public void StartAtNumberQueryTest()
+        {
+            QueryBuilder queryBuilder = QueryBuilder.New().StartAt(1472342400);
+            var queryString = queryBuilder.ToQueryString();
+            queryString.ShouldBeEquivalentTo("startAt=1472342400");
+        }
+        [Test]
+        public void EndAtNumberQueryTest()
+        {
+            QueryBuilder queryBuilder = QueryBuilder.New().StartAt(1472342400);
+            var queryString = queryBuilder.ToQueryString();
+            queryString.ShouldBeEquivalentTo("endAt=1472342400");
+        }
+
         [Test]
         public void OrderByQueryTest()
         {
