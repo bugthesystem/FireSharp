@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace FireSharp.Interfaces
+namespace FireSharp.NETCore.Interfaces
 {
     internal interface IRequestManager : IDisposable
     {

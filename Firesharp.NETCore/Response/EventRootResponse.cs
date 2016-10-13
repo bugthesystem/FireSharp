@@ -1,6 +1,6 @@
-﻿using FireSharp.EventStreaming;
-using FireSharp.Extensions;
-using FireSharp.Interfaces;
+﻿using FireSharp.NETCore.EventStreaming;
+using FireSharp.NETCore.Extensions;
+using FireSharp.NETCore.Interfaces;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FireSharp.Response
+namespace FireSharp.NETCore.Response
 {
     public class EventRootResponse<T> : IDisposable
     {

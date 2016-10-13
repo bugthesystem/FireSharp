@@ -1,7 +1,7 @@
-﻿using FireSharp.Extensions;
+﻿using FireSharp.NETCore.Extensions;
 using System.Net;
 
-namespace FireSharp.Response
+namespace FireSharp.NETCore.Response
 {
     public class FirebaseResponse
     {

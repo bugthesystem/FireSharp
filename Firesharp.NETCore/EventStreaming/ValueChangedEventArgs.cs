@@ -1,6 +1,6 @@
 using System;
 
-namespace FireSharp.EventStreaming
+namespace FireSharp.NETCore.EventStreaming
 {
     public class ValueChangedEventArgs : EventArgs
     {

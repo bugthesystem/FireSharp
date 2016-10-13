@@ -2,8 +2,8 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using FireSharp.Exceptions;
-using FireSharp.Interfaces;
+using FireSharp.NETCore.Exceptions;
+using FireSharp.NETCore.Interfaces;
 
 namespace FireSharp
 {

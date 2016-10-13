@@ -1,7 +1,7 @@
-﻿using FireSharp.EventStreaming;
-using FireSharp.Exceptions;
-using FireSharp.Interfaces;
-using FireSharp.Response;
+﻿using FireSharp.NETCore.EventStreaming;
+using FireSharp.NETCore.Exceptions;
+using FireSharp.NETCore.Interfaces;
+using FireSharp.NETCore.Response;
 using System;
 using System.Net;
 using System.Net.Http;

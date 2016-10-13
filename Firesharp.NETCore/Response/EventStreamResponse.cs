@@ -1,4 +1,4 @@
-using FireSharp.EventStreaming;
+using FireSharp.NETCore.EventStreaming;
 using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FireSharp.Response
+namespace FireSharp.NETCore.Response
 {
     public class EventStreamResponse : IDisposable
     {

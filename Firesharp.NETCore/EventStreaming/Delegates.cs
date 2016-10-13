@@ -1,4 +1,4 @@
-﻿namespace FireSharp.EventStreaming
+﻿namespace FireSharp.NETCore.EventStreaming
 {
     public delegate void ValueAddedEventHandler(object sender, ValueAddedEventArgs args, object context);
 

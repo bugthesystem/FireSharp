@@ -1,6 +1,6 @@
-﻿using FireSharp.Interfaces;
+﻿using FireSharp.NETCore.Interfaces;
 
-namespace FireSharp.Extensions
+namespace FireSharp.NETCore.Extensions
 {
     public static class ObjectExtensions
     {

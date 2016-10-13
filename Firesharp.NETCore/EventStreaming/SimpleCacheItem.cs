@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace FireSharp.EventStreaming
+namespace FireSharp.NETCore.EventStreaming
 {
     internal class SimpleCacheItem
     {

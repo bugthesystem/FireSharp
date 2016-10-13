@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using FireSharp.EventStreaming;
-using FireSharp.Response;
+using FireSharp.NETCore.EventStreaming;
+using FireSharp.NETCore.Response;
 
-namespace FireSharp.Interfaces
+namespace FireSharp.NETCore.Interfaces
 {
     public interface IFirebaseClient
     {
