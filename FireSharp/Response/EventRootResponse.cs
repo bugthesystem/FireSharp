@@ -36,7 +36,7 @@ namespace FireSharp.Response
 
         private async Task ReadLoop(HttpResponseMessage httpResponse, CancellationToken token)
         {
-            await Task.Factory.StartNew(async () =>
+            await Task.Run(async () =>
             {
                 using (httpResponse)
                 using (var content = await httpResponse.Content.ReadAsStreamAsync().ConfigureAwait(false))
