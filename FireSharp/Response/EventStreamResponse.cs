@@ -89,7 +89,7 @@ namespace FireSharp.Response
                         eventName = null;
                     }
                 }
-            }, TaskCreationOptions.LongRunning);
+            }, TaskCreationOptions.LongRunning).Unwrap();
         }
 
 
