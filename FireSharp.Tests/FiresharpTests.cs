@@ -141,7 +141,7 @@ namespace FireSharp.Tests
                 Assert.AreEqual(expected.name, arg.name);
             });
 
-            var r = await _client.SetAsync("fakepath/OnGetAsync/", expected);
+            await _client.SetAsync("fakepath/OnGetAsync/", expected);
 
             await Task.Delay(2000);
 
