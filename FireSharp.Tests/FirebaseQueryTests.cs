@@ -44,6 +44,14 @@ namespace FireSharp.Tests
         }
 
         [Test]
+        public void EqualToQueryTest()
+        {
+            QueryBuilder queryBuilder = QueryBuilder.New().EqualTo("test");
+            var queryString = queryBuilder.ToQueryString();
+            queryString.ShouldBeEquivalentTo("equalTo=\"test\"");
+        }
+
+        [Test]
         public void OrderByQueryTest()
         {
             QueryBuilder queryBuilder = QueryBuilder.New().OrderBy("test");
