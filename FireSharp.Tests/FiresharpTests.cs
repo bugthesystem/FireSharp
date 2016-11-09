@@ -145,7 +145,7 @@ namespace FireSharp.Tests
 
             await Task.Delay(2000);
 
-            await _client.SetAsync("fakepath/OnGetAsync/name", "PUSH4GET1");
+            await _client.SetAsync("fakepath/OnGetAsync", new Todo { name = "PUSH4GET1", priority = 2 });
 
             await Task.Delay(2000);
 
