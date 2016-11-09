@@ -38,7 +38,7 @@ namespace FireSharp.Tests
         [Test]
         public void EndAtNumberQueryTest()
         {
-            QueryBuilder queryBuilder = QueryBuilder.New().StartAt(1472342400);
+            QueryBuilder queryBuilder = QueryBuilder.New().EndAt(1472342400);
             var queryString = queryBuilder.ToQueryString();
             queryString.ShouldBeEquivalentTo("endAt=1472342400");
         }

@@ -141,11 +141,11 @@ namespace FireSharp.Tests
                 Assert.AreEqual(expected.name, arg.name);
             });
 
-            await _client.SetAsync("fakepath/OnGetAsync/", expected);
+            var r = await _client.SetAsync("fakepath/OnGetAsync/", expected);
 
             await Task.Delay(2000);
 
-            await _client.SetAsync("fakepath/OnGetAsync/name", "PUSH4GET1");
+            await _client.SetAsync("fakepath/OnGetAsync", new Todo { name = "PUSH4GET1", priority = 2 });
 
             await Task.Delay(2000);
 
