@@ -12,6 +12,7 @@ namespace FireSharp
         private string orderByParam = "orderBy";
         private string startAtParam = "startAt";
         private string endAtParam = "endAt";
+        private string eqaulToParam = "equalTo";
         private string formatVal = "export";
         private string limitToFirstParam = "limitToFirst";
         private string limitToLastParam = "limitToLast";
@@ -46,6 +47,11 @@ namespace FireSharp
         public QueryBuilder EndAt(long value)
         {
             return AddToQueryDictionary(endAtParam, value);
+        }
+
+        public QueryBuilder EqualTo(string value)
+        {
+            return AddToQueryDictionary(eqaulToParam, value);
         }
 
         public QueryBuilder OrderBy(string value)
