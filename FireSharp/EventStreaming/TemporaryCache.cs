@@ -111,6 +111,7 @@ namespace FireSharp.EventStreaming
                     case JsonToken.Null:
                         DeleteChild(root);
                         return;
+                    case JsonToken.EndOfObject: break;
                 }
             }
         }
