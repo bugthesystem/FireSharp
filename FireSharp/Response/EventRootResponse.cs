@@ -77,7 +77,7 @@ namespace FireSharp.Response
                         eventName = null;
                     }
                 }
-            }, token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+            }, token, TaskCreationOptions.LongRunning, TaskScheduler.Default).Unwrap();
         }
 
         public void Cancel()
