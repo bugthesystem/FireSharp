@@ -106,6 +106,7 @@ namespace FireSharp.Response
                 case "patch":
                     using (var reader = new JsonTextReader(new StringReader(p)))
                     {
+                        reader.DateParseHandling = DateParseHandling.None;
                         ReadToNamedPropertyValue(reader, "path");
                         reader.Read();
                         var path = reader.Value.ToString();
