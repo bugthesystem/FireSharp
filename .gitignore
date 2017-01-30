@@ -103,3 +103,4 @@ Backup*/
 UpgradeLog*.XML
 *.nupkg
 .vs/
+.idea/
