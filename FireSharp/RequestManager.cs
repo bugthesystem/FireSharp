@@ -20,7 +20,7 @@ namespace FireSharp
 
             _config = config;
 
-            _httpClient = new HttpClient(new HttpClientHandler { AllowAutoRedirect = true });
+            _httpClient = new HttpClient(new AutoRedirectHttpClientHandler());
 
             var basePath = _config.BasePath.EndsWith("/") ? _config.BasePath : _config.BasePath + "/";
             _httpClient.BaseAddress = new Uri(basePath);

@@ -72,6 +72,7 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoRedirectHttpClientHandler.cs" />
     <Compile Include="Config\FirebaseConfig.cs" />
     <Compile Include="EventStreaming\SimpleCacheItem.cs" />
     <Compile Include="EventStreaming\Delegates.cs" />
