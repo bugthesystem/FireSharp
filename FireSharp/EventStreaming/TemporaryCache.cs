@@ -1,30 +1,33 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Newtonsoft.Json;
 
 namespace FireSharp.EventStreaming
 {
-    internal sealed class TemporaryCache
+    internal sealed class TemporaryCache : IDisposable
     {
         private readonly LinkedList<SimpleCacheItem> _pathFromRootList = new LinkedList<SimpleCacheItem>();
         private readonly char[] _seperator = {'/'};
-        private readonly SimpleCacheItem _tree = new SimpleCacheItem();
         private readonly object _treeLock = new object();
+
+        public object Context = null;
 
         public TemporaryCache()
         {
-            _tree.Name = string.Empty;
-            _tree.Created = false;
-            _tree.Parent = null;
-            _tree.Name = null;
+            Root.Name = string.Empty;
+            Root.Created = false;
+            Root.Parent = null;
+            Root.Name = null;
         }
 
-        internal SimpleCacheItem Root
+        ~TemporaryCache()
         {
-            get { return _tree; }
+            Dispose(false);
         }
+
+        internal SimpleCacheItem Root { get; } = new SimpleCacheItem();
 
         public void Replace(string path, JsonReader data)
         {
@@ -48,7 +51,7 @@ namespace FireSharp.EventStreaming
         {
             var segments = path.Split(_seperator, StringSplitOptions.RemoveEmptyEntries);
 
-            return segments.Aggregate(_tree, GetNamedChild);
+            return segments.Aggregate(Root, GetNamedChild);
         }
 
         private static SimpleCacheItem GetNamedChild(SimpleCacheItem root, string segment)
@@ -75,10 +78,7 @@ namespace FireSharp.EventStreaming
             {
                 DeleteChild(root);
 
-                if (root.Parent != null)
-                {
-                    root.Parent.Children.Add(root);
-                }
+                root.Parent?.Children.Add(root);
             }
 
             while (reader.Read())
@@ -111,6 +111,7 @@ namespace FireSharp.EventStreaming
                     case JsonToken.Null:
                         DeleteChild(root);
                         return;
+                    case JsonToken.EndObject: return;
                 }
             }
         }
@@ -163,7 +164,7 @@ namespace FireSharp.EventStreaming
             var sb = new StringBuilder(size);
             foreach (var d in _pathFromRootList)
             {
-                sb.AppendFormat("/{0}", d.Name);
+                sb.Append($"/{d.Name}");
             }
 
             _pathFromRootList.Clear();
@@ -173,27 +174,37 @@ namespace FireSharp.EventStreaming
 
         private void OnAdded(ValueAddedEventArgs args)
         {
-            var added = Added;
-            if (added == null) return;
-            added(this, args);
+            Added?.Invoke(this, args, Context);
         }
 
         private void OnUpdated(ValueChangedEventArgs args)
         {
-            var updated = Changed;
-            if (updated == null) return;
-            updated(this, args);
+            Changed?.Invoke(this, args, Context);
         }
 
         private void OnRemoved(ValueRemovedEventArgs args)
         {
-            var removed = Removed;
-            if (removed == null) return;
-            removed(this, args);
+            Removed?.Invoke(this, args, Context);
         }
 
         public event ValueAddedEventHandler Added;
         public event ValueChangedEventHandler Changed;
         public event ValueRemovedEventHandler Removed;
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                Added = null;
+                Changed = null;
+                Removed = null;
+            }
+        }
     }
 }

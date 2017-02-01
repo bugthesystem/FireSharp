@@ -32,7 +32,7 @@ namespace FireSharp.WebApp.Controllers
 
         public ActionResult CallFirebaseSync()
         {
-            _client.Push("chat/", new 
+            _client.Push("chat/", new
             {
                 name = "someone",
                 text = "Hello from backend :" + DateTime.Now.ToString("f")
@@ -43,7 +43,8 @@ namespace FireSharp.WebApp.Controllers
 
         public ActionResult CallFirebaseSync2()
         {
-            _client.PushAsync("chat/", new {
+            _client.PushAsync("chat/", new
+            {
                 name = "someone",
                 text = "Hello from backend :" + DateTime.Now.ToString("f")
             }).Wait();

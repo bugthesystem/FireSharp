@@ -1,10 +1,28 @@
+os: Visual Studio 2015
+install:
+  - set PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
+
 configuration: Release
+
 branches:
   only:
     - master
+environment:
+  COVERALLS_REPO_TOKEN:
+    secure: dEhBWtoMGvOY9L6uMDKKlhcjmj7DAKTnI
+    
 before_build:
   - nuget restore FireSharp.sln
+  - nuget install -OutputDirectory packages -Version 4.6.519 OpenCover
+  - nuget install -OutputDirectory packages -Version 1.3.4 coveralls.io
 
 build:
   project: FireSharp.sln       
   verbosity: minimal
+  
+test_script:
+  #- nunit-console /noshadow /domain:single /framework:net-4.5 FireSharp.Tests\bin\%CONFIGURATION%\FireSharp.Tests.dll
+  - packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -filter:"+[Coveralls*]*" -target:nunit-console.exe -targetargs:"/noshadow /domain:single /framework:net-4.5 FireSharp.Tests\bin\%CONFIGURATION%\FireSharp.Tests.dll" -filter:"+[FireSharp]* -[FireSharp.Tests]*" -output:coverage.xml
+
+after_test:
+  - packages\coveralls.io.1.3.4\tools\coveralls.net.exe --opencover coverage.xml -r dEhBWtoMGvOY9L6uMDKKlhcjmj7DAKTnI

@@ -4,8 +4,8 @@ using ServiceStack.Text;
 namespace FireSharp.Serialization.ServiceStack
 {
     /// <summary>
-    /// ServiceSatck JSON serializer for request bodies
-    /// ServiceStack.Text supports DataContract,DataMember attributes
+    ///     ServiceSatck JSON serializer for request bodies
+    ///     ServiceStack.Text supports DataContract,DataMember attributes
     /// </summary>
     public class ServiceStackJsonSerializer : ISerializer
     {

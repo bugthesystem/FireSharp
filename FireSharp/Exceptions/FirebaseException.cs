@@ -21,9 +21,8 @@ namespace FireSharp.Exceptions
         }
 
         public FirebaseException(HttpStatusCode statusCode, string responseBody)
-            : base(string.Format("Request responded with status code={0}, response={1}", statusCode, responseBody))
+            : base($"Request responded with status code={statusCode}, response={responseBody}")
         {
-
         }
     }
 }

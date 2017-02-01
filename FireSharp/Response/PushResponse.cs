@@ -1,28 +1,26 @@
-﻿using System.Net;
-using System.Net.Http;
+﻿using System;
+using System.Net;
+using System.Runtime.Serialization;
 
 namespace FireSharp.Response
 {
     public class PushResponse : FirebaseResponse
     {
-        public PushResponse(string body, HttpStatusCode statusCode, HttpResponseMessage httpResponse)
-            : base(body, statusCode, httpResponse)
-        {
-        }
-
         public PushResponse(string body, HttpStatusCode statusCode)
             : base(body, statusCode)
         {
         }
 
-        public PushResult Result
-        {
-            get { return ResultAs<PushResult>(); }
-        }
+        public PushResult Result => ResultAs<PushResult>();
     }
 
+    [DataContract]
     public class PushResult
     {
-        public string name { get; set; }
+        [DataMember(Name = "name")]
+        public string Name { get; set; }
+
+        [Obsolete("Use the Name property instead")]
+        public string name => Name;
     }
 }

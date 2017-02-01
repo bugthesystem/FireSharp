@@ -10,9 +10,6 @@ namespace FireSharp.EventStreaming
         public SimpleCacheItem Parent { get; set; }
         public bool Created { get; set; }
 
-        public List<SimpleCacheItem> Children
-        {
-            get { return _children ?? (_children = new List<SimpleCacheItem>()); }
-        }
+        public List<SimpleCacheItem> Children => _children ?? (_children = new List<SimpleCacheItem>());
     }
 }

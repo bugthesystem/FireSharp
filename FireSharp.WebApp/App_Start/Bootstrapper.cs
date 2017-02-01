@@ -4,7 +4,6 @@ using Autofac;
 using Autofac.Integration.Mvc;
 using FireSharp.Config;
 using FireSharp.Interfaces;
-using FireSharp.WebApp.App_Start;
 
 namespace FireSharp.WebApp
 {
@@ -23,7 +22,7 @@ namespace FireSharp.WebApp
             var builder = new ContainerBuilder();
 
             // Register your MVC controllers.
-            builder.RegisterControllers(typeof (MvcApplication).Assembly);
+            builder.RegisterControllers(typeof(MvcApplication).Assembly);
 
             builder.Register(context => new FirebaseConfig
             {
