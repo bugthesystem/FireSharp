@@ -15,7 +15,7 @@ update your clients **in realtime from the backend**.
 **2.0**
 - Use Microsoft HTTP Client Libraries instead of RestSharp
 - FireSharp is now Portable Library
-- Supports Streaming from the REST API
+- Supports Streaming from the REST API (Firebase REST endpoints support the EventSource / Server-Sent Events protocol.)
 - It is fully asynchronous and designed to be non-blocking
 
 **IMPORTANT :** [**v1 docs**](https://github.com/ziyasal/FireSharp/wiki/v1-Docs) moved [here](https://github.com/ziyasal/FireSharp/wiki/v1-Docs).
