@@ -8,7 +8,6 @@ Changes are sent to all subscribed clients automatically, so you can
 update your clients **in realtime** from the backend.
 
 [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/bj2sdp2a0w5095sv?svg=true)](https://ci.appveyor.com/project/ziyasal/firesharp) [![Coverage Status](https://coveralls.io/repos/github/ziyasal/FireSharp/badge.svg?branch=master)](https://coveralls.io/github/ziyasal/FireSharp?branch=master) [![Stories in Ready](https://badge.waffle.io/ziyasal/firesharp.svg?label=ready&title=Ready)](http://waffle.io/ziyasal/firesharp)  
-[![Support via Gratipay](https://cdn.rawgit.com/gratipay/gratipay-badge/2.3.0/dist/gratipay.svg)](https://gratipay.com/ziyasal/)  
 
 **IMPORTANT :** [**v1 docs**](https://github.com/ziyasal/FireSharp/wiki/v1-Docs) moved [here](https://github.com/ziyasal/FireSharp/wiki/v1-Docs).
 
