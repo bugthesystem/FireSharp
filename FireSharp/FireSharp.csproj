@@ -96,6 +96,7 @@
     <Compile Include="Response\FirebaseResponse.cs" />
     <Compile Include="Response\PushResponse.cs" />
     <Compile Include="Response\SetResponse.cs" />
+    <Compile Include="ServerValues.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Threading.Tasks">
