@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FireSharp
 {
-    public class FirebaseClient : IFirebaseClient, IDisposable
+    public class FirebaseClient : IFirebaseClient
     {
         private readonly Action<HttpStatusCode, string> _defaultErrorHandler = (statusCode, body) =>
         {
