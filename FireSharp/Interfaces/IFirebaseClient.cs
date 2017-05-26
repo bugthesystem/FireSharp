@@ -5,7 +5,7 @@ using FireSharp.Response;
 
 namespace FireSharp.Interfaces
 {
-    public interface IFirebaseClient
+    public interface IFirebaseClient: IDisposable
     {
         Task<FirebaseResponse> GetAsync(string path);
         Task<FirebaseResponse> GetAsync(string path, QueryBuilder queryBuilder);
