@@ -2,13 +2,13 @@
 
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>FireSharp</id>
+    <id>LSSFireSharp</id>
     <version>2.0.4</version>
     <title>Fire#</title>
     <authors>ziyasal</authors>
     <owners>ziyasal</owners>
     <licenseUrl>https://github.com/ziyasal/FireSharp/blob/master/LICENSE.md</licenseUrl>
-    <projectUrl>https://github.com/ziyasal/FireSharp</projectUrl>
+    <projectUrl>https://github.com/AwsomeWyatt/FireSharp</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>.Net wrapper for Firebase API</description>
     <language>en-US</language>
