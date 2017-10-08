@@ -7,14 +7,14 @@ using FireSharp.Interfaces;
 
 namespace FireSharp
 {
-    internal class RequestManager : IRequestManager
+    public class RequestManager : IRequestManager
     {
-        internal static readonly HttpMethod Patch = new HttpMethod("PATCH");
+        public static readonly HttpMethod Patch = new HttpMethod("PATCH");
 
         private readonly IFirebaseConfig _config;
         private readonly HttpClient _httpClient;
 
-        internal RequestManager(IFirebaseConfig config)
+        public RequestManager(IFirebaseConfig config)
         {
             if (config == null) throw new ArgumentNullException(nameof(config));
 

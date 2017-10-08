@@ -32,7 +32,7 @@ namespace FireSharp
             Dispose(false);
         }
 
-        internal FirebaseClient(IRequestManager requestManager)
+        public FirebaseClient(IRequestManager requestManager)
         {
             _requestManager = requestManager;
         }

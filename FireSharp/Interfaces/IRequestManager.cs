@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace FireSharp.Interfaces
 {
-    internal interface IRequestManager : IDisposable
+    public interface IRequestManager : IDisposable
     {
         Task<HttpResponseMessage> ListenAsync(string path);
         Task<HttpResponseMessage> ListenAsync(string path, QueryBuilder queryBuilder);
