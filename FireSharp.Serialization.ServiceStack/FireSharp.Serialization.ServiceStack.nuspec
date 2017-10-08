@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>FireSharp.Serialization.ServiceStack</id>
+        <version>2.0.0-beta2</version>
+        <title>Fire# Serialization ServiceStack</title>
+        <authors>ziyasal</authors>
+        <owners>ziyasal</owners>
+        <licenseUrl>https://github.com/ziyasal/FireSharp/blob/master/LICENSE.md</licenseUrl>
+        <projectUrl>https://github.com/ziyasal/FireSharp</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Provides JSON serialization support using ServiceStack.Text.</description>
+        <language>en-US</language>
+        <tags>firebase rest api client realtime servicestack json</tags>
+        <dependencies>
+            <dependency id="RestSharp" version="104.4.0" />
+            <dependency id="ServiceStack.Text" version="3.9.70" />
+            <dependency id="FireSharp" version="2.0.0-beta2" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="bin\Release\FireSharp.Serialization.ServiceStack.dll" target="lib\net45\FireSharp.Serialization.ServiceStack.dll" />
+    </files>
+</package>
