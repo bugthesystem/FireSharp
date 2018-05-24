@@ -90,6 +90,10 @@ response.Dispose();
 ```
 
 ## Release Notes
+**2.1**
+- Firesharp now is a Net Standard library, so it's available for every platform.
+
+
 **2.0**
 - Use Microsoft HTTP Client Libraries instead of RestSharp
 - FireSharp is now Portable Library
