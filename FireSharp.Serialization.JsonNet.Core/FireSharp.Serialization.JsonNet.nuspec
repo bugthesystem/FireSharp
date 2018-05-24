@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>FireSharp.Serialization.JsonNet</id>
-    <version>2.0.0-beta2</version>
+    <id>FireSharp.Serialization.JsonNet.Core</id>
+    <version>2.1.0</version>
     <title>Fire# Serialization JsonNet</title>
     <authors>ziyasal</authors>
     <owners>ziyasal</owners>
+    <iconUrl>https://raw.githubusercontent.com/ziyasal/FireSharp/master/misc/logo.png</iconUrl>
     <licenseUrl>https://github.com/ziyasal/FireSharp/blob/master/LICENSE.md</licenseUrl>
     <projectUrl>https://github.com/ziyasal/FireSharp</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -20,6 +21,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\Release\netstandard2.0\FireSharp.Serialization.JsonNet.dll" target="lib\net45\FireSharp.Serialization.JsonNet.dll" />
+    <file src="bin\Release\netstandard2.0\FireSharp.Serialization.JsonNet.Core.dll" target="lib\net45\FireSharp.Serialization.JsonNet.Core.dll" />
   </files>
 </package>
