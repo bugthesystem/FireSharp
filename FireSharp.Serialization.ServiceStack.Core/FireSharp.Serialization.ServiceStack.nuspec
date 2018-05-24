@@ -6,6 +6,7 @@
     <title>Fire# Serialization ServiceStack</title>
     <authors>ziyasal</authors>
     <owners>ziyasal</owners>
+    <iconUrl>https://raw.githubusercontent.com/ziyasal/FireSharp/master/misc/logo.png</iconUrl>
     <licenseUrl>https://github.com/ziyasal/FireSharp/blob/master/LICENSE.md</licenseUrl>
     <projectUrl>https://github.com/ziyasal/FireSharp</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -14,12 +15,12 @@
     <tags>firebase rest api client realtime servicestack json</tags>
     <dependencies>
       <group targetFramework=".netstandard2.0">
-        <dependency id="ServiceStack.Text" version="5.1.0" />
+        <dependency id="ServiceStack.Text.Core" version="5.1.0" />
         <dependency id="FireSharp" version="2.1.0" />
       </group>
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\Release\netstandard2.0\FireSharp.Serialization.ServiceStack.dll" target="lib\netstandard2.0\FireSharp.Serialization.ServiceStack.dll" />
+    <file src="bin\Release\netstandard2.0\FireSharp.Serialization.ServiceStack.Core.dll" target="lib\netstandard2.0\FireSharp.Serialization.ServiceStack.Core.dll" />
   </files>
 </package>

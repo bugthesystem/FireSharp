@@ -7,6 +7,7 @@
     <title>Fire#</title>
     <authors>ziyasal</authors>
     <owners>ziyasal</owners>
+    <iconUrl>https://raw.githubusercontent.com/ziyasal/FireSharp/master/misc/logo.png</iconUrl>
     <licenseUrl>https://github.com/ziyasal/FireSharp/blob/master/LICENSE.md</licenseUrl>
     <projectUrl>https://github.com/ziyasal/FireSharp</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -20,6 +21,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\Release\netstandard2.0\FireSharp.dll" target="lib\netstandard2.0" />
+    <file src="bin\Release\netstandard2.0\FireSharp.Core.dll" target="lib\netstandard2.0" />
   </files>
 </package>
