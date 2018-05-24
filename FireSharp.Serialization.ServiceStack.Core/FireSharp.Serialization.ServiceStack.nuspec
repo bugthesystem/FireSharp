@@ -15,8 +15,8 @@
     <tags>firebase rest api client realtime servicestack json</tags>
     <dependencies>
       <group targetFramework=".netstandard2.0">
-        <dependency id="ServiceStack.Text" version="5.1.0" />
-        <dependency id="FireSharp" version="2.1.0" />
+        <dependency id="ServiceStack.Text.Core" version="5.1.0" />
+        <dependency id="FireSharp.Core" version="2.1.0" />
       </group>
     </dependencies>
   </metadata>

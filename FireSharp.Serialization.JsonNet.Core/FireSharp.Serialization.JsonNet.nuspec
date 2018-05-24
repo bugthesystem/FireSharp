@@ -16,7 +16,7 @@
     <dependencies>
       <group targetFramework=".netstandard2.0">
         <dependency id="Newtonsoft.Json" version="11.0.2" />
-        <dependency id="FireSharp" version="2.1.0" />
+        <dependency id="FireSharp.Core" version="2.1.0" />
       </group>
     </dependencies>
   </metadata>
