@@ -74,6 +74,20 @@ namespace FireSharp.Tests.Core
             var queryString = queryBuilder.ToQueryString();
             queryString.Should().BeEquivalentTo("limitToLast=10");
         }
+        [Test]
+        public void ShallowParameterTest()
+        {
+            QueryBuilder queryBuilder = QueryBuilder.New().Shallow(true);
+            var queryString = queryBuilder.ToQueryString();
+            queryString.Should().BeEquivalentTo("shallow=true");
+        }
+        [Test]
+        public void PrintParameterTest()
+        {
+            QueryBuilder queryBuilder = QueryBuilder.New().Print("silent");
+            var queryString = queryBuilder.ToQueryString();
+            queryString.Should().BeEquivalentTo("print=silent");
+        }
 
     }
 }

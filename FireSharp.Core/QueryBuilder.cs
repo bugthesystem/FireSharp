@@ -16,6 +16,7 @@ namespace FireSharp.Core
         private string formatVal = "export";
         private string limitToFirstParam = "limitToFirst";
         private string limitToLastParam = "limitToLast";
+        private string printParam = "print";
 
         static Dictionary<string, object> _query = new Dictionary<string, object>();
 
@@ -74,6 +75,11 @@ namespace FireSharp.Core
         public QueryBuilder Shallow(bool value)
         {
             return AddToQueryDictionary(shallowParam, value ? "true" : string.Empty, skipEncoding: true);
+        }
+
+        public QueryBuilder Print(string value)
+        {
+            return AddToQueryDictionary(printParam, value, skipEncoding: true);
         }
 
         public QueryBuilder IncludePriority(bool value)

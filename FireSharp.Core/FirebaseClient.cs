@@ -100,6 +100,23 @@ namespace FireSharp.Core
             }
         }
 
+        public SetResponse Set<T>(string path, T data, string print)
+        {
+            try
+            {
+                var queryBuilder = QueryBuilder.New().Print(print);
+                var response = _requestManager.RequestAsync(HttpMethod.Put, path, queryBuilder, data).Result;
+                var content = response.Content.ReadAsStringAsync().Result;
+                HandleIfErrorResponse(response.StatusCode, content);
+                return new SetResponse(content, response.StatusCode);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new FirebaseException(ex);
+            }
+        }
+
+
         public PushResponse Push<T>(string path, T data)
         {
             try
@@ -135,6 +152,24 @@ namespace FireSharp.Core
             try
             {
                 using (var response = _requestManager.RequestAsync(RequestManager.Patch, path, data).Result)
+                {
+                    var content = response.Content.ReadAsStringAsync().Result;
+                    HandleIfErrorResponse(response.StatusCode, content);
+                    return new FirebaseResponse(content, response.StatusCode);
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new FirebaseException(ex);
+            }
+        }
+
+        public FirebaseResponse Update<T>(string path, T data, string print)
+        {
+            try
+            {
+                var queryBuilder = QueryBuilder.New().Print(print);
+                using (var response = _requestManager.RequestAsync(RequestManager.Patch, path, queryBuilder, data).Result)
                 {
                     var content = response.Content.ReadAsStringAsync().Result;
                     HandleIfErrorResponse(response.StatusCode, content);
@@ -186,6 +221,22 @@ namespace FireSharp.Core
             try
             {
                 var response = await _requestManager.RequestAsync(HttpMethod.Put, path, data).ConfigureAwait(false);
+                var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                HandleIfErrorResponse(response.StatusCode, content);
+                return new SetResponse(content, response.StatusCode);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new FirebaseException(ex);
+            }
+        }
+
+        public async Task<SetResponse> SetAsync<T>(string path, T data, string print)
+        {
+            try
+            {
+                var queryBuilder = QueryBuilder.New().Print(print);
+                var response = await _requestManager.RequestAsync(HttpMethod.Put, path, queryBuilder, data).ConfigureAwait(false);
                 var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 HandleIfErrorResponse(response.StatusCode, content);
                 return new SetResponse(content, response.StatusCode);
@@ -347,6 +398,24 @@ namespace FireSharp.Core
             try
             {
                 using (var response = await _requestManager.RequestAsync(RequestManager.Patch, path, data).ConfigureAwait(false))
+                {
+                    var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    HandleIfErrorResponse(response.StatusCode, content);
+                    return new FirebaseResponse(content, response.StatusCode);
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new FirebaseException(ex);
+            }
+        }
+
+        public async Task<FirebaseResponse> UpdateAsync<T>(string path, T data, string print)
+        {
+            try
+            {
+                var queryBuilder = QueryBuilder.New().Print(print);
+                using (var response = await _requestManager.RequestAsync(RequestManager.Patch, path, queryBuilder, data).ConfigureAwait(false))
                 {
                     var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                     HandleIfErrorResponse(response.StatusCode, content);
