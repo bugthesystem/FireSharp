@@ -108,11 +108,11 @@ namespace FireSharp.Core
             request = new HttpRequestMessage(HttpMethod.Get, uri);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("text/event-stream"));
 
-			if (!string.IsNullOrEmpty(_config.AccessToken)) {
-				request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config.AccessToken);
-			}
+            if (!string.IsNullOrEmpty(_config.AccessToken)) {
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config.AccessToken);
+            }
 
-			return client;
+            return client;
         }
 
         private HttpRequestMessage PrepareRequest(HttpMethod method, Uri uri, object payload)
@@ -124,9 +124,9 @@ namespace FireSharp.Core
                 request.Content = new StringContent(payload as string ?? _config.Serializer.Serialize(payload));
             }
 
-			if (!string.IsNullOrEmpty(_config.AccessToken)) {
-				request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config.AccessToken);
-			}
+            if (!string.IsNullOrEmpty(_config.AccessToken)) {
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _config.AccessToken);
+            }
 
             return request;
         }
