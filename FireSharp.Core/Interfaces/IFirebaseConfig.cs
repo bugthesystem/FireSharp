@@ -7,7 +7,8 @@ namespace FireSharp.Core.Interfaces
         string BasePath { get; set; }
         string Host { get; set; }
         string AuthSecret { get; set; }
-        TimeSpan? RequestTimeout { get; set; }
+		string AccessToken { get; set; }
+		TimeSpan? RequestTimeout { get; set; }
         ISerializer Serializer { get; set; }
     }
 }
