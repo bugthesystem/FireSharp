@@ -23,6 +23,7 @@ namespace FireSharp.Core.Config
 
         public string Host { get; set; }
         public string AuthSecret { get; set; }
+        public string AccessToken { get; set; }
 
         public TimeSpan? RequestTimeout { get; set; }
 
