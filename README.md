@@ -103,6 +103,3 @@ response.Dispose();
 More information about Firebase and the Firebase API is available at the
 [official website](http://www.firebase.com/).
 
-
-## License
-Code and documentation are available according to the *MIT* License (see [LICENSE](https://github.com/ziyasal/FireSharp/blob/master/LICENSE.md)).
