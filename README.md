@@ -81,7 +81,7 @@ Console.WriteLine(response.StatusCode);
 ```
 #### Listen **Streaming from the REST API**
 ```csharp
-EventStreamResponse response = await _client.OnAsync("chat", (sender, args) => {
+EventStreamResponse response = await _client.OnAsync("chat", (sender, args, context) => {
        System.Console.WriteLine(args.Data);
 });
 
