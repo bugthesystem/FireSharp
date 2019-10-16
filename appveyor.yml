@@ -7,14 +7,12 @@ branches:
   
 deploy:
     - 
-        provider: Environment
-        name: NuGet
+        provider: NuGet
         on:
             branch: master
 
     - 
-        provider: Environment
-        name: NuGet
+        provider: NuGet
         on:
             APPVEYOR_REPO_TAG: true
 init:
