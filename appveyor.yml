@@ -3,6 +3,20 @@ image: Visual Studio 2019
 branches:
   only:
   - lablabla-appveyor
+  - master
+  
+deploy:
+    - 
+        provider: Environment
+        name: NuGet
+        on:
+            branch: master
+
+    - 
+        provider: Environment
+        name: NuGet
+        on:
+            APPVEYOR_REPO_TAG: true
 init:
   # Good practice, because Windows line endings are different from Unix/Linux ones
   - cmd: git config --global core.autocrlf true
