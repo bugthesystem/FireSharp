@@ -48,9 +48,5 @@ cd $projectDir
 Write-Host "Saving Artifacts" -ForegroundColor Green
 Push-AppveyorArtifact $nugetFile
 
-# Publish package to NuGet
-Write-Host "Publishing NuGet package" -ForegroundColor Green
-#& nuget push $nugetFile -ApiKey $env:NUGET_API_KEY -Source https://www.nuget.org/api/v2/package
-
 # Done
 Write-Host "Done!" -ForegroundColor Green
