@@ -8,3 +8,8 @@ before_build:
 build:
   project: FireSharp.Core.sln       
   verbosity: minimal
+
+artifacts:
+
+  # pushing all *.nupkg files in build directory recursively
+  - path: '**\*.nupkg'
