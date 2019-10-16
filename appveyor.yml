@@ -13,4 +13,4 @@ artifacts:
 
   # pushing all *.nupkg files in build directory recursively
   - path: '**\FireSharp*.nupkg'
-  - name: nuget
+    name: nuget
