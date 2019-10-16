@@ -2,7 +2,6 @@ version: 2.1.{build}
 image: Visual Studio 2019
 branches:
   only:
-  - lablabla-appveyor
   - master
   
 deploy:
