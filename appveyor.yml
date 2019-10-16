@@ -1,5 +1,6 @@
 image: Visual Studio 2019
 
+version: '{build}'
 configuration: Release
     
 before_build:
@@ -8,9 +9,25 @@ before_build:
 build:
   project: FireSharp.Core.sln       
   verbosity: minimal
-
+  
+pull_requests:
+  do_not_increment_build_number: true
+branches:
+  only:
+  - master
+nuget:
+  disable_publish_on_pr: true
+build_script:
+- ps: .\Build.ps1
+test: off
 artifacts:
-
-  # pushing all *.nupkg files in build directory recursively
-  - path: '**\FireSharp*.nupkg'
-    name: nuget
+- path: .\artifacts\**\*.nupkg
+  name: NuGet
+deploy:
+- provider: NuGet
+  name: production
+  api_key:
+    secure: zjOF0quQb2VmZysKQWTRBNbcn3UHEkyEKAeE350uKJBGI9d/VWJXzCYaQjgQTOXI
+  on:
+    branch: master
+    appveyor_repo_tag: true
