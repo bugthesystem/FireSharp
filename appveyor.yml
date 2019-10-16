@@ -1,33 +1,10 @@
+version: 2.1.{build}
 image: Visual Studio 2019
-
-version: '{build}'
-configuration: Release
-    
-before_build:
-  - nuget restore FireSharp.Core.sln
-
-build:
-  project: FireSharp.Core.sln       
-  verbosity: minimal
-  
-pull_requests:
-  do_not_increment_build_number: true
 branches:
   only:
-  - master
-nuget:
-  disable_publish_on_pr: true
+  - lablabla-appveyor
+init:
+  # Good practice, because Windows line endings are different from Unix/Linux ones
+  - cmd: git config --global core.autocrlf true
 build_script:
-- ps: .\Build.ps1
-test: off
-artifacts:
-- path: .\artifacts\**\*.nupkg
-  name: NuGet
-deploy:
-- provider: NuGet
-  name: production
-  api_key:
-    secure: zjOF0quQb2VmZysKQWTRBNbcn3UHEkyEKAeE350uKJBGI9d/VWJXzCYaQjgQTOXI
-  on:
-    branch: master
-    appveyor_repo_tag: true
+  - ps: ./Build.ps1
