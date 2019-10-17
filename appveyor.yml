@@ -1,18 +1,26 @@
-version: 2.1.{build}
-image: Visual Studio 2019
+os: Visual Studio 2019
+
+configuration: Release
+
 branches:
   only:
-  - master
+    - master
+environment:
+  COVERALLS_REPO_TOKEN:
+    secure: dEhBWtoMGvOY9L6uMDKKlhcjmj7DAKTnI
+    
+before_build:
+  - nuget restore FireSharp.Core.sln
+  - nuget install -OutputDirectory packages -Version 4.6.519 OpenCover
+  - nuget install -OutputDirectory packages -Version 1.3.4 coveralls.io
+
+build:
+  project: FireSharp.Core.sln       
+  verbosity: minimal
   
-deploy:
-    - 
-        provider: NuGet
-        api_key:
-            secure: oGoUpka4d/xNk004K0HQn4cyUpUJNiofdIRSEDDoeMjvQbzI9Prv451pbOYObPfO
-        on:
-            branch: master
-init:
-  # Good practice, because Windows line endings are different from Unix/Linux ones
-  - cmd: git config --global core.autocrlf true
-build_script:
-  - ps: ./Build.ps1
+test_script:
+  #- nunit-console /noshadow /domain:single /framework:netstandard2.0 FireSharp.Tests\bin\%CONFIGURATION%\netstandard2.0\FireSharp.Tests.Core.dll
+  - packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -filter:"+[Coveralls*]*" -target:nunit-console.exe -targetargs:"/noshadow /domain:single /framework:netstandard2.0 FireSharp.Tests\bin\%CONFIGURATION%\netstandard2.0\FireSharp.Tests.dll" -filter:"+[FireSharp.Core]* -[FireSharp.Tests.Core]*" -output:coverage.xml
+
+after_test:
+  - packages\coveralls.io.1.3.4\tools\coveralls.net.exe --opencover coverage.xml -r dEhBWtoMGvOY9L6uMDKKlhcjmj7DAKTnI
