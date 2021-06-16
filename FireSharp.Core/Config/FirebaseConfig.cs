@@ -5,7 +5,7 @@ namespace FireSharp.Core.Config
 {
     public class FirebaseConfig : IFirebaseConfig
     {
-        private string _basePath;
+        private string basePath;
 
         public FirebaseConfig()
         {
@@ -14,11 +14,8 @@ namespace FireSharp.Core.Config
 
         public string BasePath
         {
-            get
-            {
-                return _basePath.EndsWith("/") ? _basePath : $"{_basePath}/";
-            }
-            set { _basePath = value; }
+            get => basePath.EndsWith("/") ? basePath : $"{basePath}/";
+            set => basePath = value;
         }
 
         public string Host { get; set; }

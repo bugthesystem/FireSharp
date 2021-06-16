@@ -5,6 +5,7 @@ using FireSharp.Core;
 using FireSharp.Core.Exceptions;
 using FireSharp.Core.Extensions;
 using FireSharp.Core.Interfaces;
+using FireSharp.Core.Response;
 using FireSharp.Tests.Core.Commom;
 using FireSharp.Tests.Core.Models;
 using Moq;
@@ -16,153 +17,153 @@ namespace FireSharp.Tests.Core
     [TestFixture]
     public class FirebaseClientTests : TestBase
     {
-        private Todo _expected;
-        private HttpResponseMessage _expectedResponse;
-        private HttpResponseMessage _failureResponse;
-        private FirebaseClient _firebaseClient;
-        private Mock<IRequestManager> _firebaseRequestManagerMock;
+        private Todo expected;
+        private HttpResponseMessage expectedResponse;
+        private HttpResponseMessage failureResponse;
+        private FirebaseClient firebaseClient;
+        private Mock<IRequestManager> firebaseRequestManagerMock;
 
         protected override void FinalizeSetUp()
         {
-            _expected = new Todo
+            expected = new Todo
             {
                 name = "Do your homework!",
                 priority = 1
             };
 
-            _firebaseRequestManagerMock = MockFor<IRequestManager>();
+            firebaseRequestManagerMock = MockFor<IRequestManager>();
 
-            _expectedResponse = new HttpResponseMessage
+            expectedResponse = new HttpResponseMessage
             {
-                Content = new StringContent(_expected.ToJson()),
+                Content = new StringContent(expected.ToJson()),
                 StatusCode = HttpStatusCode.OK
             };
-            _failureResponse = new HttpResponseMessage
+            failureResponse = new HttpResponseMessage
             {
                 Content = new StringContent("error"),
                 StatusCode = HttpStatusCode.InternalServerError
             };
 
-            _firebaseClient = new FirebaseClient(_firebaseRequestManagerMock.Object);
+            firebaseClient = new FirebaseClient(firebaseRequestManagerMock.Object);
         }
 
         [Test]
         public async Task DeleteAsync()
         {
-            _firebaseRequestManagerMock.Setup(firebaseRequestManager =>
-                firebaseRequestManager.RequestAsync(HttpMethod.Delete, "todos", (object)null))
-                .Returns(Task.FromResult(_expectedResponse));
+            firebaseRequestManagerMock.Setup(firebaseRequestManager =>
+                firebaseRequestManager.RequestAsync(HttpMethod.Delete, "TODOs", (object)null))
+                .Returns(Task.FromResult(expectedResponse));
 
-            var response = await _firebaseClient.DeleteAsync("todos");
+            FirebaseResponse response = await firebaseClient.DeleteAsync("TODOs");
             Assert.NotNull(response);
         }
 
         [Test]
         public void DeleteAsyncFailure()
         {
-            ReturnsExtensions.ReturnsAsync(_firebaseRequestManagerMock.Setup(
-                firebaseRequestManager => firebaseRequestManager.RequestAsync(HttpMethod.Delete, "todos", (object)null)),
-                _failureResponse);
+            ReturnsExtensions.ReturnsAsync(firebaseRequestManagerMock.Setup(
+                firebaseRequestManager => firebaseRequestManager.RequestAsync(HttpMethod.Delete, "TODOs", (object)null)),
+                failureResponse);
 
-            Assert.ThrowsAsync<FirebaseException>(async () => await _firebaseClient.DeleteAsync("todos"));
+            Assert.ThrowsAsync<FirebaseException>(async () => await firebaseClient.DeleteAsync("TODOs"));
         }
 
         [Test]
         public async Task GetAsync()
         {
-            _firebaseRequestManagerMock.Setup(firebaseRequestManager =>
-                firebaseRequestManager.RequestAsync(HttpMethod.Get, "todos", (object)null))
-                .Returns(Task.FromResult(_expectedResponse));
+            firebaseRequestManagerMock.Setup(firebaseRequestManager =>
+                firebaseRequestManager.RequestAsync(HttpMethod.Get, "TODOs", (object)null))
+                .Returns(Task.FromResult(expectedResponse));
 
-            var firebaseResponse = await _firebaseClient.GetAsync("todos");
+            FirebaseResponse firebaseResponse = await firebaseClient.GetAsync("TODOs");
             Assert.NotNull(firebaseResponse);
-            Assert.AreEqual(firebaseResponse.Body, _expected.ToJson());
+            Assert.AreEqual(firebaseResponse.Body, expected.ToJson());
         }
 
         [Test]
         public void GetAsyncFailure()
         {
-            ReturnsExtensions.ReturnsAsync(_firebaseRequestManagerMock.Setup(
-                firebaseRequestManager => firebaseRequestManager.RequestAsync(HttpMethod.Get, "todos", (object)null)),
-                _failureResponse);
+            ReturnsExtensions.ReturnsAsync(firebaseRequestManagerMock.Setup(
+                firebaseRequestManager => firebaseRequestManager.RequestAsync(HttpMethod.Get, "TODOs", (object)null)),
+                failureResponse);
 
-            Assert.ThrowsAsync<FirebaseException>(async () => await _firebaseClient.GetAsync("todos"));
+            Assert.ThrowsAsync<FirebaseException>(async () => await firebaseClient.GetAsync("TODOs"));
         }
 
         [Test]
         public void GetFailure()
         {
-            ReturnsExtensions.ReturnsAsync(_firebaseRequestManagerMock.Setup(
-                firebaseRequestManager => firebaseRequestManager.RequestAsync(HttpMethod.Get, "todos", (object)null)),
-                _failureResponse);
+            ReturnsExtensions.ReturnsAsync(firebaseRequestManagerMock.Setup(
+                firebaseRequestManager => firebaseRequestManager.RequestAsync(HttpMethod.Get, "TODOs", (object)null)),
+                failureResponse);
 
-            Assert.Throws<FirebaseException>(() => _firebaseClient.Get("todos"));
+            Assert.Throws<FirebaseException>(() => firebaseClient.Get("TODOs"));
         }
 
         [Test]
         public async Task PushAsync()
         {
-            _firebaseRequestManagerMock.Setup(
-                firebaseRequestManager => firebaseRequestManager.RequestAsync(HttpMethod.Post, "todos", _expected))
-                .Returns(Task.FromResult(_expectedResponse));
+            firebaseRequestManagerMock.Setup(
+                firebaseRequestManager => firebaseRequestManager.RequestAsync(HttpMethod.Post, "TODOs", expected))
+                .Returns(Task.FromResult(expectedResponse));
 
-            var response = await _firebaseClient.PushAsync("todos", _expected);
+            PushResponse response = await firebaseClient.PushAsync("TODOs", expected);
             Assert.NotNull(response);
-            Assert.AreEqual(response.Body, _expected.ToJson());
+            Assert.AreEqual(response.Body, expected.ToJson());
         }
 
         [Test]
         public void PushAsyncFailure()
         {
-            ReturnsExtensions.ReturnsAsync(_firebaseRequestManagerMock.Setup(
-                firebaseRequestManager => firebaseRequestManager.RequestAsync(HttpMethod.Post, "todos", _expected)),
-                _failureResponse);
+            ReturnsExtensions.ReturnsAsync(firebaseRequestManagerMock.Setup(
+                firebaseRequestManager => firebaseRequestManager.RequestAsync(HttpMethod.Post, "TODOs", expected)),
+                failureResponse);
 
-            Assert.ThrowsAsync<FirebaseException>(async () => await _firebaseClient.PushAsync("todos", _expected));
+            Assert.ThrowsAsync<FirebaseException>(async () => await firebaseClient.PushAsync("TODOs", expected));
         }
 
         [Test]
         public async Task SetAsync()
         {
-            _firebaseRequestManagerMock.Setup(
-                firebaseRequestManager => firebaseRequestManager.RequestAsync(HttpMethod.Put, "todos", _expected))
-                .Returns(Task.FromResult(_expectedResponse));
+            firebaseRequestManagerMock.Setup(
+                firebaseRequestManager => firebaseRequestManager.RequestAsync(HttpMethod.Put, "TODOs", expected))
+                .Returns(Task.FromResult(expectedResponse));
 
-            var response = await _firebaseClient.SetAsync("todos", _expected);
+            SetResponse response = await firebaseClient.SetAsync("TODOs", expected);
             Assert.NotNull(response);
-            Assert.AreEqual(response.Body, _expected.ToJson());
+            Assert.AreEqual(response.Body, expected.ToJson());
         }
 
         [Test]
         public void SetAsyncFailure()
         {
-            ReturnsExtensions.ReturnsAsync(_firebaseRequestManagerMock.Setup(
-                firebaseRequestManager => firebaseRequestManager.RequestAsync(HttpMethod.Put, "todos", _expected)),
-                _failureResponse);
+            ReturnsExtensions.ReturnsAsync(firebaseRequestManagerMock.Setup(
+                firebaseRequestManager => firebaseRequestManager.RequestAsync(HttpMethod.Put, "TODOs", expected)),
+                failureResponse);
 
-            Assert.ThrowsAsync<FirebaseException>(async () => await _firebaseClient.SetAsync("todos", _expected));
+            Assert.ThrowsAsync<FirebaseException>(async () => await firebaseClient.SetAsync("TODOs", expected));
         }
 
         [Test]
         public async Task UpdateAsync()
         {
-            _firebaseRequestManagerMock.Setup(
-                firebaseRequestManager => firebaseRequestManager.RequestAsync(RequestManager.Patch, "todos", _expected))
-                .Returns(Task.FromResult(_expectedResponse));
+            firebaseRequestManagerMock.Setup(
+                firebaseRequestManager => firebaseRequestManager.RequestAsync(RequestManager.Patch, "TODOs", expected))
+                .Returns(Task.FromResult(expectedResponse));
 
-            var response = await _firebaseClient.UpdateAsync("todos", _expected);
+            FirebaseResponse response = await firebaseClient.UpdateAsync("TODOs", expected);
             Assert.NotNull(response);
-            Assert.AreEqual(response.Body, _expected.ToJson());
+            Assert.AreEqual(response.Body, expected.ToJson());
         }
 
         [Test]
         public void UpdateAsyncFailure()
         {
-            ReturnsExtensions.ReturnsAsync(_firebaseRequestManagerMock.Setup(
-                firebaseRequestManager => firebaseRequestManager.RequestAsync(RequestManager.Patch, "todos", _expected)),
-                _failureResponse);
+            ReturnsExtensions.ReturnsAsync(firebaseRequestManagerMock.Setup(
+                firebaseRequestManager => firebaseRequestManager.RequestAsync(RequestManager.Patch, "TODOs", expected)),
+                failureResponse);
 
-            Assert.ThrowsAsync<FirebaseException>(async () => await _firebaseClient.UpdateAsync("todos", _expected));
+            Assert.ThrowsAsync<FirebaseException>(async () => await firebaseClient.UpdateAsync("TODOs", expected));
         }
     }
 }

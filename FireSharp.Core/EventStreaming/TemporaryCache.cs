@@ -8,9 +8,9 @@ namespace FireSharp.Core.EventStreaming
 {
     internal sealed class TemporaryCache : IDisposable
     {
-        private readonly LinkedList<SimpleCacheItem> _pathFromRootList = new LinkedList<SimpleCacheItem>();
-        private readonly char[] _seperator = {'/'};
-        private readonly object _treeLock = new object();
+        private readonly LinkedList<SimpleCacheItem> pathFromRootList = new();
+        private readonly char[] separator = {'/'};
+        private readonly object treeLock = new();
 
         public object Context = null;
 
@@ -27,42 +27,40 @@ namespace FireSharp.Core.EventStreaming
             Dispose(false);
         }
 
-        internal SimpleCacheItem Root { get; } = new SimpleCacheItem();
+        internal SimpleCacheItem Root { get; } = new();
 
         public void Replace(string path, JsonReader data)
         {
-            lock (_treeLock)
+            lock (treeLock)
             {
-                var root = FindRoot(path);
+                SimpleCacheItem root = FindRoot(path);
                 Replace(root, data);
             }
         }
 
         public void Update(string path, JsonReader data)
         {
-            lock (_treeLock)
+            lock (treeLock)
             {
-                var root = FindRoot(path);
+                SimpleCacheItem root = FindRoot(path);
                 UpdateChildren(root, data);
             }
         }
 
         private SimpleCacheItem FindRoot(string path)
         {
-            var segments = path.Split(_seperator, StringSplitOptions.RemoveEmptyEntries);
+            string[] segments = path.Split(separator, StringSplitOptions.RemoveEmptyEntries);
 
             return segments.Aggregate(Root, GetNamedChild);
         }
 
         private static SimpleCacheItem GetNamedChild(SimpleCacheItem root, string segment)
         {
-            var newRoot = root.Children.FirstOrDefault(c => c.Name == segment);
+            SimpleCacheItem newRoot = root.Children.FirstOrDefault(c => c.Name == segment);
 
-            if (newRoot == null)
-            {
-                newRoot = new SimpleCacheItem {Name = segment, Parent = root, Created = true};
-                root.Children.Add(newRoot);
-            }
+            if (newRoot != null) return newRoot;
+            newRoot = new SimpleCacheItem {Name = segment, Parent = root, Created = true};
+            root.Children.Add(newRoot);
 
             return newRoot;
         }
@@ -86,7 +84,7 @@ namespace FireSharp.Core.EventStreaming
                 switch (reader.TokenType)
                 {
                     case JsonToken.PropertyName:
-                        UpdateChildren(GetNamedChild(root, reader.Value.ToString()), reader);
+                        if (reader.Value != null) UpdateChildren(GetNamedChild(root, reader.Value.ToString()), reader);
                         break;
                     case JsonToken.Boolean:
                     case JsonToken.Bytes:
@@ -96,14 +94,18 @@ namespace FireSharp.Core.EventStreaming
                     case JsonToken.String:
                         if (root.Created)
                         {
-                            root.Value = reader.Value.ToString();
-                            OnAdded(new ValueAddedEventArgs(PathFromRoot(root), reader.Value.ToString()));
+                            if (reader.Value != null)
+                            {
+                                root.Value = reader.Value.ToString();
+                                OnAdded(new ValueAddedEventArgs(PathFromRoot(root), reader.Value.ToString()));
+                            }
+
                             root.Created = false;
                         }
                         else
                         {
-                            var oldData = root.Value;
-                            root.Value = reader.Value.ToString();
+                            string oldData = root.Value;
+                            if (reader.Value != null) root.Value = reader.Value.ToString();
                             OnUpdated(new ValueChangedEventArgs(PathFromRoot(root), root.Value, oldData));
                         }
 
@@ -127,7 +129,7 @@ namespace FireSharp.Core.EventStreaming
             }
             else
             {
-                foreach (var child in root.Children.ToArray())
+                foreach (SimpleCacheItem child in root.Children.ToArray())
                 {
                     RemoveChildFromParent(child);
                     OnRemoved(new ValueRemovedEventArgs(PathFromRoot(child)));
@@ -147,27 +149,27 @@ namespace FireSharp.Core.EventStreaming
 
         private string PathFromRoot(SimpleCacheItem root)
         {
-            var size = 1;
+            int size = 1;
 
             while (root.Name != null)
             {
                 size += root.Name.Length + 1;
-                _pathFromRootList.AddFirst(root);
+                pathFromRootList.AddFirst(root);
                 root = root.Parent;
             }
 
-            if (_pathFromRootList.Count == 0)
+            if (pathFromRootList.Count == 0)
             {
                 return "/";
             }
 
-            var sb = new StringBuilder(size);
-            foreach (var d in _pathFromRootList)
+            StringBuilder sb = new(size);
+            foreach (SimpleCacheItem d in pathFromRootList)
             {
                 sb.Append($"/{d.Name}");
             }
 
-            _pathFromRootList.Clear();
+            pathFromRootList.Clear();
 
             return sb.ToString();
         }

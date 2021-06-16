@@ -19,14 +19,14 @@ namespace FireSharp.Tests.Core
         public void StartAtQueryTest()
         {
             QueryBuilder queryBuilder = QueryBuilder.New().StartAt("a");
-            var queryString = queryBuilder.ToQueryString();
+            string queryString = queryBuilder.ToQueryString();
             queryString.Should().BeEquivalentTo("startAt=\"a\"");
         }
         [Test]
         public void EndAtQueryTest()
         {
             QueryBuilder queryBuilder = QueryBuilder.New().EndAt("a");
-            var queryString = queryBuilder.ToQueryString();
+            string queryString = queryBuilder.ToQueryString();
             queryString.Should().BeEquivalentTo("endAt=\"a\"");
         }
 
@@ -34,14 +34,14 @@ namespace FireSharp.Tests.Core
         public void StartAtNumberQueryTest()
         {
             QueryBuilder queryBuilder = QueryBuilder.New().StartAt(1472342400);
-            var queryString = queryBuilder.ToQueryString();
+            string queryString = queryBuilder.ToQueryString();
             queryString.Should().BeEquivalentTo("startAt=1472342400");
         }
         [Test]
         public void EndAtNumberQueryTest()
         {
             QueryBuilder queryBuilder = QueryBuilder.New().EndAt(1472342400);
-            var queryString = queryBuilder.ToQueryString();
+            string queryString = queryBuilder.ToQueryString();
             queryString.Should().BeEquivalentTo("endAt=1472342400");
         }
 
@@ -49,7 +49,7 @@ namespace FireSharp.Tests.Core
         public void EqualToQueryTest()
         {
             QueryBuilder queryBuilder = QueryBuilder.New().EqualTo("test");
-            var queryString = queryBuilder.ToQueryString();
+            string queryString = queryBuilder.ToQueryString();
             queryString.Should().BeEquivalentTo("equalTo=\"test\"");
         }
 
@@ -57,35 +57,35 @@ namespace FireSharp.Tests.Core
         public void OrderByQueryTest()
         {
             QueryBuilder queryBuilder = QueryBuilder.New().OrderBy("test");
-            var queryString = queryBuilder.ToQueryString();
+            string queryString = queryBuilder.ToQueryString();
             queryString.Should().BeEquivalentTo("orderBy=\"test\"");
         }
         [Test]
         public void LimitToFirstQueryTest()
         {
             QueryBuilder queryBuilder = QueryBuilder.New().LimitToFirst(8);
-            var queryString = queryBuilder.ToQueryString();
+            string queryString = queryBuilder.ToQueryString();
             queryString.Should().BeEquivalentTo("limitToFirst=8");
         }
         [Test]
         public void LimitToLastQueryTest()
         {
             QueryBuilder queryBuilder = QueryBuilder.New().LimitToLast(10);
-            var queryString = queryBuilder.ToQueryString();
+            string queryString = queryBuilder.ToQueryString();
             queryString.Should().BeEquivalentTo("limitToLast=10");
         }
         [Test]
         public void ShallowParameterTest()
         {
             QueryBuilder queryBuilder = QueryBuilder.New().Shallow(true);
-            var queryString = queryBuilder.ToQueryString();
+            string queryString = queryBuilder.ToQueryString();
             queryString.Should().BeEquivalentTo("shallow=true");
         }
         [Test]
         public void PrintParameterTest()
         {
             QueryBuilder queryBuilder = QueryBuilder.New().Print("silent");
-            var queryString = queryBuilder.ToQueryString();
+            string queryString = queryBuilder.ToQueryString();
             queryString.Should().BeEquivalentTo("print=silent");
         }
 

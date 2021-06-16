@@ -8,11 +8,11 @@ namespace FireSharp.Core
 {
     internal class AutoRedirectHttpClientHandler : DelegatingHandler 
     {
-        private int _maximumAutomaticRedirections;
+        private int maximumAutomaticRedirections;
 
         public int MaximumAutomaticRedirections 
         {
-          get { return _maximumAutomaticRedirections; }
+          get => maximumAutomaticRedirections;
           set 
           {
               if (value < 1) 
@@ -20,27 +20,27 @@ namespace FireSharp.Core
                 throw new ArgumentException("The specified value must be greater than 0.");
               }
 
-              _maximumAutomaticRedirections = value;
+              maximumAutomaticRedirections = value;
           }
         }
 
         public AutoRedirectHttpClientHandler()
         {
-            var handler = new HttpClientHandler { AllowAutoRedirect = false };
+            HttpClientHandler handler = new() { AllowAutoRedirect = false };
             InnerHandler = handler;
             MaximumAutomaticRedirections = handler.MaxAutomaticRedirections;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken) 
         {
-            var response = await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
+            HttpResponseMessage response = await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             if (!IsRedirect(response)) 
             {
                 return response;
             }
 
-            var redirectCount = 0;
+            int redirectCount = 0;
 
             while (IsRedirect(response)) 
             {

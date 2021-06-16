@@ -2,7 +2,7 @@
 {
     public delegate void ValueAddedEventHandler(object sender, ValueAddedEventArgs args, object context);
 
-    public delegate void ValueRootAddedEventHandler<T>(object sender, T arg);
+    public delegate void ValueRootAddedEventHandler<in T>(object sender, T arg);
 
     public delegate void ValueChangedEventHandler(object sender, ValueChangedEventArgs args, object context);
 
