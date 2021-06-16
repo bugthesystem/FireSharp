@@ -25,7 +25,7 @@ run_tests() {
     print_status "RUNNING TESTS"
 
     if [ -z "$USE_SYSTEM_NUNIT_CONSOLE" ]; then
-        RUNNER_PATH="packages/NUnit.Runners.2.6.4/tools"
+        RUNNER_PATH="packages/NUnit.Runners.3.12.0/tools"
     else
         RUNNER_PATH="/usr/lib/nunit"
     fi

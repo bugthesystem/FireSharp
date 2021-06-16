@@ -11,8 +11,8 @@ environment:
     
 before_build:
   - nuget restore FireSharp.Core.sln
-  - nuget install -OutputDirectory packages -Version 4.6.519 OpenCover
-  - nuget install -OutputDirectory packages -Version 1.3.4 coveralls.io
+  - nuget install -OutputDirectory packages -Version 4.7.1204 OpenCover
+  - nuget install -OutputDirectory packages -Version 1.4.2 coveralls.io
 
 build:
   project: FireSharp.Core.sln       
@@ -20,7 +20,7 @@ build:
   
 test_script:
   #- nunit-console /noshadow /domain:single /framework:netstandard2.0 FireSharp.Tests\bin\%CONFIGURATION%\netstandard2.0\FireSharp.Tests.Core.dll
-  - packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -filter:"+[Coveralls*]*" -target:nunit-console.exe -targetargs:"/noshadow /domain:single /framework:netstandard2.0 FireSharp.Tests\bin\%CONFIGURATION%\netstandard2.0\FireSharp.Tests.dll" -filter:"+[FireSharp.Core]* -[FireSharp.Tests.Core]*" -output:coverage.xml
+  - packages\OpenCover.4.7.1204\tools\OpenCover.Console.exe -register:user -filter:"+[Coveralls*]*" -target:nunit-console.exe -targetargs:"/noshadow /domain:single /framework:net5.0 FireSharp.Tests\bin\%CONFIGURATION%\net5.0\FireSharp.Tests.dll" -filter:"+[FireSharp.Core]* -[FireSharp.Tests.Core]*" -output:coverage.xml
 
 after_test:
-  - packages\coveralls.io.1.3.4\tools\coveralls.net.exe --opencover coverage.xml -r dEhBWtoMGvOY9L6uMDKKlhcjmj7DAKTnI
+  - packages\coveralls.io.1.4.2\tools\coveralls.net.exe --opencover coverage.xml -r dEhBWtoMGvOY9L6uMDKKlhcjmj7DAKTnI

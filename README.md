@@ -90,6 +90,9 @@ response.Dispose();
 ```
 
 ## Release Notes
+**5.0**
+- Firesharp now supports .NET5
+
 **2.1**
 - Firesharp now is a Net Standard library, so it's available for every platform.
 
