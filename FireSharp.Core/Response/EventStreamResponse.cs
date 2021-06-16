@@ -55,8 +55,8 @@ namespace FireSharp.Core.Response
             await Task.Factory.StartNew(async () =>
             {
                 using (httpResponse)
-                using (var content = await httpResponse.Content.ReadAsStreamAsync())
-                using (var sr = new StreamReader(content))
+                using (Stream content = await httpResponse.Content.ReadAsStreamAsync())
+                using (StreamReader sr = new StreamReader(content))
                 {
                     string eventName = null;
 
@@ -64,7 +64,7 @@ namespace FireSharp.Core.Response
                     {
                         token.ThrowIfCancellationRequested();
 
-                        var read = await sr.ReadLineAsync();
+                        string? read = await sr.ReadLineAsync();
 
                         Debug.WriteLine(read);
 
@@ -104,12 +104,12 @@ namespace FireSharp.Core.Response
             {
                 case "put":
                 case "patch":
-                    using (var reader = new JsonTextReader(new StringReader(p)))
+                    using (JsonTextReader reader = new JsonTextReader(new StringReader(p)))
                     {
                         reader.DateParseHandling = DateParseHandling.None;
                         ReadToNamedPropertyValue(reader, "path");
                         reader.Read();
-                        var path = reader.Value.ToString();
+                        string? path = reader.Value.ToString();
 
                         if (eventName == "put")
                         {
@@ -131,7 +131,7 @@ namespace FireSharp.Core.Response
                 // skip the property
             }
 
-            var prop = reader.Value.ToString();
+            string? prop = reader.Value.ToString();
             if (property != prop)
             {
                 throw new InvalidOperationException("Error parsing response.  Expected json property named: " + property);
