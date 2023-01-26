@@ -64,7 +64,9 @@ namespace FireSharp.Core.Response
                     {
                         token.ThrowIfCancellationRequested();
 
-                        string? read = await sr.ReadLineAsync();
+                        var read = await sr.ReadLineAsync(token);
+                        if (read == null)
+                            continue;
 
                         Debug.WriteLine(read);
 
@@ -109,7 +111,7 @@ namespace FireSharp.Core.Response
                         reader.DateParseHandling = DateParseHandling.None;
                         ReadToNamedPropertyValue(reader, "path");
                         reader.Read();
-                        string? path = reader.Value.ToString();
+                        var path = reader.Value?.ToString();
 
                         if (eventName == "put")
                         {
@@ -131,7 +133,7 @@ namespace FireSharp.Core.Response
                 // skip the property
             }
 
-            string? prop = reader.Value.ToString();
+            var prop = reader.Value?.ToString();
             if (property != prop)
             {
                 throw new InvalidOperationException("Error parsing response.  Expected json property named: " + property);
